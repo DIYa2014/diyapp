@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="menu">
+        <item>@string/item_wifi</item>
+        <item>@string/item_time</item>
+        <item>@string/item_bluetooth</item>
+        <item>@string/item_gps</item>
+        <item>@string/item_phone</item>
+    </string-array>
+    
+
+</resources>

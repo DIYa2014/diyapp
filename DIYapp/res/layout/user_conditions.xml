@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/conditions"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#fe1200"
+    >
+	<FrameLayout android:name="com.example.diyapp.fragments.MenuFragment"
+            android:id="@+id/menu_fragment"
+            android:layout_weight="2"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+	<FrameLayout android:name="com.example.diyapp.fragments.ConditionsListAreaFragment"
+            android:id="@+id/condition_list_area_fragment"
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+	  
+</LinearLayout>
+

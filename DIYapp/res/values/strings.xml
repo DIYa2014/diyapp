@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">DIYapp</string>
+    <string name="action_settings">Settings</string>
+    <string name="hello_world">Hello world!</string>
+    
+    <string name="default_menu_ico_text">opcja</string>
+
+        <string name="item_wifi">tekst</string>
+        <string name="item_time">tekst</string>
+        <string name="item_bluetooth">tekst</string>
+        <string name="item_gps">tekst</string>
+        <string name="item_phone">tekst</string>
+</resources>
