@@ -29,6 +29,7 @@ public class MenuFragment extends Fragment{
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		Log.d("kkams", "onCreate MenuFragment");
+		Log.d("kkams", "onCreate MenuFragment");
 		view = inflater.inflate(R.layout.menu, null);
 		
 		return view;
