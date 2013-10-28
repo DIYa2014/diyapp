@@ -27,6 +27,8 @@
 
 package com.example.diyapp.utils;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Queue;
 
@@ -34,6 +36,7 @@ import android.content.Context;
 import android.database.DataSetObserver;
 import android.graphics.Rect;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.GestureDetector;
 import android.view.GestureDetector.OnGestureListener;
 import android.view.MotionEvent;
@@ -60,9 +63,12 @@ public class HorizontalListView extends AdapterView<ListAdapter> {
 	private OnItemLongClickListener mOnItemLongClicked;
 	private boolean mDataChanged = false;
 	
+	
 
 	public HorizontalListView(Context context, AttributeSet attrs) {
 		super(context, attrs);
+		
+		//Log.d("kkams", attrs.toString());
 		initView();
 	}
 	
@@ -75,13 +81,26 @@ public class HorizontalListView extends AdapterView<ListAdapter> {
 		mMaxX = Integer.MAX_VALUE;
 		mScroller = new Scroller(getContext());
 		mGesture = new GestureDetector(getContext(), mOnGesture);
+		
 	}
 	
 	@Override
 	public void setOnItemSelectedListener(AdapterView.OnItemSelectedListener listener) {
 		mOnItemSelected = listener;
 	}
-	
+	public void add( int id, int ico){
+		
+		HashMap<String, String> map = new HashMap<String, String>(); 
+        map.put(Constant.KEY_ID, Integer.toString(id));
+        map.put(Constant.KEY_ICO, Integer.toString(ico));
+        MenuListViewAdapter a = (MenuListViewAdapter)mAdapter;
+        a.data.add(map);
+	}
+	public void remove( int id){
+		
+        MenuListViewAdapter a = (MenuListViewAdapter)mAdapter;
+        a.data.remove(id);
+	}
 	@Override
 	public void setOnItemClickListener(AdapterView.OnItemClickListener listener){
 		mOnItemClicked = listener;

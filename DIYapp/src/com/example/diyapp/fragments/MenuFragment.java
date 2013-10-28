@@ -9,17 +9,13 @@ import com.example.diyapp.utils.HorizontalListView;
 import com.example.diyapp.utils.MenuListViewAdapter;
 
 
-import android.app.AlertDialog;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.View.OnClickListener;
-import android.widget.BaseAdapter;
-import android.widget.Button;
-import android.widget.TextView;
+
 
 
 public class MenuFragment extends Fragment{
@@ -28,7 +24,6 @@ public class MenuFragment extends Fragment{
 	public View view;
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		Log.d("kkams", "onCreate MenuFragment");
 		Log.d("kkams", "onCreate MenuFragment");
 		view = inflater.inflate(R.layout.menu, null);
 		
@@ -43,17 +38,16 @@ public class MenuFragment extends Fragment{
 		
 		optionList = new ArrayList<HashMap<String, String>>();
 
-		add(mainMenu[0], 0, android.R.drawable.ic_menu_help,  android.R.drawable.ic_menu_call); 
-		add(mainMenu[1], 1, android.R.drawable.ic_menu_help,   android.R.drawable.ic_menu_call); 
-		add(mainMenu[2], 2, android.R.drawable.ic_menu_help,   android.R.drawable.ic_menu_call); 
-		add(mainMenu[3], 3, android.R.drawable.ic_menu_help,  android.R.drawable.ic_menu_call); 
-		add(mainMenu[4], 4, android.R.drawable.ic_menu_help,   android.R.drawable.ic_menu_call);
-		add(mainMenu[0], 5, android.R.drawable.ic_menu_help,  android.R.drawable.ic_menu_call); 
-		add(mainMenu[1], 6, android.R.drawable.ic_menu_help,   android.R.drawable.ic_menu_call); 
-		add(mainMenu[2], 7, android.R.drawable.ic_menu_help,   android.R.drawable.ic_menu_call); 
-		add(mainMenu[3], 8, android.R.drawable.ic_menu_help,  android.R.drawable.ic_menu_call); 
-		add(mainMenu[4], 9, android.R.drawable.ic_menu_help,   android.R.drawable.ic_menu_call);
-		     
+		add(mainMenu[0], 0, android.R.drawable.ic_dialog_alert); 
+		add(mainMenu[1], 1, android.R.drawable.ic_input_delete); 
+		add(mainMenu[2], 2, android.R.drawable.ic_menu_call); 
+		add(mainMenu[3], 3, android.R.drawable.ic_media_pause); 
+		add(mainMenu[4], 4, android.R.drawable.ic_media_rew);
+		add(mainMenu[0], 0, android.R.drawable.ic_lock_idle_alarm); 
+		add(mainMenu[1], 1, android.R.drawable.ic_menu_camera); 
+		add(mainMenu[2], 2, android.R.drawable.ic_media_ff); 
+		add(mainMenu[3], 3, android.R.drawable.ic_menu_close_clear_cancel); 
+		add(mainMenu[4], 4, android.R.drawable.ic_menu_mapmode);  
 		HorizontalListView listview = (HorizontalListView) getActivity().findViewById(R.id.listview);
 
         adapter=new MenuListViewAdapter(getActivity(), optionList, view);
@@ -63,13 +57,12 @@ public class MenuFragment extends Fragment{
 //		setListAdapter(adapter);
 
 	}
-	public void add(String title, int id, int ico, int bg){
+	public void add(String title, int id, int ico){
 		
 		HashMap<String, String> map = new HashMap<String, String>(); 
         map.put(Constant.KEY_ID, Integer.toString(id));
         map.put(Constant.KEY_OPTION, title);
         map.put(Constant.KEY_ICO, Integer.toString(ico));
-        map.put(Constant.KEY_BACKGROUND, Integer.toString(bg));
         optionList.add(map);
 	}
 }
