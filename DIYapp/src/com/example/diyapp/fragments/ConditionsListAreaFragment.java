@@ -48,14 +48,19 @@ public class ConditionsListAreaFragment extends Fragment{
 		add(3, android.R.drawable.ic_input_get, list);
 		add(4, android.R.drawable.ic_input_get, list);
 		add(5, android.R.drawable.ic_input_get, list);
-		
+		add(0, android.R.drawable.ic_input_get, list); 
+		add(1, android.R.drawable.ic_input_get, list);
+		add(2, android.R.drawable.ic_input_get, list);
+		add(3, android.R.drawable.ic_input_get, list);
+		add(4, android.R.drawable.ic_input_get, list);
+		add(5, android.R.drawable.ic_input_get, list);
 		     
 		addGroup(list);
 		
 		button.setOnClickListener(addConditionButtonListener);
 	}
 	public void addGroup(ArrayList<HashMap<String, String>> array){
-		LayoutParams params = new LayoutParams(LayoutParams.MATCH_PARENT, 50);
+		LayoutParams params = new LayoutParams(LayoutParams.MATCH_PARENT, 200);
 		
 		HorizontalListView listview = new HorizontalListView(getActivity(), null);
 		params.setMargins(30, 20, 30, 0);
@@ -99,6 +104,17 @@ public class ConditionsListAreaFragment extends Fragment{
 			ArrayList<HashMap<String, String>> list = new ArrayList<HashMap<String, String>>();
 
 			add(0, android.R.drawable.ic_input_get, list); 
+			add(1, android.R.drawable.ic_input_delete, list);
+			add(2, android.R.drawable.ic_menu_day, list);
+			add(3, android.R.drawable.ic_secure, list);
+			add(4, android.R.drawable.ic_menu_zoom, list);
+			add(5, android.R.drawable.ic_input_add, list);
+			add(0, android.R.drawable.ic_input_get, list); 
+			add(1, android.R.drawable.ic_input_delete, list);
+			add(2, android.R.drawable.ic_menu_day, list);
+			add(3, android.R.drawable.ic_secure, list);
+			add(4, android.R.drawable.ic_menu_zoom, list);
+			add(5, android.R.drawable.ic_input_add, list);add(0, android.R.drawable.ic_input_get, list); 
 			add(1, android.R.drawable.ic_input_delete, list);
 			add(2, android.R.drawable.ic_menu_day, list);
 			add(3, android.R.drawable.ic_secure, list);

@@ -334,6 +334,13 @@ public class HorizontalListView extends AdapterView<ListAdapter> {
 	
 	private OnGestureListener mOnGesture = new GestureDetector.SimpleOnGestureListener() {
 
+		/*@Override
+		public void onLongPress(MotionEvent e) {
+			//Log.d("kkams", "onLongPress HorizontalLisView");
+			
+			super.onLongPress(e);
+		}*/
+
 		@Override
 		public boolean onDown(MotionEvent e) {
 			return HorizontalListView.this.onDown(e);

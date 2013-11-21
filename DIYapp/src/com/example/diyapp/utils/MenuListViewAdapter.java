@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import com.example.diyapp.R;
+import com.example.diyapp.fragments.MenuFragment;
 
 
 import android.app.Activity;
@@ -29,7 +30,7 @@ public class MenuListViewAdapter extends BaseAdapter {
     public ArrayList<HashMap<String, String>> data;
     private static LayoutInflater inflater=null;
     private View listView;
-
+    private int id;
     Boolean touchFlag=false;
     boolean dropFlag=false;
     LayoutParams imageParams;
@@ -38,27 +39,38 @@ public class MenuListViewAdapter extends BaseAdapter {
     Drawable dropDrawable,selectDrawable;
     Rect dropRect,selectRect;
     int topy,leftX,rightX,bottomY;
+    private ImageView ico_image;
+    public View vi;
+    private OnTouchListener onTouchListener;
 
-    int dropArray[];
-    public MenuListViewAdapter(Activity a, ArrayList<HashMap<String, String>> d, View list) {
+   // int dropArray[];
+    public MenuListViewAdapter(Activity a, ArrayList<HashMap<String, String>> d, View list, View.OnTouchListener otl) {
     	activity = a;
         data=d;
         inflater = (LayoutInflater)activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         listView = list;
-        
+        onTouchListener = otl;
     }
     
+    public ArrayList<HashMap<String, String>> getData(){
+    	return data;
+    }
+    @Override
     public int getCount() {
         return data.size();
     }
- 
+
+    @Override
     public Object getItem(int position) {
         return position;
     }
- 
+
+    @Override
     public long getItemId(int position) {
         return position;
     }
+    
+    
     public View getListView(){
     	return listView;
     }
@@ -67,10 +79,11 @@ public class MenuListViewAdapter extends BaseAdapter {
         DisplayMetrics metrics = context.getResources().getDisplayMetrics();
         return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dipValue, metrics);
     }
+    @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         Drawable ico;
         HashMap<String, String> map = new HashMap<String, String>();
-        View vi=convertView;
+        vi=convertView;
         if(convertView==null)
             vi = inflater.inflate(R.layout.menu_single_element, null);
         
@@ -82,57 +95,25 @@ public class MenuListViewAdapter extends BaseAdapter {
     	map = data.get(position);
         
     	
-        	title.setText(map.get(Constant.KEY_OPTION));
-            ico = activity.getResources().getDrawable(Integer.parseInt(map.get(Constant.KEY_ICO)));
-            
-            ImageView ico_image=(ImageView)vi.findViewById(R.id.menu_element_ico); // ico image
-            ico_image.setImageDrawable(ico);
-        	
+    	title.setText(map.get(Constant.KEY_OPTION));
+    	id=Integer.parseInt(map.get(Constant.KEY_ID));
+        ico = activity.getResources().getDrawable(Integer.parseInt(map.get(Constant.KEY_ICO)));
         
-        	listview.setVerticalFadingEdgeEnabled(false);
-        	listview.setVerticalScrollBarEnabled(false);
-        	
- 	        title.setVisibility(View.GONE);
- 	        
-        
-        
-       // vi.setOnTouchListener(dragListener);
+        ico_image=(ImageView)vi.findViewById(R.id.menu_element_ico); // ico image
+        ico_image.setImageDrawable(ico);
+    	
+    
+    	listview.setVerticalFadingEdgeEnabled(false);
+    	listview.setVerticalScrollBarEnabled(false);
+    	
+        title.setVisibility(View.GONE);
+
+    	vi.setOnTouchListener(onTouchListener);
         return vi;
     }
-    
-		
-      /*
-    	OnTouchListener dragListener = new OnTouchListener() 
-    	{
-    		@Override
-         public boolean onTouch(View v, MotionEvent event) 
-         {
-             if(touchFlag==true)
-             {
-                 System.err.println("Display If  Part ::->"+touchFlag);
-                 switch (event.getActionMasked()) 
-                 {
-                 case MotionEvent.ACTION_DOWN :
-                	 Log.d("kkams","action_down");
-                     break;
-                 case MotionEvent.ACTION_MOVE:
-                	 Log.d("kkams","action_move");
-                     break;  
-                 case MotionEvent.ACTION_UP:
-                	 Log.d("kkams","action_up");
-                     break;
-                 default:
-                     break;
-                 }
-             }else
-             {
-                
-             }               
-             return true;
-         }
+   
 
-		
-		
-     };*/
+      
+    	
     
 }
