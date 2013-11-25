@@ -11,10 +11,12 @@ import com.example.diyapp.utils.Constant;
 import com.example.diyapp.utils.HorizontalListView;
 import com.example.diyapp.utils.ConditionsListViewAdapter;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -72,9 +74,43 @@ public class ConditionsListAreaFragment extends Fragment{
         
         listview.setAdapter(adapter);
         ll.addView(listview);
+        
         groupCounter++;
+       // listview.setOnTouchListener(onTouch);
 		
 	}
+	public int getListCount(){
+		return groupCounter;
+	}
+	public View getListById(int id){
+		return getActivity().findViewById(id);
+	}
+	public View.OnTouchListener onTouch = new View.OnTouchListener() {
+
+		@Override
+		public boolean onTouch(View arg0, MotionEvent event) {
+			
+				
+				Log.d("kkams", "ConditionsListArea touch");
+				
+	            switch(event.getAction())
+	            {
+	            case MotionEvent.ACTION_UP:   
+	            				
+	            				
+	                break;
+	            
+	            case MotionEvent.ACTION_MOVE:
+								
+                                break;
+	            default:
+                                break;
+            }
+			
+			
+           return true;
+		}
+};
 	public void add( int id, int ico, ArrayList<HashMap<String, String>> optionList){
 		
 		HashMap<String, String> map = new HashMap<String, String>(); 
@@ -84,7 +120,7 @@ public class ConditionsListAreaFragment extends Fragment{
 	}
 	public void addElemToList(int ListId){
 		HorizontalListView listview = (HorizontalListView)getActivity().findViewById(ListId);
-		listview.setBackgroundColor(-16776961);
+		listview.setBackgroundColor(Color.BLACK);
 		
 	}
 	public void addElemToList(int elemId, int listId){
@@ -121,6 +157,7 @@ public class ConditionsListAreaFragment extends Fragment{
 			add(4, android.R.drawable.ic_menu_zoom, list);
 			add(5, android.R.drawable.ic_input_add, list);
 			addGroup(list);
+			
 			/*test*/
 			/*
 			if(groupCounter == 4){

@@ -9,11 +9,17 @@ import com.example.diyapp.utils.HorizontalListView;
 import com.example.diyapp.utils.MenuListViewAdapter;
 
 
+
+
 import android.R.drawable;
+import android.annotation.TargetApi;
 import android.graphics.Color;
+import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -39,7 +45,8 @@ public class MenuFragment extends Fragment{
 	private LayoutParams imgParams;
 	private Drawable img_drawable;
 	private String dragElemId;
-	
+	private FragmentManager mFragmentManager;
+	private Fragment mFragment;
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		Log.d("kkams", "onCreate MenuFragment");
@@ -77,7 +84,8 @@ public class MenuFragment extends Fragment{
         getActivity().addContentView(ll, params);
         adapter=new MenuListViewAdapter(getActivity(), optionList, view, onTouch);
         listview.setAdapter(adapter);
-        
+        mFragmentManager = getFragmentManager(); 
+        mFragment = mFragmentManager.findFragmentById(R.id.condition_list_area_fragment);
         
         listview.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
@@ -100,6 +108,7 @@ public class MenuFragment extends Fragment{
             );
 
 	}
+
 	public void add(String title, int id, int ico){
 		
 		HashMap<String, String> map = new HashMap<String, String>(); 
@@ -110,10 +119,20 @@ public class MenuFragment extends Fragment{
 	}
 	
 	
+	
+
+	
+
+
+
+
 	public View.OnTouchListener onTouch = new View.OnTouchListener() {
 
+		
 		@Override
 		public boolean onTouch(View arg0, MotionEvent event) {
+			int x_cord;
+			int y_cord;
 			if(ifLongPressed){
 				
 				//Log.d("kkams", "po ifie");
@@ -133,6 +152,38 @@ public class MenuFragment extends Fragment{
 	            switch(event.getAction())
 	            {
 	            case MotionEvent.ACTION_UP:   
+
+	            				x_cord = (int)event.getRawX();
+	            				y_cord = (int)event.getRawY();
+	            				ViewGroup a;
+	            				Rect viewRect = new Rect();
+	            				a = (ViewGroup)getView().getParent();
+	            				for(int i=0;i<a.getChildCount();i++){
+	            					
+	            					
+//	            					View child = a.getChildAt(i);
+//	            					int left = child.getLeft();
+//	            					int right = child.getRight();
+//	            					int top = child.getTop() + a.getTop();
+//	            					int bottom = child.getBottom() + a.getBottom();
+//	            					
+//	            					viewRect.set(left, top, right, bottom);
+//	            					
+//	            					if(viewRect.contains(x_cord,y_cord)){
+//	            						Log.d("kkams", "Contain:" + child.toString());
+//	            						
+//	            						//if(mOnItemSelected != null){
+//	            							//mOnItemSelected.onItemSelected(HorizontalListView.this, child, mLeftViewIndex + 1 + i, mAdapter.getItemId( mLeftViewIndex + 1 + i ));
+//	            						//}
+//	            						//if(mOnItemReceiver != null){
+//	            							//mOnItemReceiver.onItemClick(HorizontalListView.this, child, mLeftViewIndex + 1 + i, mAdapter.getItemId( mLeftViewIndex + 1 + i ));
+//	            						//}
+//	            						
+//	            					}
+	            				}
+	            				
+	            				
+	            				
 	            				ll.removeView(img);
 	            				ifLongPressed = false;
 	            				
@@ -140,8 +191,8 @@ public class MenuFragment extends Fragment{
 	            
 	            case MotionEvent.ACTION_MOVE:
 								//getActivity().addContentView(img, params);
-                                int x_cord = (int)event.getRawX();
-                                int y_cord = (int)event.getRawY();
+                                x_cord = (int)event.getRawX();
+                                y_cord = (int)event.getRawY();
                                 //Log.d("move","x: "+ x_cord +" y: "+y_cord);
                                 //if(x_cord>windowwidth){x_cord=windowwidth;}
                                 //if(y_cord>windowheight){y_cord=windowheight;}
@@ -150,6 +201,7 @@ public class MenuFragment extends Fragment{
                                 imgParams.topMargin = y_cord-219 - img.getHeight()/2 ;
 
                                 img.setLayoutParams(imgParams);
+                                getView().setBackgroundColor(Color.BLUE);
                                 break;
 	            default:
                                 break;
@@ -162,5 +214,6 @@ public class MenuFragment extends Fragment{
            return true;
 		}
 };
+
 }
 
