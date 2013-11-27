@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" 
+    android:orientation="vertical"
+    android:background="@color/black"
+    >
+ 	<LinearLayout
+	    android:layout_width="match_parent"
+	    android:layout_height="match_parent"
+	    android:layout_weight="3"
+	    android:orientation="vertical"
+   		 android:background="@color/red"
+	    >
+
+	    
+
+		<LinearLayout
+		    android:layout_width="match_parent"
+		    android:layout_height="match_parent" 
+		    android:orientation="horizontal"
+   		 	android:background="@color/who_knows"
+		    >
+	    	<com.karbar.diyapp.utils.HorizontalListView 
+			      android:id="@+id/listview" 
+			      android:layout_width="fill_parent" 
+			      android:layout_height="fill_parent" 
+			      android:background="@color/red">  
+			    
+			</com.karbar.diyapp.utils.HorizontalListView>
+	
+		</LinearLayout>
+	</LinearLayout>
+	<LinearLayout
+	    android:layout_width="match_parent"
+	    android:layout_height="match_parent"
+	    android:layout_weight="1"
+	    android:orientation="vertical"
+   		android:background="@color/white"
+   		android:id="@+id/conditionsContainer"
+	    >
+    	<RelativeLayout
+		    android:layout_width="match_parent"
+		    android:layout_height="match_parent" 
+		    >
+			<ScrollView
+			    android:layout_width="match_parent"
+			    android:layout_height="match_parent" 
+			    android:layout_marginBottom="40dp"
+			    android:layout_alignParentTop="true"
+			    >
+			
+			    <LinearLayout
+			        android:id="@+id/condition_horizontal_list_linear"
+			        android:layout_width="match_parent"
+			        android:layout_height="100dp"
+			        android:orientation="vertical" >
+			
+			        
+			
+			    </LinearLayout>
+				
+			</ScrollView>
+			<Button
+			    android:id="@+id/add_condition_button"
+			    android:layout_width="wrap_content"
+			    android:layout_height="40dp"
+			    android:text="@string/addConditionsList"
+			    android:layout_alignParentBottom="true"
+			    android:layout_centerHorizontal="true" />
+			</RelativeLayout>
+
+	</LinearLayout>
+</LinearLayout>

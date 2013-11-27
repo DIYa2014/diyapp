@@ -1,4 +1,4 @@
-package com.example.diyapp.utils;
+package com.karbar.diyapp.utils;
 
 public class Constant {
 	

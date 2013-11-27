@@ -25,7 +25,7 @@
  *
  */
 
-package com.example.diyapp.utils;
+package com.karbar.diyapp.utils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -94,8 +94,10 @@ public class HorizontalListView extends AdapterView<ListAdapter> {
         map.put(Constant.KEY_ID, Integer.toString(id));
         map.put(Constant.KEY_ICO, Integer.toString(ico));
         MenuListViewAdapter a = (MenuListViewAdapter)mAdapter;
-        a.data.add(map);
+        //a.data.add(map);
+        a.data.add(0, map);
 	}
+	
 	public void remove( int id){
 		
         MenuListViewAdapter a = (MenuListViewAdapter)mAdapter;

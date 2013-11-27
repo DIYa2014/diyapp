@@ -1,10 +1,9 @@
-package com.example.diyapp.utils;
+package com.karbar.diyapp.utils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import com.example.diyapp.R;
-import com.example.diyapp.fragments.MenuFragment;
+import com.karbar.diyapp.R;
 
 
 import android.app.Activity;
@@ -20,11 +19,12 @@ import android.view.View;
 import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout.LayoutParams;
 import android.widget.TextView;
 
-public class MenuListViewAdapter extends BaseAdapter {
+public class GridViewAdapter extends BaseAdapter {
 
     private Activity activity;
     public ArrayList<HashMap<String, String>> data;
@@ -39,17 +39,17 @@ public class MenuListViewAdapter extends BaseAdapter {
     Drawable dropDrawable,selectDrawable;
     Rect dropRect,selectRect;
     int topy,leftX,rightX,bottomY;
-    private ImageView ico_image;
+    private ImageView imageView;
     public View vi;
     private OnTouchListener onTouchListener;
 
    // int dropArray[];
-    public MenuListViewAdapter(Activity a, ArrayList<HashMap<String, String>> d, View list, View.OnTouchListener otl) {
+    public GridViewAdapter(Activity a, ArrayList<HashMap<String, String>> d) {
     	activity = a;
         data=d;
         inflater = (LayoutInflater)activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        listView = list;
-        onTouchListener = otl;
+
+        //onTouchListener = otl;
     }
     
     public ArrayList<HashMap<String, String>> getData(){
@@ -71,9 +71,6 @@ public class MenuListViewAdapter extends BaseAdapter {
     }
     
     
-    public View getListView(){
-    	return listView;
-    }
    
     public static float dipToPixels(Context context, float dipValue) {
         DisplayMetrics metrics = context.getResources().getDisplayMetrics();
@@ -86,30 +83,23 @@ public class MenuListViewAdapter extends BaseAdapter {
         vi=convertView;
         if(convertView==null)
             vi = inflater.inflate(R.layout.menu_single_element, null);
-        
-        vi.setMinimumHeight(500);
-        TextView title = (TextView)vi.findViewById(R.id.menu_element_text); // title
-        View listview = getListView();
-        
-        
-    	map = data.get(position);
+        map = data.get(position);
         
     	
-    	title.setText(map.get(Constant.KEY_OPTION));
+    	
     	id=Integer.parseInt(map.get(Constant.KEY_ID));
         ico = activity.getResources().getDrawable(Integer.parseInt(map.get(Constant.KEY_ICO)));
         
-        ico_image=(ImageView)vi.findViewById(R.id.menu_element_ico); // ico image
-        ico_image.setImageDrawable(ico);
-    	
+        imageView=(ImageView)vi.findViewById(R.id.menu_element_ico); // ico image
+        imageView.setImageDrawable(ico);
+        imageView.setLayoutParams(new GridView.LayoutParams(100, 100));
+        imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+        imageView.setPadding(8, 8, 8, 8);
     
-    	listview.setVerticalFadingEdgeEnabled(false);
-    	listview.setVerticalScrollBarEnabled(false);
-    	
-        title.setVisibility(View.GONE);
-
-    	vi.setOnTouchListener(onTouchListener);
-        return vi;
+        return imageView;
+        
+       
+       
     }
    
 
