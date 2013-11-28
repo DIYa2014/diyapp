@@ -4,19 +4,24 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.LinearLayout.LayoutParams;
 import android.widget.RelativeLayout;
 
@@ -51,11 +56,36 @@ public class ActionsFragment extends Fragment{
 	private GridView mGrid;
 	private GridViewAdapter mGridAdapter;
 	
+	private RelativeLayout mButton1;
+	private RelativeLayout mButton2;
+	private TextView mButtonText1;
+	private TextView mButtonText2;
+	private ImageView mButtonImage1;
+	private ImageView mButtonImage2;
+
+	private ImageView mButtonArrow1;
+	private ImageView mButtonArrow2;
+	private Intent mIntent;
+	private FragmentManager mFragmentManager;
+	private ConditionsFragment content;
+	private ActionsFragment actions;
+	private ConditionsFragment conditions;
 	
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-	
+		
+		
 		mView = inflater.inflate(R.layout.actions_fragment, container, false);
 		
+		 mButton1 = (RelativeLayout) mView.findViewById(R.id.conditionsButtonRelative);
+		 mButton2 = (RelativeLayout) mView.findViewById(R.id.actionsButtonRelative);
+		 mButtonText1 = (TextView)mView.findViewById(R.id.textViewCondition);
+		 mButtonText2 = (TextView)mView.findViewById(R.id.textViewAction);
+		 mButtonImage1 = (ImageView)mView.findViewById(R.id.imageViewCondition);
+		 mButtonImage2 = (ImageView)mView.findViewById(R.id.imageViewAction);
+		 mButtonArrow1 = (ImageView)mView.findViewById(R.id.arrowCondition);
+		 mButtonArrow2 = (ImageView)mView.findViewById(R.id.arrowAction);
+		 mButton1.setOnClickListener(changeToConditionsListener);
+		 mButton2.setOnClickListener(changeToActionsListener);
 	 return mView;
 	 }
 
@@ -310,4 +340,27 @@ public class ActionsFragment extends Fragment{
 	           return true;
 			}
 	};
+	 View.OnClickListener changeToActionsListener= new OnClickListener() {
+		    public void onClick(View v) {
+		    	 
+		    	 mFragmentManager = getFragmentManager(); 
+		    	 actions = new ActionsFragment();
+		    	 FragmentTransaction transaction = mFragmentManager.beginTransaction();
+		    	 transaction.replace(R.id.contentFrag, actions);
+		    	 transaction.commit();
+		    	 
+		    	
+		    }
+		};
+	View.OnClickListener changeToConditionsListener= new OnClickListener() {
+		    public void onClick(View v) {
+		    	 mFragmentManager = getFragmentManager(); 
+
+				 conditions = new ConditionsFragment();
+
+		    	 mFragmentManager.beginTransaction().replace(R.id.contentFrag, conditions).commit();
+
+		    	
+		    }
+		};	
 	}

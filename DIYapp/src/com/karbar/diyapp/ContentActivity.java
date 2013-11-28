@@ -12,7 +12,6 @@ import com.karbar.fragments.ConditionsFragment;
 
 
 public class ContentActivity extends FragmentActivity {
-	ButtonsFragment buttons;
 	ConditionsFragment conditions;
 	
 	
@@ -20,9 +19,7 @@ public class ContentActivity extends FragmentActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.content_view);
-		buttons = new ButtonsFragment();
 		conditions = new ConditionsFragment();
-        getSupportFragmentManager().beginTransaction().replace(R.id.buttonsFrag, buttons).commit();
         getSupportFragmentManager().beginTransaction().replace(R.id.contentFrag, conditions).commit();
 		
 

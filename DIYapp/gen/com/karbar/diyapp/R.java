@@ -84,31 +84,30 @@ public final class R {
         public static final int white_line=0x7f02002e;
     }
     public static final class id {
-        public static final int action_grid=0x7f0a0002;
-        public static final int action_settings=0x7f0a0018;
-        public static final int actionsButton=0x7f0a000f;
-        public static final int actionsButtonRelative=0x7f0a0010;
-        public static final int actionsContainer=0x7f0a0001;
-        public static final int add_condition_button=0x7f0a0007;
-        public static final int add_diya=0x7f0a0003;
-        public static final int arrowAction=0x7f0a0013;
-        public static final int arrowCondition=0x7f0a000e;
-        public static final int buttonsFrag=0x7f0a0015;
-        public static final int condition_horizontal_list_linear=0x7f0a0006;
-        public static final int conditionsButton=0x7f0a000a;
-        public static final int conditionsButtonRelative=0x7f0a000b;
-        public static final int conditionsContainer=0x7f0a0005;
-        public static final int contentFrag=0x7f0a0016;
+        public static final int action_grid=0x7f0a000c;
+        public static final int action_settings=0x7f0a0017;
+        public static final int actionsButton=0x7f0a0005;
+        public static final int actionsButtonRelative=0x7f0a0006;
+        public static final int actionsContainer=0x7f0a000b;
+        public static final int add_condition_button=0x7f0a0011;
+        public static final int add_diya=0x7f0a000d;
+        public static final int arrowAction=0x7f0a0009;
+        public static final int arrowCondition=0x7f0a0004;
+        public static final int condition_horizontal_list_linear=0x7f0a0010;
+        public static final int conditionsButton=0x7f0a0000;
+        public static final int conditionsButtonRelative=0x7f0a0001;
+        public static final int conditionsContainer=0x7f0a000f;
+        public static final int contentFrag=0x7f0a0015;
         public static final int contentFragLay=0x7f0a0014;
-        public static final int imageViewAction=0x7f0a0011;
-        public static final int imageViewCondition=0x7f0a000c;
-        public static final int listview=0x7f0a0004;
-        public static final int listview_action=0x7f0a0000;
-        public static final int menu_element_ico=0x7f0a0008;
-        public static final int menu_element_text=0x7f0a0017;
-        public static final int textViewAction=0x7f0a0012;
-        public static final int textViewCondition=0x7f0a000d;
-        public static final int white_line=0x7f0a0009;
+        public static final int imageViewAction=0x7f0a0007;
+        public static final int imageViewCondition=0x7f0a0002;
+        public static final int listview=0x7f0a000e;
+        public static final int listview_action=0x7f0a000a;
+        public static final int menu_element_ico=0x7f0a0012;
+        public static final int menu_element_text=0x7f0a0016;
+        public static final int textViewAction=0x7f0a0008;
+        public static final int textViewCondition=0x7f0a0003;
+        public static final int white_line=0x7f0a0013;
     }
     public static final class layout {
         public static final int actions_fragment=0x7f030000;

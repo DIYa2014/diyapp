@@ -4,9 +4,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -14,6 +17,7 @@ import android.view.MotionEvent;
 import android.view.TextureView;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -35,7 +39,7 @@ public class ConditionsFragment extends Fragment{
 	private View mainView;
 	private MenuListViewAdapter mMenuAdapter;
 	private ArrayList<HashMap<String, String>> optionList;
-	private View mView;
+	private ArrayList<ArrayList<HashMap<String, String>>> bundleLists;
 	private boolean oneElemDragedFlag = false;
 	private boolean ifLongPressed = false;
 	private String[] mainMenu;
@@ -51,19 +55,43 @@ public class ConditionsFragment extends Fragment{
 	private int draggedId = -1;
 	private ImageButton mActionButton;
 	private boolean isFirstGroup = true;
+
+	private RelativeLayout mButton1;
+	private RelativeLayout mButton2;
+	private TextView mButtonText1;
+	private TextView mButtonText2;
+	private ImageView mButtonImage1;
+	private ImageView mButtonImage2;
+
+	private ImageView mButtonArrow1;
+	private ImageView mButtonArrow2;
+	private Intent mIntent;
+	private FragmentManager mFragmentManager;
+	private ConditionsFragment content;
+	private ActionsFragment actions;
+	private ConditionsFragment conditions;
+	
 	
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 	
 	 mainView = inflater.inflate(R.layout.conditions_fragment, container, false);
-	
+
+	 mButton1 = (RelativeLayout) mainView.findViewById(R.id.conditionsButtonRelative);
+	 mButton2 = (RelativeLayout) mainView.findViewById(R.id.actionsButtonRelative);
+	 mButtonText1 = (TextView)mainView.findViewById(R.id.textViewCondition);
+	 mButtonText2 = (TextView)mainView.findViewById(R.id.textViewAction);
+	 mButtonImage1 = (ImageView)mainView.findViewById(R.id.imageViewCondition);
+	 mButtonImage2 = (ImageView)mainView.findViewById(R.id.imageViewAction);
+	 mButtonArrow1 = (ImageView)mainView.findViewById(R.id.arrowCondition);
+	 mButtonArrow2 = (ImageView)mainView.findViewById(R.id.arrowAction);
+	 mButton1.setOnClickListener(changeToConditionsListener);
+	 mButton2.setOnClickListener(changeToActionsListener);
 	 return mainView;
 	 }
 
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		 mActivity = getActivity();
-			mView = getView();
-
 			mainMenu = getResources().getStringArray(R.array.menu);
 			createMenu();
 			createDraggedIco(400);
@@ -98,7 +126,7 @@ public class ConditionsFragment extends Fragment{
 		
 		mMenuListview.setLongClickable(true);
 	
-	    mMenuAdapter=new MenuListViewAdapter(getActivity(), optionList, mView, onTouch, true);
+	    mMenuAdapter=new MenuListViewAdapter(getActivity(), optionList, mainView, onTouch, true);
 	    mMenuListview.setAdapter(mMenuAdapter);
 	    
 	    mMenuListview.setOnItemLongClickListener(onLongClick);
@@ -162,7 +190,7 @@ public class ConditionsFragment extends Fragment{
 		listview.setId(groupCounter);
 		LinearLayout ll=(LinearLayout)getActivity().findViewById(R.id.condition_horizontal_list_linear); 
 	    
-		mMenuAdapter=new MenuListViewAdapter(getActivity(), array, mView,onTouch, false);
+		mMenuAdapter=new MenuListViewAdapter(getActivity(), array, mainView,onTouch, false);
 	    
 	    listview.setAdapter(mMenuAdapter);
 	    if(!isFirstGroup){
@@ -172,6 +200,7 @@ public class ConditionsFragment extends Fragment{
 		listview.setLayoutParams(params);
     	isFirstGroup = false;
 	    ll.addView(listview);
+	    
 	    groupCounter++;
 		
 	}
@@ -300,4 +329,28 @@ public class ConditionsFragment extends Fragment{
 	           return true;
 			}
 	};
+	 View.OnClickListener changeToActionsListener= new OnClickListener() {
+		    public void onClick(View v) {
+		    	 
+		    	 mFragmentManager = getFragmentManager(); 
+		    	 actions = new ActionsFragment();
+		    	 FragmentTransaction transaction = mFragmentManager.beginTransaction();
+		    	 transaction.replace(R.id.contentFrag, actions);
+		    	 transaction.commit();
+		    	 
+		    	 
+		    }
+		};
+	View.OnClickListener changeToConditionsListener= new OnClickListener() {
+		    public void onClick(View v) {
+		    	 mFragmentManager = getFragmentManager(); 
+
+				 conditions = new ConditionsFragment();
+
+		    	 mFragmentManager.beginTransaction().replace(R.id.contentFrag, conditions).commit();
+
+		    	 
+		    }
+		};	
+	
 }
