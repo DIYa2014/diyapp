@@ -3,14 +3,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent" 
     android:orientation="vertical"
-    android:background="@color/black"
     >
  	<LinearLayout
 	    android:layout_width="match_parent"
-	    android:layout_height="match_parent"
-	    android:layout_weight="3"
+	    android:layout_height="120dp"
 	    android:orientation="vertical"
-   		 android:background="@color/red"
 	    >
 
 
@@ -18,13 +15,12 @@
 		    android:layout_width="match_parent"
 		    android:layout_height="match_parent" 
 		    android:orientation="horizontal"
-   		 	android:background="@color/who_knows"
 		    >
 	    	<com.karbar.diyapp.utils.HorizontalListView 
+   				  android:background="@color/orange"
 			      android:id="@+id/listview_action" 
 			      android:layout_width="fill_parent" 
-			      android:layout_height="fill_parent" 
-			      android:background="@color/red">  
+			      android:layout_height="fill_parent" >  
 			    
 			</com.karbar.diyapp.utils.HorizontalListView>
 	
@@ -33,10 +29,9 @@
 	<LinearLayout
 	    android:layout_width="match_parent"
 	    android:layout_height="match_parent"
-	    android:layout_weight="1"
 	    android:orientation="vertical"
-   		android:background="@color/white"
    		android:id="@+id/actionsContainer"
+    	android:background="@color/grey"
 	    >
     	<RelativeLayout
 		    android:layout_width="match_parent"

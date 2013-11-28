@@ -13,5 +13,8 @@
         <string name="item_gps">tekst</string>
         <string name="item_phone">tekst</string>
         <string name="addDiya">Dodaj DIYe</string>
-        <string name="addConditionsList">Dodaj</string>
+        <string name="addConditionsList">Dodaj listę warunków</string>
+        <string name="action_text">Akcje</string>
+        <string name="condition_text">Warunki</string>
+        <string name="orText">Lub...</string>
 </resources>

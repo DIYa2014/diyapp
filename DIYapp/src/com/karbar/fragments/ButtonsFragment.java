@@ -13,15 +13,27 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.View.OnClickListener;
+import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 
 
 public class ButtonsFragment extends Fragment{
 	
 	 View mainView;
-	 ImageButton mButton1;
-	 ImageButton mButton2;
+	 RelativeLayout mButton1;
+	 RelativeLayout mButton2;
+	 TextView mButtonText1;
+	 TextView mButtonText2;
+	 ImageView mButtonImage1;
+	 ImageView mButtonImage2;
+
+	 ImageView mButtonArrow1;
+	 ImageView mButtonArrow2;
 	 Intent mIntent;
 	 FragmentManager mFragmentManager;
 	 ConditionsFragment content;
@@ -32,9 +44,14 @@ public class ButtonsFragment extends Fragment{
 	 public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 	
 	 mainView = inflater.inflate(R.layout.content_buttons, container, false);
-	 mButton1 = (ImageButton) mainView.findViewById(R.id.conditionsButton);
-	 mButton2 = (ImageButton) mainView.findViewById(R.id.actionsButton);
-	
+	 mButton1 = (RelativeLayout) mainView.findViewById(R.id.conditionsButtonRelative);
+	 mButton2 = (RelativeLayout) mainView.findViewById(R.id.actionsButtonRelative);
+	 mButtonText1 = (TextView)mainView.findViewById(R.id.textViewCondition);
+	 mButtonText2 = (TextView)mainView.findViewById(R.id.textViewAction);
+	 mButtonImage1 = (ImageView)mainView.findViewById(R.id.imageViewCondition);
+	 mButtonImage2 = (ImageView)mainView.findViewById(R.id.imageViewAction);
+	 mButtonArrow1 = (ImageView)mainView.findViewById(R.id.arrowCondition);
+	 mButtonArrow2 = (ImageView)mainView.findViewById(R.id.arrowAction);
 	
 	
 	 View.OnClickListener changeToActionsListener= new OnClickListener() {
@@ -45,8 +62,15 @@ public class ButtonsFragment extends Fragment{
 			    	 FragmentTransaction transaction = mFragmentManager.beginTransaction();
 			    	 transaction.replace(R.id.contentFrag, actions);
 			    	 transaction.commit();
-			    	
 			    	 
+			    	 mButtonText1.setTextColor(getActivity().getResources().getColor(R.color.white));
+			    	 mButtonText2.setTextColor(getActivity().getResources().getColor(R.color.orange));
+			    	 mButton1.setBackgroundDrawable(getActivity().getResources().getDrawable(R.drawable.inactive_menu));
+			    	 mButton2.setBackgroundColor(getActivity().getResources().getColor(R.color.white));
+			    	 mButtonImage1.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.conditions_white));
+			    	 mButtonImage2.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.actions_orange));
+			    	 mButtonArrow1.setVisibility(View.GONE);
+			    	 mButtonArrow2.setVisibility(View.VISIBLE);
 			    }
 			};
 		View.OnClickListener changeToConditionsListener= new OnClickListener() {
@@ -56,7 +80,16 @@ public class ButtonsFragment extends Fragment{
 					 conditions = new ConditionsFragment();
 
 			    	 mFragmentManager.beginTransaction().replace(R.id.contentFrag, conditions).commit();
-			    	 
+
+			    	 mButtonText2.setTextColor(getActivity().getResources().getColor(R.color.white));
+			    	 mButtonText1.setTextColor(getActivity().getResources().getColor(R.color.orange));
+			    	 mButton2.setBackgroundDrawable(getActivity().getResources().getDrawable(R.drawable.inactive_menu));
+			    	 mButton1.setBackgroundColor(getActivity().getResources().getColor(R.color.white));
+
+			    	 mButtonImage1.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.conditions_orange));
+			    	 mButtonImage2.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.actions_white));
+			    	 mButtonArrow2.setVisibility(View.GONE);
+			    	 mButtonArrow1.setVisibility(View.VISIBLE);
 			    }
 			};		
 	 mButton1.setOnClickListener(changeToConditionsListener);

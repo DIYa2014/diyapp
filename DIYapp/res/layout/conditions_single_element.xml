@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+	    android:layout_height="80dp">
+	<RelativeLayout
+	    android:layout_width="50dp"
+	    android:layout_height="50dp"
+	    android:orientation="horizontal"
+	    android:layout_centerVertical="true">
+    <ImageView
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        
+        android:id="@+id/menu_element_ico"
+        android:layout_width="30dp"
+   		 android:layout_height="match_parent"
+        android:src="@drawable/ic_launcher" 
+        
+        />
+
+    
+    <View
+        android:id="@+id/white_line"
+	    android:layout_width="1dp"
+	    android:layout_height="match_parent"
+	    android:background="@color/halfTransparent2"
+	    android:layout_alignParentRight="true"
+	    />
+	</RelativeLayout>
+	
+</RelativeLayout>

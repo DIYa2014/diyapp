@@ -4,14 +4,14 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import android.app.Activity;
-import android.content.Intent;
-import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
+import android.view.TextureView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -20,6 +20,8 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 
 import com.karbar.diyapp.R;
@@ -48,6 +50,7 @@ public class ConditionsFragment extends Fragment{
 	private int draggedImgId = -1;
 	private int draggedId = -1;
 	private ImageButton mActionButton;
+	private boolean isFirstGroup = true;
 	
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 	
@@ -82,21 +85,20 @@ public class ConditionsFragment extends Fragment{
 	private void createMenu(){
 	
 		optionList = new ArrayList<HashMap<String, String>>();
-		add(mainMenu[0], 0, android.R.drawable.ic_dialog_alert); 
-		add(mainMenu[1], 1, android.R.drawable.ic_input_delete); 
-		add(mainMenu[2], 2, android.R.drawable.ic_menu_call); 
-		add(mainMenu[3], 1, android.R.drawable.ic_input_delete); 
-		add(mainMenu[4], 1, android.R.drawable.ic_input_delete);
-		add(mainMenu[0], 5, android.R.drawable.ic_lock_idle_alarm); 
-		add(mainMenu[1], 6, android.R.drawable.ic_menu_camera); 
-		add(mainMenu[2], 7, android.R.drawable.ic_media_ff); 
-		add(mainMenu[3], 8, android.R.drawable.ic_menu_close_clear_cancel); 
-		add(mainMenu[4], 2, android.R.drawable.ic_menu_call);  
+		
+		add(mainMenu[0],0, R.drawable.perm_group_system_clock); 
+		add(mainMenu[1],1, R.drawable.perm_group_network);
+		add(mainMenu[2],2, R.drawable.perm_group_location);
+		add(mainMenu[3],3, R.drawable.stat_notify_email_generic);
+		add(mainMenu[4],4, R.drawable.stat_notify_sdcard_usb);
+		add(mainMenu[0],5, R.drawable.ic_dialog_alert_holo_dark);
+		add(mainMenu[1],6, R.drawable.perm_group_calendar);
+		add(mainMenu[2],7, R.drawable.ic_lock_airplane_mode_off);
 		mMenuListview = (HorizontalListView) getActivity().findViewById(R.id.listview);
 		
 		mMenuListview.setLongClickable(true);
 	
-	    mMenuAdapter=new MenuListViewAdapter(getActivity(), optionList, mView, onTouch);
+	    mMenuAdapter=new MenuListViewAdapter(getActivity(), optionList, mView, onTouch, true);
 	    mMenuListview.setAdapter(mMenuAdapter);
 	    
 	    mMenuListview.setOnItemLongClickListener(onLongClick);
@@ -106,19 +108,12 @@ public class ConditionsFragment extends Fragment{
 		button = (Button)getActivity().findViewById(R.id.add_condition_button);
 		ArrayList<HashMap<String, String>> list;
 		list = new ArrayList<HashMap<String, String>>();
-		add(0, android.R.drawable.ic_input_get, list); 
-		add(1, android.R.drawable.ic_input_get, list);
-		add(2, android.R.drawable.ic_input_get, list);
-		add(3, android.R.drawable.ic_input_get, list);
-		add(4, android.R.drawable.ic_input_get, list);
-		add(5, android.R.drawable.ic_input_get, list);
-		add(0, android.R.drawable.ic_input_get, list); 
-		add(1, android.R.drawable.ic_input_get, list);
-		add(2, android.R.drawable.ic_input_get, list);
-		add(3, android.R.drawable.ic_input_get, list);
-		add(4, android.R.drawable.ic_input_get, list);
-		add(5, android.R.drawable.ic_input_get, list);
-		     
+		
+		add(0, R.drawable.empty, list); 
+		add(0, R.drawable.empty, list);
+		add(0, R.drawable.empty, list);
+		add(0, R.drawable.empty, list);
+		add(0, R.drawable.empty, list);
 		addGroup(list);
 		
 		button.setOnClickListener(addConditionButtonListener);
@@ -155,18 +150,28 @@ public class ConditionsFragment extends Fragment{
 	}
 	public void addGroup(ArrayList<HashMap<String, String>> array){
 		LayoutParams params = new LayoutParams(LayoutParams.MATCH_PARENT, 200);
+		LayoutParams textParams = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+		TextView lub = new TextView(getActivity());
+		lub.setText(getActivity().getResources().getString(R.string.orText));
+		lub.setGravity(Gravity.CENTER_HORIZONTAL);
 		
 		HorizontalListView listview = new HorizontalListView(getActivity(), null);
-		params.setMargins(30, 20, 30, 0);
-		listview.setLayoutParams(params);
+		params.setMargins(80, 120, 80, 40);
+		textParams.setMargins(0, 40, 0, 40);
+		listview.setBackgroundColor(getActivity().getResources().getColor(R.color.halfTransparent));
 		listview.setId(groupCounter);
 		LinearLayout ll=(LinearLayout)getActivity().findViewById(R.id.condition_horizontal_list_linear); 
 	    
-		mMenuAdapter=new MenuListViewAdapter(getActivity(), array, mView,onTouch);
+		mMenuAdapter=new MenuListViewAdapter(getActivity(), array, mView,onTouch, false);
 	    
 	    listview.setAdapter(mMenuAdapter);
+	    if(!isFirstGroup){
+	    	params.setMargins(80, 40, 80, 40);
+	    	ll.addView(lub);
+	    }
+		listview.setLayoutParams(params);
+    	isFirstGroup = false;
 	    ll.addView(listview);
-	    
 	    groupCounter++;
 		
 	}
@@ -187,7 +192,6 @@ public class ConditionsFragment extends Fragment{
 	}
 	public void addElemToList(int ListId){
 		HorizontalListView listview = (HorizontalListView)getActivity().findViewById(ListId);
-		listview.setBackgroundColor(Color.BLACK);
 		
 	}
 	public void addElemToList(int elemId, int listId){
@@ -206,40 +210,12 @@ public class ConditionsFragment extends Fragment{
 	        
 			ArrayList<HashMap<String, String>> list = new ArrayList<HashMap<String, String>>();
 	
-			add(0, android.R.drawable.ic_input_get, list); 
-			add(1, android.R.drawable.ic_input_delete, list);
-			add(2, android.R.drawable.ic_menu_day, list);
-			add(3, android.R.drawable.ic_secure, list);
-			add(4, android.R.drawable.ic_menu_zoom, list);
-			add(5, android.R.drawable.ic_input_add, list);
-			add(0, android.R.drawable.ic_input_get, list); 
-			add(1, android.R.drawable.ic_input_delete, list);
-			add(2, android.R.drawable.ic_menu_day, list);
-			add(3, android.R.drawable.ic_secure, list);
-			add(4, android.R.drawable.ic_menu_zoom, list);
-			add(5, android.R.drawable.ic_input_add, list);add(0, android.R.drawable.ic_input_get, list); 
-			add(1, android.R.drawable.ic_input_delete, list);
-			add(2, android.R.drawable.ic_menu_day, list);
-			add(3, android.R.drawable.ic_secure, list);
-			add(4, android.R.drawable.ic_menu_zoom, list);
-			add(5, android.R.drawable.ic_input_add, list);
+			add(0, R.drawable.empty, list); 
+			add(0, R.drawable.empty, list);
+			add(0, R.drawable.empty, list);
+			add(0, R.drawable.empty, list);
+			add(0, R.drawable.empty, list);
 			addGroup(list);
-			
-			/*test*/
-			/*
-			if(groupCounter == 4){
-				addElemToList(android.R.drawable.ic_media_play, 0);
-				addElemToList(android.R.drawable.ic_menu_delete, 0);
-				addElemToList(android.R.drawable.ic_media_play, 0);
-				addElemToList(android.R.drawable.ic_menu_delete, 0);
-				addElemToList(android.R.drawable.ic_media_play, 0);
-				addElemToList(android.R.drawable.ic_menu_delete, 0);
-				addElemToList(android.R.drawable.ic_media_play, 0);
-				addElemToList(android.R.drawable.ic_menu_delete, 0);
-				removeElemfromList(1, 1);
-				removeElemfromList(2, 1);
-				removeElemfromList(3, 1);
-			}*/
 		}
 	};
 	public AdapterView.OnItemLongClickListener onLongClick = new AdapterView.OnItemLongClickListener() {
@@ -277,7 +253,7 @@ public class ConditionsFragment extends Fragment{
 				int y_cord;
 				if(ifLongPressed){
 					if(oneElemDragedFlag){
-						LinearLayout a = (LinearLayout)arg0;
+						RelativeLayout a = (RelativeLayout)arg0;
 						
 						if(img_drawable!=null)
 							img.setBackgroundDrawable(img_drawable);
@@ -310,7 +286,7 @@ public class ConditionsFragment extends Fragment{
 	                                y_cord = (int)event.getRawY();
 	
 	                                imgParams.leftMargin = x_cord - img.getWidth()/2;
-	                                imgParams.topMargin = y_cord-219 - img.getHeight()/2 ;
+	                                imgParams.topMargin = y_cord- img.getHeight()/2 ;
 	
 	                                img.setLayoutParams(imgParams);
 	                                break;

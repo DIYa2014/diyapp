@@ -41,14 +41,16 @@ public class MenuListViewAdapter extends BaseAdapter {
     private ImageView ico_image;
     public View vi;
     private OnTouchListener onTouchListener;
+    private boolean isMenu;
 
-   // int dropArray[];
-    public MenuListViewAdapter(Activity a, ArrayList<HashMap<String, String>> d, View list, View.OnTouchListener otl) {
+   
+    public MenuListViewAdapter(Activity a, ArrayList<HashMap<String, String>> d, View list, View.OnTouchListener otl, boolean isMenu) {
     	activity = a;
         data=d;
         inflater = (LayoutInflater)activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         listView = list;
         onTouchListener = otl;
+        this.isMenu = isMenu;
     }
     
     public ArrayList<HashMap<String, String>> getData(){
@@ -80,34 +82,59 @@ public class MenuListViewAdapter extends BaseAdapter {
     }
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        Drawable ico;
-        HashMap<String, String> map = new HashMap<String, String>();
-        vi=convertView;
-        if(convertView==null)
-            vi = inflater.inflate(R.layout.menu_single_element, null);
         
-        vi.setMinimumHeight(500);
-        TextView title = (TextView)vi.findViewById(R.id.menu_element_text); // title
-        View listview = getListView();
-        
-        
-    	map = data.get(position);
-        
-    	
-    	title.setText(map.get(Constant.KEY_OPTION));
-    	id=Integer.parseInt(map.get(Constant.KEY_ID));
-        ico = activity.getResources().getDrawable(Integer.parseInt(map.get(Constant.KEY_ICO)));
-        
-        ico_image=(ImageView)vi.findViewById(R.id.menu_element_ico); // ico image
-        ico_image.setImageDrawable(ico);
-    	
-    
-    	listview.setVerticalFadingEdgeEnabled(false);
-    	listview.setVerticalScrollBarEnabled(false);
-    	
-        title.setVisibility(View.GONE);
-
-    	vi.setOnTouchListener(onTouchListener);
+    	if(isMenu){
+	    	Drawable ico;
+	        HashMap<String, String> map = new HashMap<String, String>();
+	        vi=convertView;
+	        if(convertView==null)
+	            vi = inflater.inflate(R.layout.menu_single_element, null);
+	        
+	        vi.setMinimumHeight(500);
+	        TextView title = (TextView)vi.findViewById(R.id.menu_element_text); // title
+	        View listview = getListView();
+	        
+	        
+	    	map = data.get(position);
+	        
+	    	
+	    	title.setText(map.get(Constant.KEY_OPTION));
+	    	id=Integer.parseInt(map.get(Constant.KEY_ID));
+	        ico = activity.getResources().getDrawable(Integer.parseInt(map.get(Constant.KEY_ICO)));
+	        
+	        ico_image=(ImageView)vi.findViewById(R.id.menu_element_ico); // ico image
+	        ico_image.setImageDrawable(ico);
+	    	
+	    
+	    	listview.setVerticalFadingEdgeEnabled(false);
+	    	listview.setVerticalScrollBarEnabled(false);
+	    	
+	        title.setVisibility(View.GONE);
+	
+	    	vi.setOnTouchListener(onTouchListener);
+    	}
+    	else{
+    		Drawable ico;
+	        HashMap<String, String> map = new HashMap<String, String>();
+	        vi=convertView;
+	        if(convertView==null)
+	            vi = inflater.inflate(R.layout.conditions_single_element, null);
+	        
+	        vi.setMinimumHeight(500);
+	        View listview = getListView();
+	        
+	    	map = data.get(position);
+	        
+	    	id=Integer.parseInt(map.get(Constant.KEY_ID));
+	        ico = activity.getResources().getDrawable(Integer.parseInt(map.get(Constant.KEY_ICO)));
+	        
+	        ico_image=(ImageView)vi.findViewById(R.id.menu_element_ico); // ico image
+	        ico_image.setImageDrawable(ico);
+	    	
+	    
+	    	listview.setVerticalFadingEdgeEnabled(false);
+	    	listview.setVerticalScrollBarEnabled(false);
+    	}
         return vi;
     }
    

@@ -14,10 +14,15 @@ public final class R {
     public static final class attr {
     }
     public static final class color {
-        public static final int black=0x7f050000;
-        public static final int red=0x7f050003;
-        public static final int white=0x7f050001;
-        public static final int who_knows=0x7f050002;
+        public static final int black=0x7f050007;
+        public static final int grey=0x7f050001;
+        public static final int grey_menu=0x7f050006;
+        public static final int halfTransparent=0x7f050002;
+        public static final int halfTransparent2=0x7f050003;
+        public static final int lineColor=0x7f050005;
+        public static final int orange=0x7f050000;
+        public static final int transparent=0x7f050004;
+        public static final int white=0x7f050008;
     }
     public static final class dimen {
         /**  Default screen margins, per the Android Design guidelines. 
@@ -30,41 +35,99 @@ public final class R {
         public static final int activity_vertical_margin=0x7f060001;
     }
     public static final class drawable {
-        public static final int ic_launcher=0x7f020000;
+        public static final int actions_orange=0x7f020000;
+        public static final int actions_white=0x7f020001;
+        public static final int arrow_down=0x7f020002;
+        public static final int conditions_orange=0x7f020003;
+        public static final int conditions_white=0x7f020004;
+        public static final int empty=0x7f020005;
+        public static final int ic_audio_alarm=0x7f020006;
+        public static final int ic_audio_bt=0x7f020007;
+        public static final int ic_audio_notification=0x7f020008;
+        public static final int ic_audio_ring_notif=0x7f020009;
+        public static final int ic_audio_ring_notif_vibrate=0x7f02000a;
+        public static final int ic_audio_vol=0x7f02000b;
+        public static final int ic_dialog_alert_holo_dark=0x7f02000c;
+        public static final int ic_launcher=0x7f02000d;
+        public static final int ic_lock_airplane_mode_off=0x7f02000e;
+        public static final int ic_lock_power_off=0x7f02000f;
+        public static final int ic_menu_search_holo_dark=0x7f020010;
+        public static final int inactive_menu=0x7f020011;
+        public static final int kg_security_lock_normal=0x7f020012;
+        public static final int perm_group_affects_battery=0x7f020013;
+        public static final int perm_group_app_info=0x7f020014;
+        public static final int perm_group_bookmarks=0x7f020015;
+        public static final int perm_group_calendar=0x7f020016;
+        public static final int perm_group_camera=0x7f020017;
+        public static final int perm_group_device_alarms=0x7f020018;
+        public static final int perm_group_display=0x7f020019;
+        public static final int perm_group_location=0x7f02001a;
+        public static final int perm_group_messages=0x7f02001b;
+        public static final int perm_group_microphone=0x7f02001c;
+        public static final int perm_group_network=0x7f02001d;
+        public static final int perm_group_personal_info=0x7f02001e;
+        public static final int perm_group_phone_calls=0x7f02001f;
+        public static final int perm_group_screenlock=0x7f020020;
+        public static final int perm_group_shortrange_network=0x7f020021;
+        public static final int perm_group_social_info=0x7f020022;
+        public static final int perm_group_status_bar=0x7f020023;
+        public static final int perm_group_storage=0x7f020024;
+        public static final int perm_group_sync_settings=0x7f020025;
+        public static final int perm_group_system_clock=0x7f020026;
+        public static final int perm_group_system_tools=0x7f020027;
+        public static final int perm_group_user_dictionary=0x7f020028;
+        public static final int perm_group_user_dictionary_write=0x7f020029;
+        public static final int perm_group_voicemail=0x7f02002a;
+        public static final int perm_group_wallpaper=0x7f02002b;
+        public static final int stat_notify_email_generic=0x7f02002c;
+        public static final int stat_notify_sdcard_usb=0x7f02002d;
+        public static final int white_line=0x7f02002e;
     }
     public static final class id {
         public static final int action_grid=0x7f0a0002;
-        public static final int action_settings=0x7f0a000f;
-        public static final int actionsButton=0x7f0a0009;
+        public static final int action_settings=0x7f0a0018;
+        public static final int actionsButton=0x7f0a000f;
+        public static final int actionsButtonRelative=0x7f0a0010;
         public static final int actionsContainer=0x7f0a0001;
         public static final int add_condition_button=0x7f0a0007;
         public static final int add_diya=0x7f0a0003;
-        public static final int buttonsFrag=0x7f0a000b;
+        public static final int arrowAction=0x7f0a0013;
+        public static final int arrowCondition=0x7f0a000e;
+        public static final int buttonsFrag=0x7f0a0015;
         public static final int condition_horizontal_list_linear=0x7f0a0006;
-        public static final int conditionsButton=0x7f0a0008;
+        public static final int conditionsButton=0x7f0a000a;
+        public static final int conditionsButtonRelative=0x7f0a000b;
         public static final int conditionsContainer=0x7f0a0005;
-        public static final int contentFrag=0x7f0a000c;
-        public static final int contentFragLay=0x7f0a000a;
+        public static final int contentFrag=0x7f0a0016;
+        public static final int contentFragLay=0x7f0a0014;
+        public static final int imageViewAction=0x7f0a0011;
+        public static final int imageViewCondition=0x7f0a000c;
         public static final int listview=0x7f0a0004;
         public static final int listview_action=0x7f0a0000;
-        public static final int menu_element_ico=0x7f0a000d;
-        public static final int menu_element_text=0x7f0a000e;
+        public static final int menu_element_ico=0x7f0a0008;
+        public static final int menu_element_text=0x7f0a0017;
+        public static final int textViewAction=0x7f0a0012;
+        public static final int textViewCondition=0x7f0a000d;
+        public static final int white_line=0x7f0a0009;
     }
     public static final class layout {
         public static final int actions_fragment=0x7f030000;
         public static final int conditions_fragment=0x7f030001;
-        public static final int content_buttons=0x7f030002;
-        public static final int content_view=0x7f030003;
-        public static final int menu_single_element=0x7f030004;
+        public static final int conditions_single_element=0x7f030002;
+        public static final int content_buttons=0x7f030003;
+        public static final int content_view=0x7f030004;
+        public static final int menu_single_element=0x7f030005;
     }
     public static final class menu {
         public static final int conditions=0x7f090000;
     }
     public static final class string {
         public static final int action_settings=0x7f070001;
+        public static final int action_text=0x7f07000b;
         public static final int addConditionsList=0x7f07000a;
         public static final int addDiya=0x7f070009;
         public static final int app_name=0x7f070000;
+        public static final int condition_text=0x7f07000c;
         public static final int default_menu_ico_text=0x7f070003;
         public static final int hello_world=0x7f070002;
         public static final int item_bluetooth=0x7f070006;
@@ -72,6 +135,7 @@ public final class R {
         public static final int item_phone=0x7f070008;
         public static final int item_time=0x7f070005;
         public static final int item_wifi=0x7f070004;
+        public static final int orText=0x7f07000d;
     }
     public static final class style {
         /** 

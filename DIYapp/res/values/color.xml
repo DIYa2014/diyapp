@@ -1,7 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    
+    <color name="orange">#e8490b</color>
+    <color name="grey">#2e2e2e</color>
+    <color name="halfTransparent">#10ffffff</color>
+    <color name="halfTransparent2">#40ffffff</color>
+    <color name="transparent">#00000000</color>
+    <color name="lineColor">#ee7c4f</color>
+    <color name="grey_menu">#e0e0e0</color>
+    
+    
+    
     <color name="black">#000000</color>
     <color name="white">#ffffff</color>
-    <color name="who_knows">#54fd09</color>
-    <color name="red"> #ff0000</color>
 </resources>
