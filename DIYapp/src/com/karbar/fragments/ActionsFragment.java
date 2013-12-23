@@ -134,14 +134,10 @@ public class ActionsFragment extends Fragment{
 	private void createMenu(){
 	
 		optionList = new ArrayList<HashMap<String, String>>();
-		add(mainMenu[0],0, R.drawable.ic_audio_bt); 
-		add(mainMenu[1],1, R.drawable.perm_group_network);
-		add(mainMenu[2],2, R.drawable.ic_dialog_alert_holo_dark);
-		add(mainMenu[3],3, R.drawable.stat_notify_email_generic);
-		add(mainMenu[4],4, R.drawable.perm_group_user_dictionary);
-		add(mainMenu[0],5, R.drawable.ic_dialog_alert_holo_dark);
-		add(mainMenu[1],6, R.drawable.perm_group_calendar);
-		add(mainMenu[2],7, R.drawable.ic_lock_airplane_mode_off);
+		add(mainMenu[1],0, R.drawable.perm_group_network);
+		add(mainMenu[1],1, R.drawable.perm_group_user_dictionary);
+		add(mainMenu[1],2, R.drawable.ic_audio_ring_notif);
+		add(mainMenu[1],3, R.drawable.ic_audio_ring_notif_vibrate);
 		mMenuListview = (HorizontalListView) getActivity().findViewById(R.id.listview_action);
 		
 		mMenuListview.setLongClickable(true);
