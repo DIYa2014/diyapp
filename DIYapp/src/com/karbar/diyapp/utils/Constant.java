@@ -7,5 +7,6 @@ public class Constant {
 	public static final String KEY_NAME = "name";
 	public static final String KEY_ICO = "ico_url";
 	public static final String KEY_BACKGROUND = "bg";
+	public static final String KEY_BUNDLE = "bundle";
 	
 }

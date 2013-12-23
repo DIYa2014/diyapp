@@ -92,7 +92,7 @@ public class GridViewAdapter extends BaseAdapter {
         
         imageView=(ImageView)vi.findViewById(R.id.menu_element_ico); // ico image
         imageView.setImageDrawable(ico);
-        imageView.setLayoutParams(new GridView.LayoutParams(100, 100));
+        imageView.setLayoutParams(new GridView.LayoutParams(120, 120));
         imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
         imageView.setPadding(8, 8, 8, 8);
     

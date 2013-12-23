@@ -62,12 +62,14 @@ public class ActionsFragment extends Fragment{
 	private TextView mButtonText2;
 	private ImageView mButtonImage1;
 	private ImageView mButtonImage2;
+	private Button buttonAdd;
 
 	private ImageView mButtonArrow1;
 	private ImageView mButtonArrow2;
 	private Intent mIntent;
 	private FragmentManager mFragmentManager;
 	private ConditionsFragment content;
+	private StartFragment start;
 	private ActionsFragment actions;
 	private ConditionsFragment conditions;
 	
@@ -86,6 +88,7 @@ public class ActionsFragment extends Fragment{
 		 mButtonArrow2 = (ImageView)mView.findViewById(R.id.arrowAction);
 		 mButton1.setOnClickListener(changeToConditionsListener);
 		 mButton2.setOnClickListener(changeToActionsListener);
+		 
 	 return mView;
 	 }
 
@@ -96,9 +99,10 @@ public class ActionsFragment extends Fragment{
 			mainMenu = getResources().getStringArray(R.array.menu);
 	        
 			mActivity = getActivity();
+			buttonAdd = (Button)mActivity.findViewById(R.id.add_complete_diya);
+			buttonAdd.setOnClickListener(addListener);
 			createMenu();
 			createDraggedIco(400);
-			createActionsList();
 			createGrid();
 		 
 		
@@ -149,27 +153,7 @@ public class ActionsFragment extends Fragment{
 	    
 		
 	}
-	private void createActionsList(){
-		button = (Button)getActivity().findViewById(R.id.add_diya);
-		/*ArrayList<HashMap<String, String>> list;
-		list = new ArrayList<HashMap<String, String>>();
-		add(0, android.R.drawable.ic_input_get, list); 
-		add(1, android.R.drawable.ic_input_get, list);
-		add(2, android.R.drawable.ic_input_get, list);
-		add(3, android.R.drawable.ic_input_get, list);
-		add(4, android.R.drawable.ic_input_get, list);
-		add(5, android.R.drawable.ic_input_get, list);
-		add(0, android.R.drawable.ic_input_get, list); 
-		add(1, android.R.drawable.ic_input_get, list);
-		add(2, android.R.drawable.ic_input_get, list);
-		add(3, android.R.drawable.ic_input_get, list);
-		add(4, android.R.drawable.ic_input_get, list);
-		add(5, android.R.drawable.ic_input_get, list);
-		     
-		addGroup(list);
-		*/
-		button.setOnClickListener(addConditionButtonListener);
-	}
+	
 	public void add(String title, int id, int ico){
 			
 			HashMap<String, String> map = new HashMap<String, String>(); 
@@ -352,6 +336,18 @@ public class ActionsFragment extends Fragment{
 		    	
 		    }
 		};
+		View.OnClickListener addListener= new OnClickListener() {
+		    public void onClick(View v) {
+
+		    	 mFragmentManager = getFragmentManager(); 
+
+				 start = new StartFragment();
+
+		    	 mFragmentManager.beginTransaction().replace(R.id.contentFrag, start).commit();
+
+		    	 
+		    }
+		};	
 	View.OnClickListener changeToConditionsListener= new OnClickListener() {
 		    public void onClick(View v) {
 		    	 mFragmentManager = getFragmentManager(); 
@@ -363,4 +359,5 @@ public class ActionsFragment extends Fragment{
 		    	
 		    }
 		};	
+		
 	}
