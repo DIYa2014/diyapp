@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -18,10 +19,15 @@ import android.view.ViewGroup;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.CompoundButton;
+import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.SeekBar;
+import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.LinearLayout.LayoutParams;
 import android.widget.RelativeLayout;
 
@@ -31,6 +37,8 @@ import com.karbar.diyapp.utils.Constant;
 import com.karbar.diyapp.utils.GridViewAdapter;
 import com.karbar.diyapp.utils.HorizontalListView;
 import com.karbar.diyapp.utils.MenuListViewAdapter;
+
+import dbPack.DbMethods;
 
 public class ActionsFragment extends Fragment{
 	
@@ -52,6 +60,8 @@ public class ActionsFragment extends Fragment{
 	private int groupCounter = 0;
 	private int draggedImgId = -1;
 	private int draggedId = -1;
+	private int diyaID =-1;
+
 	
 	private GridView mGrid;
 	private GridViewAdapter mGridAdapter;
@@ -63,6 +73,7 @@ public class ActionsFragment extends Fragment{
 	private ImageView mButtonImage1;
 	private ImageView mButtonImage2;
 	private Button buttonAdd;
+	private Dialog dialog;
 
 	private ImageView mButtonArrow1;
 	private ImageView mButtonArrow2;
@@ -72,7 +83,7 @@ public class ActionsFragment extends Fragment{
 	private StartFragment start;
 	private ActionsFragment actions;
 	private ConditionsFragment conditions;
-	
+	private Bundle bundle;
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		
 		
@@ -94,8 +105,8 @@ public class ActionsFragment extends Fragment{
 
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
-		 mActivity = getActivity();
-
+			 mActivity = getActivity();
+			
 			mainMenu = getResources().getStringArray(R.array.menu);
 	        
 			mActivity = getActivity();
@@ -104,6 +115,16 @@ public class ActionsFragment extends Fragment{
 			createMenu();
 			createDraggedIco(400);
 			createGrid();
+			bundle = getArguments();
+				if (bundle !=null){
+					diyaID = bundle.getInt(Constant.KEY_DIYAID);
+					Log.d("kkams", "Actions - bundle is not null. DIYa id:" +diyaID);
+					if(!DbMethods.isDIYaEmpty(diyaID)){
+						DbMethods.getActionsLists(diyaID);
+					}
+					
+				}
+				
 		 
 		
 		super.onActivityCreated(savedInstanceState);
@@ -127,6 +148,13 @@ public class ActionsFragment extends Fragment{
 		
 	
 	    mGridAdapter=new GridViewAdapter(getActivity(), optionList2);
+	    mGrid.setAdapter(mGridAdapter);
+	    
+	    
+	}
+	private void createExistingGrid(ArrayList<HashMap<String, String>>  list){
+		mGrid = (GridView)getActivity().findViewById(R.id.action_grid);
+	    mGridAdapter=new GridViewAdapter(getActivity(), list);
 	    mGrid.setAdapter(mGridAdapter);
 	    
 	    
@@ -288,12 +316,20 @@ public class ActionsFragment extends Fragment{
 		            switch(event.getAction())
 		            {
 		            case MotionEvent.ACTION_UP:   
-		            				int id;
+		            				final int id;
 		            				x_cord = (int)event.getRawX();
 		            				y_cord = (int)event.getRawY();
 		            				if(isViewContains(getActivity().findViewById(R.id.action_grid), x_cord, y_cord)){
-		            					add( 0, draggedImgId, optionList2);
-		            					mGrid.setAdapter(mGridAdapter);
+		            					
+		            					Log.d("kkams", ""+Integer.parseInt(dragElemId));//wiem, ¿e to glupie...
+		            					if(Integer.parseInt(dragElemId) == 0)
+		            						runDialogWiFi();
+		            					else if(Integer.parseInt(dragElemId) == 1)
+		            						runDialogNotification();
+		            					else if(Integer.parseInt(dragElemId) == 2)
+		            						runDialogSoundLevel();
+		            					else if(Integer.parseInt(dragElemId) == 3)
+	            							vibrationOn();
 		            				}
 		            				
 		            				ll.removeView(img);
@@ -346,14 +382,135 @@ public class ActionsFragment extends Fragment{
 		};	
 	View.OnClickListener changeToConditionsListener= new OnClickListener() {
 		    public void onClick(View v) {
+
 		    	 mFragmentManager = getFragmentManager(); 
-
-				 conditions = new ConditionsFragment();
-
-		    	 mFragmentManager.beginTransaction().replace(R.id.contentFrag, conditions).commit();
-
-		    	
+		    	 conditions = new ConditionsFragment();
+		    	 conditions.setArguments(bundle);
+		    	 FragmentTransaction transaction = mFragmentManager.beginTransaction();
+		    	 transaction.replace(R.id.contentFrag, conditions);
+		    	 transaction.commit();
+		    	 
 		    }
 		};	
 		
+		View.OnClickListener anulujListener= new OnClickListener() {
+		    public void onClick(View v) {
+		    	dialog.cancel();
+		    }
+		};
+	public void removeEmptyElem(int id){
+
+		HorizontalListView listview = (HorizontalListView)getActivity().findViewById(id);
+		MenuListViewAdapter a = (MenuListViewAdapter)listview.getAdapter();
+		
+		HashMap<String, String> h = a.data.get(a.getCount()-1);
+		
+		
+		int elemId = Integer.parseInt(h.get(Constant.KEY_ID));
+		
+		if(elemId == -1)
+			removeElemfromList(a.getCount()-1, id);
+	}
+		public void runDialogWiFi(){
+			dialog = new Dialog(getActivity(), R.style.MyDialogTheme);
+			dialog.setContentView(R.layout.condition_wifi);
+			dialog.show();
+			final Switch wifi;
+			wifi = (Switch) dialog.findViewById(R.id.switchWiFi);
+			final LinearLayout wiFiNameLayout;
+			wiFiNameLayout = (LinearLayout)dialog.findViewById(R.id.ifWiFiOn);
+			TextView jesli = (TextView)dialog.findViewById(R.id.text_if);
+			jesli.setText("On/OFF WiFi");
+			TextView name = (TextView)dialog.findViewById(R.id.conectetToWifiNamed);
+			name.setText("Polacz z konktretna siecia(opcjonalnie)");
+			OnCheckedChangeListener switchListener = new OnCheckedChangeListener() {
+				
+				@Override
+				public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+					if(isChecked)
+						wiFiNameLayout.setVisibility(View.VISIBLE);
+					else
+						wiFiNameLayout.setVisibility(View.GONE);
+						
+					
+				}
+			};
+			wifi.setOnCheckedChangeListener(switchListener);
+			final EditText et = (EditText)dialog.findViewById(R.id.wifiName);
+			Button ok, anuluj;
+			ok = (Button)dialog.findViewById(R.id.buttonOkWifi);
+			anuluj = (Button)dialog.findViewById(R.id.buttonAnulujWifi);
+			anuluj.setOnClickListener(anulujListener);
+			ok.setOnClickListener(new OnClickListener() {
+			    public void onClick(View v) {
+			    	//DbMethods.addWiFiCondition( wifi.isActivated(), et.getText().toString());
+					add( 0, draggedImgId, optionList2);
+					mGrid.setAdapter(mGridAdapter);
+					int tryb = 0;
+					String ssid ="";
+					if(wifi.isActivated()){
+						tryb = 1;
+						if(!et.getText().toString().isEmpty()){
+							tryb = 2;
+							ssid = et.getText().toString();
+						}
+					}
+					
+					DbMethods.addWiFiAction(tryb, ssid);
+			    	dialog.dismiss();
+			    }
+			    }
+			);
+		}
+		public void runDialogNotification(){
+			dialog = new Dialog(getActivity(), R.style.MyDialogTheme);
+			dialog.setContentView(R.layout.action_notification);
+			dialog.show();
+			
+			final EditText ticker = (EditText)dialog.findViewById(R.id.tickerTextNotificationEdit);
+			final EditText title = (EditText)dialog.findViewById(R.id.notificationTitleNotificationEdit);
+			final EditText content = (EditText)dialog.findViewById(R.id.notificationTextNotificationEdit);
+			Button ok, anuluj;
+			ok = (Button)dialog.findViewById(R.id.buttonOkNotification);
+			anuluj = (Button)dialog.findViewById(R.id.buttonAnulujNotification);
+			anuluj.setOnClickListener(anulujListener);
+			ok.setOnClickListener(new OnClickListener() {
+			    public void onClick(View v) {
+			    	//DbMethods.addWiFiCondition( wifi.isActivated(), et.getText().toString());
+					add( 0, draggedImgId, optionList2);
+					mGrid.setAdapter(mGridAdapter);
+					DbMethods.addnotificationAction(ticker.getText().toString(), title.getText().toString(), content.getText().toString());
+			    	dialog.dismiss();
+			    }
+			    }
+			);
+		}
+		public void runDialogSoundLevel(){
+			dialog = new Dialog(getActivity(), R.style.MyDialogTheme);
+			dialog.setContentView(R.layout.action_sound);
+			dialog.show();
+			
+			final SeekBar level = (SeekBar)dialog.findViewById(R.id.setSoundLevel);
+			Button ok, anuluj;
+			ok = (Button)dialog.findViewById(R.id.buttonOkSound);
+			anuluj = (Button)dialog.findViewById(R.id.buttonAnulujSound);
+			anuluj.setOnClickListener(anulujListener);
+			ok.setOnClickListener(new OnClickListener() {
+			    public void onClick(View v) {
+			    	//DbMethods.addWiFiCondition( wifi.isActivated(), et.getText().toString());
+					add( 0, draggedImgId, optionList2);
+					mGrid.setAdapter(mGridAdapter);
+					DbMethods.addSoundAction(level.getProgress());
+			    	dialog.dismiss();
+			    }
+			    }
+			);
+		}
+		public void vibrationOn(){
+					
+					add( 0, draggedImgId, optionList2);
+					mGrid.setAdapter(mGridAdapter);
+					DbMethods.addVibrationAction();
+			    	
+		}
 	}

@@ -3,7 +3,6 @@
 
     <string name="app_name">DIYapp</string>
     <string name="action_settings">Settings</string>
-    <string name="hello_world">Hello world!</string>
     
     <string name="default_menu_ico_text">opcja</string>
 
@@ -13,6 +12,8 @@
         <string name="item_gps">GPS</string>
         <string name="item_phone">Telefon</string>
         <string name="item_date">Data</string>
+        <string name="item_sound">Glosnosc dzwonka</string>
+        <string name="item_notification">Notyfikacja</string>
         
         <string name="addDiya">Dodaj DIYe</string>
         <string name="addConditionsList">Dodaj listę warunków</string>
@@ -24,7 +25,10 @@
         <string name="text_if">jesli&#8230;</string>
         <string name="onDays">W nastpujce dni tygodnia:</string>
         <string name="conectetToWifiNamed">Podlaczone do konkretnej sieci(opcjonalnie):</string>
-        
+        <string name="tickerTextNotification">tickerText:</string>
+        <string name="notificationTitleNotification">notificationTitle:</string>
+        <string name="notificationTextNotification">notificationText:</string>
+        <string name="soundLevel">Ustaw glosnosc dzwonka:</string>
         
 		<string name="CheckBoxDay1">Pn</string>
 		<string name="CheckBoxDay2">Wt</string>

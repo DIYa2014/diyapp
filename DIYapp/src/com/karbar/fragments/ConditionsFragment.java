@@ -67,11 +67,12 @@ public class ConditionsFragment extends Fragment{
 	private Dialog dialog;
 	private RelativeLayout mButton1;
 	private RelativeLayout mButton2;
+	private int diyaID =-1;
 
 	private FragmentManager mFragmentManager;
 	private ActionsFragment actions;
 	private ConditionsFragment conditions;
-	
+	private Bundle bundle;
 	
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 	
@@ -87,9 +88,24 @@ public class ConditionsFragment extends Fragment{
 	public void onActivityCreated(Bundle savedInstanceState) {
 		 mActivity = getActivity();
 			mainMenu = getResources().getStringArray(R.array.menu);
+
+			button = (Button)getActivity().findViewById(R.id.add_condition_button);
+			button.setOnClickListener(addConditionButtonListener);
+			bundle = getArguments();
 			createMenu();
 			createDraggedIco(400);
-			createFirstConditionsList();
+			
+			if (bundle !=null){
+				diyaID = bundle.getInt(Constant.KEY_DIYAID);
+				Log.d("kkams", "Conditions - bundle is not null. DIYa id:" +diyaID);
+				if(DbMethods.isDIYaEmpty(diyaID))
+					createFirstConditionsList();
+				else{
+					createConditionsLists(DbMethods.getConditonLists(diyaID));
+				}
+			}
+			else
+				createFirstConditionsList();
 		
 		 
 		
@@ -125,7 +141,6 @@ public class ConditionsFragment extends Fragment{
 		
 	}
 	private void createFirstConditionsList(){
-		button = (Button)getActivity().findViewById(R.id.add_condition_button);
 		ArrayList<HashMap<String, String>> list;
 		list = new ArrayList<HashMap<String, String>>();
 		
@@ -136,8 +151,12 @@ public class ConditionsFragment extends Fragment{
 		add(-1, R.drawable.empty, list);
 		addGroup(list);
 		
-		button.setOnClickListener(addConditionButtonListener);
 	}
+	private void createConditionsLists(ArrayList<ArrayList<HashMap<String, String>>> list){
+		
+		for(int i=0;i<list.size();i++)
+			addGroup(list.get(i));
+		}
 	public void add(String title, int id, int ico){
 			
 			HashMap<String, String> map = new HashMap<String, String>(); 
@@ -282,30 +301,18 @@ public class ConditionsFragment extends Fragment{
 		            				y_cord = (int)event.getRawY();
 		            				if(( id = getContainViewId(x_cord, y_cord))!=-2){
 		            					Log.d("kkams", ""+draggedId);
-		            					if(draggedId == 0)
+		            					if(draggedId == 0){
 		            						runDialogTime(id);
-		            					else if(draggedId == 1)
+		            					}
+		            					else if(draggedId == 1){
 		            						runDialogWiFi(id);
-		            					else if(draggedId == 2)
+		            						}
+		            					else if(draggedId == 2){
 		            						runDialogGPS(id);
-		            					else if(draggedId == 3)
+		            						}
+		            					else if(draggedId == 3){
 		            						runDialogDate(id);
-		            					
-		            					addElemToList(draggedImgId, id);
-		            					
-		            					HorizontalListView listview = (HorizontalListView)getActivity().findViewById(id);
-		            					MenuListViewAdapter a = (MenuListViewAdapter)listview.getAdapter();
-		            					
-		            					HashMap<String, String> h = a.data.get(a.getCount()-1);
-		            					
-		            					
-		            					int elemId = Integer.parseInt(h.get(Constant.KEY_ID));
-		            					
-		            					if(elemId == -1)
-		            						removeElemfromList(a.getCount()-1, id);
-		            						
-		            					//Log.d("kkams", "blablabla "+elemId +" " );
-		            					
+		            						}
 		            					
 		            					
 		            				}
@@ -336,14 +343,12 @@ public class ConditionsFragment extends Fragment{
 	};
 	 View.OnClickListener changeToActionsListener= new OnClickListener() {
 		    public void onClick(View v) {
-		    	 
 		    	 mFragmentManager = getFragmentManager(); 
 		    	 actions = new ActionsFragment();
+			     actions.setArguments(bundle);
 		    	 FragmentTransaction transaction = mFragmentManager.beginTransaction();
 		    	 transaction.replace(R.id.contentFrag, actions);
 		    	 transaction.commit();
-		    	 
-		    	 
 		    }
 		};
 	View.OnClickListener changeToConditionsListener= new OnClickListener() {
@@ -362,6 +367,19 @@ public class ConditionsFragment extends Fragment{
 		    	dialog.cancel();
 		    }
 		};
+	public void removeEmptyElem(int id){
+
+		HorizontalListView listview = (HorizontalListView)getActivity().findViewById(id);
+		MenuListViewAdapter a = (MenuListViewAdapter)listview.getAdapter();
+		
+		HashMap<String, String> h = a.data.get(a.getCount()-1);
+		
+		
+		int elemId = Integer.parseInt(h.get(Constant.KEY_ID));
+		
+		if(elemId == -1)
+			removeElemfromList(a.getCount()-1, id);
+	}
 	public void runDialogTime(int idGroup){
 		dialog = new Dialog(getActivity(), R.style.MyDialogTheme);
 		dialog.setContentView(R.layout.condition_time);
@@ -393,6 +411,8 @@ public class ConditionsFragment extends Fragment{
 		    			tpTo.getCurrentHour(), tpTo.getCurrentMinute(), new boolean[]{cb1.isChecked(),cb2.isChecked(),cb3.isChecked(),cb4.isChecked(),cb5.isChecked(),cb6.isChecked(),cb7.isChecked()});
 
 		    	dialog.dismiss();
+				addElemToList(draggedImgId, idGroupFinal);
+				removeEmptyElem(idGroupFinal);
 		    }});
 		
 		
@@ -415,6 +435,8 @@ public class ConditionsFragment extends Fragment{
 		    	DbMethods.addDateCondition(idGroupFinal, since.getDayOfMonth(), since.getMonth(), since.getYear(), 
 		    			to.getDayOfMonth(), to.getMonth(), to.getYear());
 		    	dialog.dismiss();
+				addElemToList(draggedImgId, idGroupFinal);
+				removeEmptyElem(idGroupFinal);
 		    }});
 	}
 	public void runDialogWiFi(int idGroup){
@@ -448,6 +470,8 @@ public class ConditionsFragment extends Fragment{
 		    public void onClick(View v) {
 		    	DbMethods.addWiFiCondition(idGroupFinal, wifi.isActivated(), et.getText().toString());
 		    	dialog.dismiss();
+				addElemToList(draggedImgId, idGroupFinal);
+				removeEmptyElem(idGroupFinal);
 		    }
 		    }
 		);
@@ -471,6 +495,8 @@ public class ConditionsFragment extends Fragment{
 		    	DbMethods.addGpsCondition(idGroupFinal,Double.parseDouble(etX.getText().toString()), Double.parseDouble(etY.getText().toString()), Double.parseDouble(etR.getText().toString()), reversed.isChecked());
 
 		    	dialog.dismiss();
+				addElemToList(draggedImgId, idGroupFinal);
+				removeEmptyElem(idGroupFinal);
 		    }});
 	}
 	
