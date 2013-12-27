@@ -3,6 +3,8 @@ package com.karbar.fragments;
 import com.karbar.diyapp.R;
 
 
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -39,7 +41,14 @@ public class ButtonsFragment extends Fragment{
 	 ConditionsFragment content;
 	 ActionsFragment actions;
 	 ConditionsFragment conditions;
+	 
+	 private Context context;
+	 private Activity activity;
 		
+	 public ButtonsFragment(Context context,Activity activity){
+		 this.context = context;
+		 this.activity = activity;
+	 }
 	 
 	 public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 	
@@ -58,7 +67,7 @@ public class ButtonsFragment extends Fragment{
 			    public void onClick(View v) {
 			    	 
 			    	 mFragmentManager = getFragmentManager(); 
-			    	 actions = new ActionsFragment();
+			    	 actions = new ActionsFragment(context, activity);
 			    	 FragmentTransaction transaction = mFragmentManager.beginTransaction();
 			    	 transaction.replace(R.id.contentFrag, actions);
 			    	 transaction.commit();
@@ -77,7 +86,7 @@ public class ButtonsFragment extends Fragment{
 			    public void onClick(View v) {
 			    	 mFragmentManager = getFragmentManager(); 
 
-					 conditions = new ConditionsFragment();
+					 conditions = new ConditionsFragment(context, activity);
 
 			    	 mFragmentManager.beginTransaction().replace(R.id.contentFrag, conditions).commit();
 

@@ -3,6 +3,7 @@ package com.karbar.fragments;
 import java.util.HashMap;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -43,6 +44,15 @@ public class StartFragment extends Fragment{
 	private Button button;
 	private ListView listView;
 	ConditionsFragment conditions;
+	private Context context;
+	private Activity activity;
+	
+	public StartFragment(Context context, Activity activity){
+		this.context = context;
+		this.activity = activity;
+		
+	}
+	
 	
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 	
@@ -65,8 +75,11 @@ public class StartFragment extends Fragment{
 	    	FragmentTransaction ft = getFragmentManager().beginTransaction();
 	    	//ft.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out);
 	    	Bundle bundle = new Bundle();
-	    	bundle.putInt(Constant.KEY_DIYAID, DbMethods.getNewDIYaID());
-			 conditions = new ConditionsFragment();
+	    	
+	    	// w konstruktorze pobieram context i activity
+	    	DbMethods dbMethods = new DbMethods(context, activity);
+	    	bundle.putLong(Constant.KEY_DIYAID, dbMethods.getNewDIYaID());
+			 conditions = new ConditionsFragment(context, activity);
 			 conditions.setArguments(bundle);
 	    	ft.replace(R.id.contentFrag, conditions);
 

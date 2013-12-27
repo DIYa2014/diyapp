@@ -5,6 +5,7 @@ import java.util.HashMap;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
@@ -74,6 +75,14 @@ public class ConditionsFragment extends Fragment{
 	private ConditionsFragment conditions;
 	private Bundle bundle;
 	
+	private Context context;
+	private Activity activity;
+	
+	public ConditionsFragment(Context context, Activity activity){
+		this.context = context;
+		this.activity = activity;
+	}
+	
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 	
 	 mainView = inflater.inflate(R.layout.conditions_fragment, container, false);
@@ -98,10 +107,11 @@ public class ConditionsFragment extends Fragment{
 			if (bundle !=null){
 				diyaID = bundle.getInt(Constant.KEY_DIYAID);
 				Log.d("kkams", "Conditions - bundle is not null. DIYa id:" +diyaID);
-				if(DbMethods.isDIYaEmpty(diyaID))
+				DbMethods dbMethods = new DbMethods(context,activity);
+				if(dbMethods.isDIYaEmpty(diyaID))
 					createFirstConditionsList();
 				else{
-					createConditionsLists(DbMethods.getConditonLists(diyaID));
+					createConditionsLists(dbMethods.getConditonLists(diyaID));
 				}
 			}
 			else
@@ -344,7 +354,7 @@ public class ConditionsFragment extends Fragment{
 	 View.OnClickListener changeToActionsListener= new OnClickListener() {
 		    public void onClick(View v) {
 		    	 mFragmentManager = getFragmentManager(); 
-		    	 actions = new ActionsFragment();
+		    	 actions = new ActionsFragment(context, activity);
 			     actions.setArguments(bundle);
 		    	 FragmentTransaction transaction = mFragmentManager.beginTransaction();
 		    	 transaction.replace(R.id.contentFrag, actions);
@@ -355,7 +365,7 @@ public class ConditionsFragment extends Fragment{
 		    public void onClick(View v) {
 		    	 mFragmentManager = getFragmentManager(); 
 
-				 conditions = new ConditionsFragment();
+				 conditions = new ConditionsFragment(context,activity);
 
 		    	 mFragmentManager.beginTransaction().replace(R.id.contentFrag, conditions).commit();
 
@@ -407,7 +417,8 @@ public class ConditionsFragment extends Fragment{
 		    			" Do:"+tpTo.getCurrentHour().toString()+":"+tpTo.getCurrentMinute().toString());
 		    	Log.d("kkams",Boolean.toString(cb1.isChecked())+ " " +Boolean.toString(cb2.isChecked())+ " " +Boolean.toString(cb3.isChecked())+ " " +Boolean.toString(cb4.isChecked())+ " " +Boolean.toString(cb5.isChecked())+ " " +Boolean.toString(cb6.isChecked())+ " " +Boolean.toString(cb7.isChecked()));
 		    	*/
-		    	DbMethods.addTimeCondition(idGroupFinal, tpSince.getCurrentHour(), tpSince.getCurrentMinute(), 
+		    	DbMethods dbMethods = new DbMethods(context,activity);
+		    	dbMethods.addTimeCondition(idGroupFinal, tpSince.getCurrentHour(), tpSince.getCurrentMinute(), 
 		    			tpTo.getCurrentHour(), tpTo.getCurrentMinute(), new boolean[]{cb1.isChecked(),cb2.isChecked(),cb3.isChecked(),cb4.isChecked(),cb5.isChecked(),cb6.isChecked(),cb7.isChecked()});
 
 		    	dialog.dismiss();
@@ -432,7 +443,8 @@ public class ConditionsFragment extends Fragment{
 		anuluj.setOnClickListener(anulujListener);
 		ok.setOnClickListener(new OnClickListener() {
 		    public void onClick(View v) {
-		    	DbMethods.addDateCondition(idGroupFinal, since.getDayOfMonth(), since.getMonth(), since.getYear(), 
+		    	DbMethods dbMethods = new DbMethods(context,activity);
+		    	dbMethods.addDateCondition(idGroupFinal, since.getDayOfMonth(), since.getMonth(), since.getYear(), 
 		    			to.getDayOfMonth(), to.getMonth(), to.getYear());
 		    	dialog.dismiss();
 				addElemToList(draggedImgId, idGroupFinal);
@@ -468,7 +480,8 @@ public class ConditionsFragment extends Fragment{
 		anuluj.setOnClickListener(anulujListener);
 		ok.setOnClickListener(new OnClickListener() {
 		    public void onClick(View v) {
-		    	DbMethods.addWiFiCondition(idGroupFinal, wifi.isActivated(), et.getText().toString());
+		    	DbMethods dbMethods = new DbMethods(context,activity);
+		    	dbMethods.addWiFiCondition(idGroupFinal, wifi.isActivated(), et.getText().toString());
 		    	dialog.dismiss();
 				addElemToList(draggedImgId, idGroupFinal);
 				removeEmptyElem(idGroupFinal);
@@ -492,7 +505,8 @@ public class ConditionsFragment extends Fragment{
 		anuluj.setOnClickListener(anulujListener);
 		ok.setOnClickListener(new OnClickListener() {
 		    public void onClick(View v) {
-		    	DbMethods.addGpsCondition(idGroupFinal,Double.parseDouble(etX.getText().toString()), Double.parseDouble(etY.getText().toString()), Double.parseDouble(etR.getText().toString()), reversed.isChecked());
+		    	DbMethods dbMethods = new DbMethods(context,activity);
+		    	dbMethods.addGpsCondition(idGroupFinal,Double.parseDouble(etX.getText().toString()), Double.parseDouble(etY.getText().toString()), Double.parseDouble(etR.getText().toString()), reversed.isChecked());
 
 		    	dialog.dismiss();
 				addElemToList(draggedImgId, idGroupFinal);

@@ -5,6 +5,7 @@ import java.util.HashMap;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -84,6 +85,15 @@ public class ActionsFragment extends Fragment{
 	private ActionsFragment actions;
 	private ConditionsFragment conditions;
 	private Bundle bundle;
+	
+	private Context context;
+	 private Activity activity;
+		
+	 public ActionsFragment(Context context,Activity activity){
+		 this.context = context;
+		 this.activity = activity;
+	 }
+	
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		
 		
@@ -119,8 +129,9 @@ public class ActionsFragment extends Fragment{
 				if (bundle !=null){
 					diyaID = bundle.getInt(Constant.KEY_DIYAID);
 					Log.d("kkams", "Actions - bundle is not null. DIYa id:" +diyaID);
-					if(!DbMethods.isDIYaEmpty(diyaID)){
-						DbMethods.getActionsLists(diyaID);
+					DbMethods dbMethods = new DbMethods(context,activity);
+					if(!dbMethods.isDIYaEmpty(diyaID)){
+						dbMethods.getActionsLists(diyaID);
 					}
 					
 				}
@@ -360,7 +371,7 @@ public class ActionsFragment extends Fragment{
 		    public void onClick(View v) {
 		    	 
 		    	 mFragmentManager = getFragmentManager(); 
-		    	 actions = new ActionsFragment();
+		    	 actions = new ActionsFragment(context, activity);
 		    	 FragmentTransaction transaction = mFragmentManager.beginTransaction();
 		    	 transaction.replace(R.id.contentFrag, actions);
 		    	 transaction.commit();
@@ -373,7 +384,7 @@ public class ActionsFragment extends Fragment{
 
 		    	 mFragmentManager = getFragmentManager(); 
 
-				 start = new StartFragment();
+				 start = new StartFragment(context, activity);
 
 		    	 mFragmentManager.beginTransaction().replace(R.id.contentFrag, start).commit();
 
@@ -384,7 +395,7 @@ public class ActionsFragment extends Fragment{
 		    public void onClick(View v) {
 
 		    	 mFragmentManager = getFragmentManager(); 
-		    	 conditions = new ConditionsFragment();
+		    	 conditions = new ConditionsFragment(context, activity);
 		    	 conditions.setArguments(bundle);
 		    	 FragmentTransaction transaction = mFragmentManager.beginTransaction();
 		    	 transaction.replace(R.id.contentFrag, conditions);
@@ -455,8 +466,8 @@ public class ActionsFragment extends Fragment{
 							ssid = et.getText().toString();
 						}
 					}
-					
-					DbMethods.addWiFiAction(tryb, ssid);
+					DbMethods dbMethods = new DbMethods(context,activity);
+					dbMethods.addWiFiAction(tryb, ssid);
 			    	dialog.dismiss();
 			    }
 			    }
@@ -479,7 +490,8 @@ public class ActionsFragment extends Fragment{
 			    	//DbMethods.addWiFiCondition( wifi.isActivated(), et.getText().toString());
 					add( 0, draggedImgId, optionList2);
 					mGrid.setAdapter(mGridAdapter);
-					DbMethods.addnotificationAction(ticker.getText().toString(), title.getText().toString(), content.getText().toString());
+					DbMethods dbMethods = new DbMethods(context,activity);
+					dbMethods.addnotificationAction(ticker.getText().toString(), title.getText().toString(), content.getText().toString());
 			    	dialog.dismiss();
 			    }
 			    }
@@ -500,7 +512,8 @@ public class ActionsFragment extends Fragment{
 			    	//DbMethods.addWiFiCondition( wifi.isActivated(), et.getText().toString());
 					add( 0, draggedImgId, optionList2);
 					mGrid.setAdapter(mGridAdapter);
-					DbMethods.addSoundAction(level.getProgress());
+					DbMethods dbMethods = new DbMethods(context,activity);
+					dbMethods.addSoundAction(level.getProgress());
 			    	dialog.dismiss();
 			    }
 			    }
@@ -510,7 +523,8 @@ public class ActionsFragment extends Fragment{
 					
 					add( 0, draggedImgId, optionList2);
 					mGrid.setAdapter(mGridAdapter);
-					DbMethods.addVibrationAction();
+					DbMethods dbMethods = new DbMethods(context,activity);
+					dbMethods.addVibrationAction();
 			    	
 		}
 	}

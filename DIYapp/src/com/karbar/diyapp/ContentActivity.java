@@ -21,8 +21,9 @@ public class ContentActivity extends FragmentActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.content_view);
-		conditions = new ConditionsFragment();
-		start = new StartFragment() ;
+		//w konstruktorach pobieram context i activity
+		conditions = new ConditionsFragment(this, this);
+		start = new StartFragment(this, this) ;
         getSupportFragmentManager().beginTransaction().replace(R.id.contentFrag, start).commit();
 		
 
