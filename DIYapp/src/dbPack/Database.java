@@ -20,13 +20,13 @@ public class Database {
 	
 	private static final String DEBUG_TAG = "DIYaDatabase";
 	
-	private static final int DB_VERSION = 1;
+	private static final int DB_VERSION = 3;
 	private static final String DB_NAME = "diyadatabase.db";
 	private static final String DB_TASKS_TABLE = "tasks";
 	private static final String DB_ACTIONS_TABLE = "actions";
 	private static final String DB_CONDITIONS_TABLE = "conditions";
 	private static final String DB_ADDED_ACTIONS_TABLE = "added_actions";
-	private static final String DB_ADDED_CONDITIONS_TABLE = "aded_conditions";
+	private static final String DB_ADDED_CONDITIONS_TABLE = "added_conditions";
 	
 	/*tabela tasks*/
 	public static final String TASKS_KEY_ID = "_id_tasks";
@@ -492,10 +492,10 @@ public class Database {
 		return null;
 	}*/
 	
-	public ArrayList<HashMap<String, String>> getArrayConditionFromOneGrup(String idGroup){
+	public ArrayList<HashMap<String, String>> getArrayConditionFromOneGrup(String idGroup, String idTask){
 		ArrayList<HashMap<String, String>> ret =  new ArrayList<HashMap<String,String>>();
 		
-		String whereCon2 = ADDED_CONDITIONS_KEY_GROUP_ID + '=' + idGroup;
+		String whereCon2 = ADDED_CONDITIONS_KEY_GROUP_ID + '=' + idGroup + " AND " + ADDED_CONDITIONS_KEY_TASK_ID_CONDITIONS +"="+idTask;
 		Cursor cursorCon = db.query(DB_ADDED_CONDITIONS_TABLE, column_keys_added_condition, whereCon2, null, null, null, null);
 		cursorCon.moveToFirst();
 		if(cursorCon != null && cursorCon.moveToFirst()){
@@ -547,7 +547,7 @@ ADDED_CONDITIONS_KEY_EXECUTED_CONDITION*/
 		
 		for(String str : groupsListStrings){
 			getConditonLists.add(
-					getArrayConditionFromOneGrup(str)
+					getArrayConditionFromOneGrup(str, idTask)
 					);
 		}
 		

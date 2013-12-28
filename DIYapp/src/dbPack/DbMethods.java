@@ -46,7 +46,7 @@ public class DbMethods {
 		 * 
 		 */
 		
-		
+	
 		return db.getArrayAddedConditionFromDatabase(idDIYa);
 	} 
 	public ArrayList<HashMap<String, String>> getActionsLists(int idDIYa){
