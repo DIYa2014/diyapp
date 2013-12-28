@@ -5,7 +5,6 @@ import java.util.HashMap;
 
 import android.app.Activity;
 import android.app.Dialog;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -86,13 +85,8 @@ public class ActionsFragment extends Fragment{
 	private ConditionsFragment conditions;
 	private Bundle bundle;
 	
-	private Context context;
-	 private Activity activity;
 		
-	 public ActionsFragment(Context context,Activity activity){
-		 this.context = context;
-		 this.activity = activity;
-	 }
+	 
 	
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		
@@ -129,7 +123,7 @@ public class ActionsFragment extends Fragment{
 				if (bundle !=null){
 					diyaID = bundle.getInt(Constant.KEY_DIYAID);
 					Log.d("kkams", "Actions - bundle is not null. DIYa id:" +diyaID);
-					DbMethods dbMethods = new DbMethods(context,activity);
+					DbMethods dbMethods = new DbMethods(getActivity(),getActivity());
 					if(!dbMethods.isDIYaEmpty(diyaID)){
 						dbMethods.getActionsLists(diyaID);
 					}
@@ -371,7 +365,7 @@ public class ActionsFragment extends Fragment{
 		    public void onClick(View v) {
 		    	 
 		    	 mFragmentManager = getFragmentManager(); 
-		    	 actions = new ActionsFragment(context, activity);
+		    	 actions = new ActionsFragment();
 		    	 FragmentTransaction transaction = mFragmentManager.beginTransaction();
 		    	 transaction.replace(R.id.contentFrag, actions);
 		    	 transaction.commit();
@@ -384,7 +378,7 @@ public class ActionsFragment extends Fragment{
 
 		    	 mFragmentManager = getFragmentManager(); 
 
-				 start = new StartFragment(context, activity);
+				 start = new StartFragment();
 
 		    	 mFragmentManager.beginTransaction().replace(R.id.contentFrag, start).commit();
 
@@ -395,7 +389,7 @@ public class ActionsFragment extends Fragment{
 		    public void onClick(View v) {
 
 		    	 mFragmentManager = getFragmentManager(); 
-		    	 conditions = new ConditionsFragment(context, activity);
+		    	 conditions = new ConditionsFragment();
 		    	 conditions.setArguments(bundle);
 		    	 FragmentTransaction transaction = mFragmentManager.beginTransaction();
 		    	 transaction.replace(R.id.contentFrag, conditions);
@@ -466,7 +460,7 @@ public class ActionsFragment extends Fragment{
 							ssid = et.getText().toString();
 						}
 					}
-					DbMethods dbMethods = new DbMethods(context,activity);
+					DbMethods dbMethods = new DbMethods(getActivity(),getActivity());
 					long diyaID = bundle.getLong(Constant.KEY_DIYAID);
 					dbMethods.addWiFiAction(diyaID,tryb, ssid);
 			    	dialog.dismiss();
@@ -491,7 +485,7 @@ public class ActionsFragment extends Fragment{
 			    	//DbMethods.addWiFiCondition( wifi.isActivated(), et.getText().toString());
 					add( 0, draggedImgId, optionList2);
 					mGrid.setAdapter(mGridAdapter);
-					DbMethods dbMethods = new DbMethods(context,activity);
+					DbMethods dbMethods = new DbMethods(getActivity(),getActivity());
 					long diyaID = bundle.getLong(Constant.KEY_DIYAID);
 					dbMethods.addnotificationAction(diyaID, ticker.getText().toString(), title.getText().toString(), content.getText().toString());
 			    	dialog.dismiss();
@@ -514,7 +508,7 @@ public class ActionsFragment extends Fragment{
 			    	//DbMethods.addWiFiCondition( wifi.isActivated(), et.getText().toString());
 					add( 0, draggedImgId, optionList2);
 					mGrid.setAdapter(mGridAdapter);
-					DbMethods dbMethods = new DbMethods(context,activity);
+					DbMethods dbMethods = new DbMethods(getActivity(),getActivity());
 					long diyaID = bundle.getLong(Constant.KEY_DIYAID);
 					dbMethods.addSoundAction(diyaID, level.getProgress());
 			    	dialog.dismiss();
@@ -526,7 +520,7 @@ public class ActionsFragment extends Fragment{
 					
 					add( 0, draggedImgId, optionList2);
 					mGrid.setAdapter(mGridAdapter);
-					DbMethods dbMethods = new DbMethods(context,activity);
+					DbMethods dbMethods = new DbMethods(getActivity(),getActivity());
 					long diyaID = bundle.getLong(Constant.KEY_DIYAID);
 					dbMethods.addVibrationAction(diyaID);
 			    	

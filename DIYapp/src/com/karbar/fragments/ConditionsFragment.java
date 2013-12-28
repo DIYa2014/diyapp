@@ -75,13 +75,6 @@ public class ConditionsFragment extends Fragment{
 	private ConditionsFragment conditions;
 	private Bundle bundle;
 	
-	private Context context;
-	private Activity activity;
-	
-	public ConditionsFragment(Context context, Activity activity){
-		this.context = context;
-		this.activity = activity;
-	}
 	
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 	
@@ -107,7 +100,7 @@ public class ConditionsFragment extends Fragment{
 			if (bundle !=null){
 				diyaID = bundle.getInt(Constant.KEY_DIYAID);
 				Log.d("kkams", "Conditions - bundle is not null. DIYa id:" +diyaID);
-				DbMethods dbMethods = new DbMethods(context,activity);
+				DbMethods dbMethods = new DbMethods(getActivity(),getActivity());
 				if(dbMethods.isDIYaEmpty(diyaID))
 					createFirstConditionsList();
 				else{
@@ -354,7 +347,7 @@ public class ConditionsFragment extends Fragment{
 	 View.OnClickListener changeToActionsListener= new OnClickListener() {
 		    public void onClick(View v) {
 		    	 mFragmentManager = getFragmentManager(); 
-		    	 actions = new ActionsFragment(context, activity);
+		    	 actions = new ActionsFragment();
 			     actions.setArguments(bundle);
 		    	 FragmentTransaction transaction = mFragmentManager.beginTransaction();
 		    	 transaction.replace(R.id.contentFrag, actions);
@@ -365,7 +358,7 @@ public class ConditionsFragment extends Fragment{
 		    public void onClick(View v) {
 		    	 mFragmentManager = getFragmentManager(); 
 
-				 conditions = new ConditionsFragment(context,activity);
+				 conditions = new ConditionsFragment();
 
 		    	 mFragmentManager.beginTransaction().replace(R.id.contentFrag, conditions).commit();
 
@@ -417,7 +410,7 @@ public class ConditionsFragment extends Fragment{
 		    			" Do:"+tpTo.getCurrentHour().toString()+":"+tpTo.getCurrentMinute().toString());
 		    	Log.d("kkams",Boolean.toString(cb1.isChecked())+ " " +Boolean.toString(cb2.isChecked())+ " " +Boolean.toString(cb3.isChecked())+ " " +Boolean.toString(cb4.isChecked())+ " " +Boolean.toString(cb5.isChecked())+ " " +Boolean.toString(cb6.isChecked())+ " " +Boolean.toString(cb7.isChecked()));
 		    	*/
-		    	DbMethods dbMethods = new DbMethods(context,activity);
+		    	DbMethods dbMethods = new DbMethods(getActivity(),getActivity());
 		    	long diyaID = bundle.getLong(Constant.KEY_DIYAID);
 		    	dbMethods.addTimeCondition(diyaID, idGroupFinal, tpSince.getCurrentHour(), tpSince.getCurrentMinute(), 
 		    			tpTo.getCurrentHour(), tpTo.getCurrentMinute(), new boolean[]{cb1.isChecked(),cb2.isChecked(),cb3.isChecked(),cb4.isChecked(),cb5.isChecked(),cb6.isChecked(),cb7.isChecked()});
@@ -444,7 +437,7 @@ public class ConditionsFragment extends Fragment{
 		anuluj.setOnClickListener(anulujListener);
 		ok.setOnClickListener(new OnClickListener() {
 		    public void onClick(View v) {
-		    	DbMethods dbMethods = new DbMethods(context,activity);
+		    	DbMethods dbMethods = new DbMethods(getActivity(),getActivity());
 		    	long diyaID = bundle.getLong(Constant.KEY_DIYAID);
 		    	dbMethods.addDateCondition(diyaID, idGroupFinal, since.getDayOfMonth(), since.getMonth(), since.getYear(), 
 		    			to.getDayOfMonth(), to.getMonth(), to.getYear());
@@ -482,7 +475,7 @@ public class ConditionsFragment extends Fragment{
 		anuluj.setOnClickListener(anulujListener);
 		ok.setOnClickListener(new OnClickListener() {
 		    public void onClick(View v) {
-		    	DbMethods dbMethods = new DbMethods(context,activity);
+		    	DbMethods dbMethods = new DbMethods(getActivity(),getActivity());
 		    	long diyaID = bundle.getLong(Constant.KEY_DIYAID);
 		    	dbMethods.addWiFiCondition(diyaID, idGroupFinal, wifi.isActivated(), et.getText().toString());
 		    	dialog.dismiss();
@@ -508,7 +501,7 @@ public class ConditionsFragment extends Fragment{
 		anuluj.setOnClickListener(anulujListener);
 		ok.setOnClickListener(new OnClickListener() {
 		    public void onClick(View v) {
-		    	DbMethods dbMethods = new DbMethods(context,activity);
+		    	DbMethods dbMethods = new DbMethods(getActivity(),getActivity());
 		    	long diyaID = bundle.getLong(Constant.KEY_DIYAID);
 		    	dbMethods.addGpsCondition(diyaID, idGroupFinal,Double.parseDouble(etX.getText().toString()), Double.parseDouble(etY.getText().toString()), Double.parseDouble(etR.getText().toString()), reversed.isChecked());
 

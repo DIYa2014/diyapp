@@ -5,7 +5,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 
 
-import com.karbar.fragments.ButtonsFragment;
 import com.karbar.fragments.ConditionsFragment;
 import com.karbar.fragments.StartFragment;
 
@@ -22,8 +21,8 @@ public class ContentActivity extends FragmentActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.content_view);
 		//w konstruktorach pobieram context i activity
-		conditions = new ConditionsFragment(this, this);
-		start = new StartFragment(this, this) ;
+		conditions = new ConditionsFragment();
+		start = new StartFragment() ;
         getSupportFragmentManager().beginTransaction().replace(R.id.contentFrag, start).commit();
 		
 

@@ -44,14 +44,7 @@ public class StartFragment extends Fragment{
 	private Button button;
 	private ListView listView;
 	ConditionsFragment conditions;
-	private Context context;
-	private Activity activity;
-	
-	public StartFragment(Context context, Activity activity){
-		this.context = context;
-		this.activity = activity;
-		
-	}
+
 	
 	
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -76,10 +69,10 @@ public class StartFragment extends Fragment{
 	    	//ft.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out);
 	    	Bundle bundle = new Bundle();
 	    	
-	    	// w konstruktorze pobieram context i activity
+	    	// w konstruktorze pobieram getActivity() i getActivity()
 	    	DbMethods dbMethods = new DbMethods(getActivity(), getActivity());
 	    	bundle.putLong(Constant.KEY_DIYAID, dbMethods.getNewDIYaID());
-			 conditions = new ConditionsFragment(context, activity);
+			 conditions = new ConditionsFragment();
 			 conditions.setArguments(bundle);
 	    	ft.replace(R.id.contentFrag, conditions);
 
