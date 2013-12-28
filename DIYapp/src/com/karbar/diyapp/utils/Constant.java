@@ -49,5 +49,15 @@ public class Constant {
 	public static final String ADDED_CONDITIONS_KEY_PARAMETERS_CONDITIONS = "parameters_conditions";
 	public static final String ADDED_CONDITIONS_KEY_EXECUTED_CONDITION = "executed_condition";
 
+	/*mo¿liwe warunki */
+	public static final long CONDITION_TIME = 1;
+	public static final long CONDITION_DATE = 2;
+	public static final long CONDITION_GPS = 3;
+	public static final long CONDITION_WIFI = 4;
 	
+	/*mo¿liwe akcje*/
+	public static final long ACTION_WIFI = 1;
+	public static final long ACTION_VIBRATION = 2;
+	public static final long ACTION_SOUND = 3;
+	public static final long ACTION_NOTIFICATION = 4;
 }

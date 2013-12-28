@@ -20,13 +20,14 @@ public class Database {
 	
 	private static final String DEBUG_TAG = "DIYaDatabase";
 	
-	private static final int DB_VERSION = 3;
+	private static final int DB_VERSION = 5;
 	private static final String DB_NAME = "diyadatabase.db";
 	private static final String DB_TASKS_TABLE = "tasks";
 	private static final String DB_ACTIONS_TABLE = "actions";
 	private static final String DB_CONDITIONS_TABLE = "conditions";
 	private static final String DB_ADDED_ACTIONS_TABLE = "added_actions";
 	private static final String DB_ADDED_CONDITIONS_TABLE = "added_conditions";
+	private static final String DB_SERVICE_TABLE = "service";
 	
 	/*tabela tasks*/
 	public static final String TASKS_KEY_ID = "_id_tasks";
@@ -145,6 +146,14 @@ public class Database {
 	public static final String ADDED_CONDITIONS_EXECUTED_CONDITION_OPTIONS = "INTEGER";
 	public static final int ADDED_CONDITIONS_EXECUTED_CONDITION_COLUMN = 5;
 	
+	/*tabela service*/
+	public static final String SERVICE_KEY_ID_SERVICE = "id_service";
+	public static final String SERVICE_ID_SERVICE_OPTIONS = "INTEGER PRIMARY KEY AUTOINCREMENT";
+	public static final int SERVICE_ID_SERVICE_COLUMN = 0;
+
+	public static final String SERVICE_KEY_RUNNING = "running";
+	public static final String SERVICE_RUNNING_OPTIONS = "INTEGER";
+	public static final int SERVICE_RUNNING_COLUMN = 1;
 
 	//wszystkie kolumny
 	public static final String[] column_keys_task = {TASKS_KEY_ID, TASKS_KEY_NAME_TASKS, TASKS_KEY_DESCRIPTION, TASKS_KEY_GROUPS_OF_CONDITIONS, 
@@ -159,6 +168,8 @@ public class Database {
 	public static final String[] column_keys_added_actions = {ADDED_ACTIONS_KEY_ID_ADDEDD_ACTIONS, ADDED_ACTIONS_KEY_ACTION_ID, ADDED_ACTIONS_KEY_TASK_ID_ACTIONS, 
 																ADDED_ACTIONS_KEY_PARAMETERS_ACTIONS, ADDED_ACTIONS_KEY_EXECUTED_ACTION, ADDED_ACTIONS_KEY_BEFORE_ACTION
 																};
+	public static final String[] column_keys_service = {SERVICE_KEY_ID_SERVICE, SERVICE_KEY_RUNNING};
+	
 	/*tworzenie tabel w bazie danych*/
 	private static final String DB_CREATE_TASKS_TABLE = 
 			"CREATE TABLE" + " " + DB_TASKS_TABLE + "( " +
@@ -202,6 +213,11 @@ public class Database {
 			ADDED_CONDITIONS_KEY_PARAMETERS_CONDITIONS + " " + ADDED_CONDITIONS_PARAMETERS_CONDITIONS_OPTIONS + ", " + 
 			ADDED_CONDITIONS_KEY_EXECUTED_CONDITION + " " + ADDED_CONDITIONS_EXECUTED_CONDITION_OPTIONS + 
 			" );";
+	private static final String DB_CREATE_SERVICE_TABLE = 
+			"CREATE TABLE" + " " + DB_SERVICE_TABLE + "( " +
+			SERVICE_KEY_ID_SERVICE + " " + SERVICE_ID_SERVICE_OPTIONS + ", " +
+			SERVICE_KEY_RUNNING + " " + SERVICE_RUNNING_OPTIONS + 
+			" );";
 	
 	private static final String DROP_TASKS_TABLE = 
 			"DROP TABLE IF EXISTS" + " " + DB_TASKS_TABLE;
@@ -213,6 +229,8 @@ public class Database {
 			"DROP TABLE IF EXISTS" + " " + DB_ADDED_ACTIONS_TABLE;
 	private static final String DROP_ADDED_CONDITIONS_TABLE = 
 			"DROP TABLE IF EXISTS" + " " + DB_ADDED_CONDITIONS_TABLE;
+	private static final String DROP_SERVICE_TABLE = 
+			"DROP TABLE IF EXISTS" + " " + DB_SERVICE_TABLE;
 	
 	private SQLiteDatabase db;
 	private Context context;
@@ -227,16 +245,21 @@ public class Database {
 
 		@Override
 		public void onCreate(SQLiteDatabase db) {
+			System.out.println("jestem w on create database");
 			db.execSQL(DB_CREATE_TASKS_TABLE);
 			db.execSQL(DB_CREATE_ACTIONS_TABLE);
 			db.execSQL(DB_CREATE_CONDITIONS_TABLE);
 			db.execSQL(DB_CREATE_ADDED_ACTIONS_TABLE);
 			db.execSQL(DB_CREATE_ADDED_CONDITIONS_TABLE);
-			
+			db.execSQL(DB_CREATE_SERVICE_TABLE);
+			System.out.println("jestem w on create database2");
+			String sql = "INSERT or replace INTO " + DB_SERVICE_TABLE + "(" + SERVICE_KEY_RUNNING + ") VALUES(0)" ; 
+			db.execSQL(sql);
+			System.out.println("jestem w on create database3");
 			//tu trzeba jeszcze wrzucuc wartoœci dla tabel action i condition
 			
 			Log.d(DEBUG_TAG, "Database creating...");
-			Log.d(DEBUG_TAG, "Tables " + DB_CREATE_TASKS_TABLE + ", " + DB_CREATE_ACTIONS_TABLE + ", " + DB_CREATE_CONDITIONS_TABLE + ", " + DB_CREATE_ADDED_ACTIONS_TABLE + ", " + DB_CREATE_ADDED_CONDITIONS_TABLE + " ver." + DB_VERSION + " created");
+			Log.d(DEBUG_TAG, "Tables " + DB_CREATE_TASKS_TABLE + ", " + DB_CREATE_ACTIONS_TABLE + ", " + DB_CREATE_CONDITIONS_TABLE + ", " + DB_CREATE_ADDED_ACTIONS_TABLE + ", " + DB_CREATE_ADDED_CONDITIONS_TABLE +", " + DB_CREATE_SERVICE_TABLE + " ver." + DB_VERSION + " created");
 		}
 
 		@Override
@@ -246,7 +269,7 @@ public class Database {
 			db.execSQL(DROP_CONDITIONS_TABLE);
 			db.execSQL(DROP_ADDED_ACTIONS_TABLE);
 			db.execSQL(DROP_ADDED_CONDITIONS_TABLE);
-			
+			db.execSQL(DROP_SERVICE_TABLE);
 			Log.d(DEBUG_TAG, "Database updating...");
 			Log.d(DEBUG_TAG, "Table " + DB_CREATE_TASKS_TABLE + ", " + DB_CREATE_ACTIONS_TABLE + ", " + DB_CREATE_CONDITIONS_TABLE + ", " + DB_CREATE_ADDED_ACTIONS_TABLE + ", " + DB_CREATE_ADDED_CONDITIONS_TABLE + " updated from ver." + oldVersion + " to ver." + newVersion);
 			Log.d(DEBUG_TAG, "All data is lost.");
@@ -277,6 +300,7 @@ public class Database {
 			db = dbHelper.getReadableDatabase();
 			System.out.println("uda³o sie dostaæ do bazy ale tylko readable");
 			Log.d(DEBUG_TAG, "Getting readable database "+ DB_NAME + " ended with success");
+			
 		}
 		catch(Exception e){
 			System.out.println(e.toString());
@@ -322,6 +346,40 @@ public class Database {
 	 * -usuniecie dodanej akcji
 	 * 
 	 * */
+	
+	public boolean isServiceRunning(){
+
+		Cursor cursor = db.query(DB_TASKS_TABLE, column_keys_service, null, null, null, null, null);
+		cursor.moveToFirst();
+		if(cursor != null && cursor.moveToFirst()){
+			int running = cursor.getInt(SERVICE_RUNNING_COLUMN);
+			boolean run = running == 1 ? true : false;
+			return run;
+		}
+		return false;
+	}
+	
+	public boolean initServiceRunning(){
+		ContentValues newValues = new ContentValues();
+		newValues.put(SERVICE_KEY_RUNNING, 0);
+		long id = dbHelper.getWritableDatabase().insert(DB_SERVICE_TABLE, null, newValues);
+		if (id == 1){
+			return true;
+		}
+		return false;
+	}
+	
+	public boolean setServiceRunning(boolean run){
+		String where = SERVICE_KEY_ID_SERVICE + "=" + 1;
+		ContentValues updateValues = new ContentValues();
+		int running = run ? 1 : 0;
+		updateValues.put(SERVICE_KEY_RUNNING, running);
+		if (db.update(DB_SERVICE_TABLE, updateValues, where, null) > 0){
+			return true;
+		}
+		return false;
+	}
+	
 	
 	//dodawanie nowego zadania, wstawiana jest obecna data i zwracane jest id zadania
 	public long insertTask(){
@@ -582,7 +640,7 @@ ADDED_CONDITIONS_KEY_EXECUTED_CONDITION*/
 		
 	}
 	
-	public ArrayList<HashMap<String, String>> getArrayAddedActionsFrmDatabase(long idTask){
+	public ArrayList<HashMap<String, String>> getArrayAddedActionsFromDatabase(long idTask){
 		ArrayList<HashMap<String, String>> getActionsLists = new ArrayList<HashMap<String,String>>();
 		
 		String whereCon2 = ADDED_ACTIONS_KEY_TASK_ID_ACTIONS +"="+idTask;
@@ -631,60 +689,49 @@ ADDED_CONDITIONS_KEY_EXECUTED_CONDITION*/
 		
 		return getActionsLists;
 	}
-	/*
-	public Task addConditionToTask(Task task, long addedConditionID){
-		long id = task.getId();
+
+	public long addConditionToTask(long idTask, long addedConditionID){
+		//long id = task.getId();
 		//Task task2 = task;
-		String where = TASKS_KEY_ID + "=" + id;
+		String where = TASKS_KEY_ID + "=" + idTask;
 		Cursor cursor = db.query(DB_TASKS_TABLE, column_keys_task, where, null, null, null, null);
 		cursor.moveToFirst();
 		if(cursor != null && cursor.moveToFirst()){
 			System.out.println("cokolwiek");
+			//tu poprawiæ
 			String addedConditions = cursor.getString(TASKS_ADDED_CONDITIONS_ID_COLUMN);
 			System.out.println("addedConditions = " + addedConditions);
-			task.setAdded_conditions_id(addedConditions);
-			ArrayList<AddedCondition> arrayCon = task.getAdded_condition_array();
-			if(arrayCon == null)
-				arrayCon = new ArrayList<AddedCondition>();
-			AddedCondition addCon = new AddedCondition();
-			//w obiekcie z arraylisty musi jeszcze byc grupa i inne 
-			//albo i nie
-			System.out.println("addConditionToTask arrayCon.size = " + arrayCon.size());
-			addCon.setId(addedConditionID);
-			System.out.println("addConditionToTask arrayCon.size = " + arrayCon.size());
-			arrayCon.add(addCon);
-			task.setAdded_condition_array(arrayCon);
-			System.out.println("addedConditions1.5 = " + addedConditions);
-			addedConditions = task.getAdded_conditions_id();
-			System.out.println("addedConditions2 = " + addedConditions);
+			if(addedConditions.equals("")){
+				addedConditions += addedConditionID;
+			}
+			else
+				addedConditions += ", " + addedConditionID;
+			
 			ContentValues updateValues = new ContentValues();
 			updateValues.put(TASKS_KEY_ADDED_CONDITIONS_ID, addedConditions);
 			int iloscZaktualizowanych = db.update(DB_TASKS_TABLE, updateValues, where, null);
-			update wszystkich dodanych warunków - array
-			ArrayList<AddedCondition> arrayC = getArrayAddedConditionFromDatabase(task.getId());
-			task.setAdded_condition_array(arrayC);
-			koniec update
-			
+			//update wszystkich dodanych warunków - array
+		
 			if(iloscZaktualizowanych > 0){
-				return task;
+				return iloscZaktualizowanych;
 			}
 		}
 		
-		return null;
+		return -1;
 	}
 	
-	
-	public AddedCondition insertAddedCondition(long idCondition, Task task, long idGroup){
-		AddedCondition addCon = new AddedCondition();
-		ADDED_CONDITIONS_KEY_ID_ADDEDD_CONDITIONS	
+
+	public long insertAddedCondition(long idCondition, long idTask, int idGroup, String params){
+		//AddedCondition addCon = new AddedCondition();
+		/*ADDED_CONDITIONS_KEY_ID_ADDEDD_CONDITIONS	
 		ADDED_CONDITIONS_KEY_CONDITION_ID
 		ADDED_CONDITIONS_KEY_TASK_ID_CONDITIONS
 		ADDED_CONDITIONS_KEY_GROUP_ID
 		ADDED_CONDITIONS_KEY_PARAMETERS_CONDITIONS
 		ADDED_CONDITIONS_KEY_EXECUTED_CONDITION
 		
-		
-		long idTask = task.getId();
+		*/
+		//long idTask = task.getId();
 		
 		ContentValues newValues = new ContentValues();
 		newValues.put(ADDED_CONDITIONS_KEY_CONDITION_ID, idCondition);
@@ -692,22 +739,19 @@ ADDED_CONDITIONS_KEY_EXECUTED_CONDITION*/
 		newValues.put(ADDED_CONDITIONS_KEY_GROUP_ID, idGroup);
 		newValues.put(ADDED_CONDITIONS_KEY_PARAMETERS_CONDITIONS, "");
 		newValues.put(ADDED_CONDITIONS_KEY_EXECUTED_CONDITION, 0);
+		newValues.put(ADDED_CONDITIONS_KEY_PARAMETERS_CONDITIONS, params);
 		
-		addCon.setCondition_id(idCondition);
-		addCon.setExecuted(0);
-		addCon.setTask_id(idTask);
-		addCon.setGroup_id(idGroup);
-		
+
 		long id  = db.insert(DB_ADDED_CONDITIONS_TABLE, null, newValues);
 		if(id == -1){
 			System.out.println("Blad przy tworzeniu dodanego warunku");
-			return null;
+			return -1;
 		}
-		addCon.setId(id);
-		System.out.println("insertAddedCondition, id = " + id + " a task to " + task);
-		addConditionToTask(task, id);
+
+		System.out.println("insertAddedCondition, id = " + id + " a task to " + idTask);
+		addConditionToTask(idTask, id);
 		
-		return addCon;
-	}*/
+		return id;
+	}
 		
 }

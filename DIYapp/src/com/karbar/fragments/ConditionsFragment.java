@@ -418,7 +418,8 @@ public class ConditionsFragment extends Fragment{
 		    	Log.d("kkams",Boolean.toString(cb1.isChecked())+ " " +Boolean.toString(cb2.isChecked())+ " " +Boolean.toString(cb3.isChecked())+ " " +Boolean.toString(cb4.isChecked())+ " " +Boolean.toString(cb5.isChecked())+ " " +Boolean.toString(cb6.isChecked())+ " " +Boolean.toString(cb7.isChecked()));
 		    	*/
 		    	DbMethods dbMethods = new DbMethods(context,activity);
-		    	dbMethods.addTimeCondition(idGroupFinal, tpSince.getCurrentHour(), tpSince.getCurrentMinute(), 
+		    	long diyaID = bundle.getLong(Constant.KEY_DIYAID);
+		    	dbMethods.addTimeCondition(diyaID, idGroupFinal, tpSince.getCurrentHour(), tpSince.getCurrentMinute(), 
 		    			tpTo.getCurrentHour(), tpTo.getCurrentMinute(), new boolean[]{cb1.isChecked(),cb2.isChecked(),cb3.isChecked(),cb4.isChecked(),cb5.isChecked(),cb6.isChecked(),cb7.isChecked()});
 
 		    	dialog.dismiss();
@@ -444,7 +445,8 @@ public class ConditionsFragment extends Fragment{
 		ok.setOnClickListener(new OnClickListener() {
 		    public void onClick(View v) {
 		    	DbMethods dbMethods = new DbMethods(context,activity);
-		    	dbMethods.addDateCondition(idGroupFinal, since.getDayOfMonth(), since.getMonth(), since.getYear(), 
+		    	long diyaID = bundle.getLong(Constant.KEY_DIYAID);
+		    	dbMethods.addDateCondition(diyaID, idGroupFinal, since.getDayOfMonth(), since.getMonth(), since.getYear(), 
 		    			to.getDayOfMonth(), to.getMonth(), to.getYear());
 		    	dialog.dismiss();
 				addElemToList(draggedImgId, idGroupFinal);
@@ -481,7 +483,8 @@ public class ConditionsFragment extends Fragment{
 		ok.setOnClickListener(new OnClickListener() {
 		    public void onClick(View v) {
 		    	DbMethods dbMethods = new DbMethods(context,activity);
-		    	dbMethods.addWiFiCondition(idGroupFinal, wifi.isActivated(), et.getText().toString());
+		    	long diyaID = bundle.getLong(Constant.KEY_DIYAID);
+		    	dbMethods.addWiFiCondition(diyaID, idGroupFinal, wifi.isActivated(), et.getText().toString());
 		    	dialog.dismiss();
 				addElemToList(draggedImgId, idGroupFinal);
 				removeEmptyElem(idGroupFinal);
@@ -506,7 +509,8 @@ public class ConditionsFragment extends Fragment{
 		ok.setOnClickListener(new OnClickListener() {
 		    public void onClick(View v) {
 		    	DbMethods dbMethods = new DbMethods(context,activity);
-		    	dbMethods.addGpsCondition(idGroupFinal,Double.parseDouble(etX.getText().toString()), Double.parseDouble(etY.getText().toString()), Double.parseDouble(etR.getText().toString()), reversed.isChecked());
+		    	long diyaID = bundle.getLong(Constant.KEY_DIYAID);
+		    	dbMethods.addGpsCondition(diyaID, idGroupFinal,Double.parseDouble(etX.getText().toString()), Double.parseDouble(etY.getText().toString()), Double.parseDouble(etR.getText().toString()), reversed.isChecked());
 
 		    	dialog.dismiss();
 				addElemToList(draggedImgId, idGroupFinal);

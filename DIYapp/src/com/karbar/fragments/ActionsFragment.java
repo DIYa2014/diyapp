@@ -467,7 +467,8 @@ public class ActionsFragment extends Fragment{
 						}
 					}
 					DbMethods dbMethods = new DbMethods(context,activity);
-					dbMethods.addWiFiAction(tryb, ssid);
+					long diyaID = bundle.getLong(Constant.KEY_DIYAID);
+					dbMethods.addWiFiAction(diyaID,tryb, ssid);
 			    	dialog.dismiss();
 			    }
 			    }
@@ -491,7 +492,8 @@ public class ActionsFragment extends Fragment{
 					add( 0, draggedImgId, optionList2);
 					mGrid.setAdapter(mGridAdapter);
 					DbMethods dbMethods = new DbMethods(context,activity);
-					dbMethods.addnotificationAction(ticker.getText().toString(), title.getText().toString(), content.getText().toString());
+					long diyaID = bundle.getLong(Constant.KEY_DIYAID);
+					dbMethods.addnotificationAction(diyaID, ticker.getText().toString(), title.getText().toString(), content.getText().toString());
 			    	dialog.dismiss();
 			    }
 			    }
@@ -513,7 +515,8 @@ public class ActionsFragment extends Fragment{
 					add( 0, draggedImgId, optionList2);
 					mGrid.setAdapter(mGridAdapter);
 					DbMethods dbMethods = new DbMethods(context,activity);
-					dbMethods.addSoundAction(level.getProgress());
+					long diyaID = bundle.getLong(Constant.KEY_DIYAID);
+					dbMethods.addSoundAction(diyaID, level.getProgress());
 			    	dialog.dismiss();
 			    }
 			    }
@@ -524,7 +527,8 @@ public class ActionsFragment extends Fragment{
 					add( 0, draggedImgId, optionList2);
 					mGrid.setAdapter(mGridAdapter);
 					DbMethods dbMethods = new DbMethods(context,activity);
-					dbMethods.addVibrationAction();
+					long diyaID = bundle.getLong(Constant.KEY_DIYAID);
+					dbMethods.addVibrationAction(diyaID);
 			    	
 		}
 	}

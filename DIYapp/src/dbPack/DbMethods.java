@@ -3,6 +3,8 @@ package dbPack;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import com.karbar.diyapp.utils.Constant;
+
 //import com.example.testbazy.model.*;
 
 import android.app.Activity;
@@ -55,50 +57,67 @@ public class DbMethods {
 		 * Tutaj jedna lista HashMap
 		 */
 		
-		return db.getArrayAddedActionsFrmDatabase(idDIYa);
+		return db.getArrayAddedActionsFromDatabase(idDIYa);
 	} 
 	
-	public int addTimeCondition(int groupId, int timeSinceHour, int timeSinceMinutes, int timeToHour, int timeToMinutes, boolean [] days){
+	public long addTimeCondition(long idDIYa, int groupId, int timeSinceHour, int timeSinceMinutes, int timeToHour, int timeToMinutes, boolean [] days){
 		//Log.d("kkams","Od: "+timeSinceHour+":"+timeSinceMinutes);
     	Log.d("kkams",""+groupId);
-		
+    	String days_boolean= "";
+    	for(int i=0;i < days.length -1; i++){
+    		days_boolean += days[i]+",";
+    	}
+    	days_boolean += days[days.length -1];
+		String params = "" + timeSinceHour + "/~/"+ timeSinceMinutes + "/~/"+ timeToHour+ "/~/"+ timeToMinutes + "/~/"+ days_boolean;
     	//zwraca id z bazy
-    	return 1;
+    	return db.insertAddedCondition(Constant.CONDITION_TIME, idDIYa, groupId, params);
+    	
 		
 	}
-	public int addDateCondition(int groupId, int dateSinceDay, int dateSinceMonth, int dateSinceYear, 
+	public long addDateCondition(long idDIYa, int groupId, int dateSinceDay, int dateSinceMonth, int dateSinceYear, 
 			int dateToDay, int dateToMonth, int dateToYear){
-		
+		String params = "" + dateSinceDay + "/~/" + dateSinceMonth + "/~/" + dateSinceYear + "/~/" + dateToDay + "/~/" + dateToMonth + "/~/" + dateToYear;
     	//zwraca id z bazy
-    	return 2;
+    	return db.insertAddedCondition(Constant.CONDITION_DATE, idDIYa, groupId, params);
 		
 	}
 	
-	public int addGpsCondition(int groupId,double x, double y, double r, boolean isReversed){//isReversed - jesli true to na zewntrz okrgu
-		
+	public long addGpsCondition(long idDIYa, int groupId,double x, double y, double r, boolean isReversed){//isReversed - jesli true to na zewntrz okrgu
+		String params = "" + x + "/~/" + y + "/~/" + r + "/~/" + isReversed;
     	//zwraca id z bazy
-    	return 3;
+    	return db.insertAddedCondition(Constant.CONDITION_GPS, idDIYa, groupId, params);
 		
 	}
-	public int addWiFiCondition(int groupId, boolean on, String nameWiFi){
-		
+	public long addWiFiCondition(long idDIYa, int groupId, boolean on, String nameWiFi){
+		String params = "" + on + "/~/" + nameWiFi;
     	//zwraca id z bazy
-    	return 4;
+		System.out.println(Constant.CONDITION_WIFI + " "+idDIYa+" "+groupId + " " + on+ " " + nameWiFi);
+    	return db.insertAddedCondition(Constant.CONDITION_WIFI, idDIYa, groupId, params);
 		
 	}
-	public int addWiFiAction(int tryb, String ssid){
+	
+	public boolean isServiceRunning(){
+		return db.isServiceRunning();
+	}
+	
+	public boolean setServiceRunning(boolean run){
+		return db.setServiceRunning(run);
+	}
+	
+	
+	public int addWiFiAction(long idDIYa, int tryb, String ssid){
 		
 		return 0;
 	}
-	public int addVibrationAction(){
+	public int addVibrationAction(long idDIYa){
 		
 		return 0;
 	}
-	public int addSoundAction(int sounLevel){
+	public int addSoundAction(long idDIYa, int soundLevel){
 			
 		return 0;
 	}
-	public int addnotificationAction(String tickerText, String notificationTitle, String notificationText){
+	public int addnotificationAction(long idDIYa, String tickerText, String notificationTitle, String notificationText){
 			
 		return 0;
 	}
