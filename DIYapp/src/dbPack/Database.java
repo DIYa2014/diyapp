@@ -156,7 +156,9 @@ public class Database {
 																ADDED_CONDITIONS_KEY_TASK_ID_CONDITIONS, ADDED_CONDITIONS_KEY_GROUP_ID, 
 																ADDED_CONDITIONS_KEY_PARAMETERS_CONDITIONS, ADDED_CONDITIONS_KEY_EXECUTED_CONDITION
 																};
-	
+	public static final String[] column_keys_added_actions = {ADDED_ACTIONS_KEY_ID_ADDEDD_ACTIONS, ADDED_ACTIONS_KEY_ACTION_ID, ADDED_ACTIONS_KEY_TASK_ID_ACTIONS, 
+																ADDED_ACTIONS_KEY_PARAMETERS_ACTIONS, ADDED_ACTIONS_KEY_EXECUTED_ACTION, ADDED_ACTIONS_KEY_BEFORE_ACTION
+																};
 	/*tworzenie tabel w bazie danych*/
 	private static final String DB_CREATE_TASKS_TABLE = 
 			"CREATE TABLE" + " " + DB_TASKS_TABLE + "( " +
@@ -492,7 +494,7 @@ public class Database {
 		return null;
 	}*/
 	
-	public ArrayList<HashMap<String, String>> getArrayConditionFromOneGrup(String idGroup, String idTask){
+	public ArrayList<HashMap<String, String>> getArrayConditionFromOneGrup(String idGroup, long idTask){
 		ArrayList<HashMap<String, String>> ret =  new ArrayList<HashMap<String,String>>();
 		
 		String whereCon2 = ADDED_CONDITIONS_KEY_GROUP_ID + '=' + idGroup + " AND " + ADDED_CONDITIONS_KEY_TASK_ID_CONDITIONS +"="+idTask;
@@ -553,6 +555,81 @@ ADDED_CONDITIONS_KEY_EXECUTED_CONDITION*/
 		
 		
 		return getConditonLists;
+	}
+	
+	public boolean isTaskEmpty(long idTask){
+		String where = TASKS_KEY_ID + "=" + idTask;
+		Cursor cursor = db.query(DB_TASKS_TABLE, column_keys_task, where, null, null, null, null);
+		System.out.println("get task2");
+		cursor.moveToFirst();
+		if(cursor != null && cursor.moveToFirst()){
+			System.out.println("get task3");
+			String name = cursor.getString(TASKS_NAME_TASKS_COLUMN);
+			String description = cursor.getString(TASKS_DESCRIPTION_COLUMN);
+			String groups_of_conditions = cursor.getString(TASKS_GROUPS_OF_CONDITIONS_COLUMN);
+			String added_conditions_id = cursor.getString(TASKS_ADDED_CONDITIONS_ID_COLUMN);
+			String added_acions_id = cursor.getString(TASKS_ADDED_ACTIONS_ID_COLUMN);
+			int active = cursor.getInt(TASKS_ACTIVE_COLUMN);
+			boolean act = active == 1 ? true : false;
+			String date_create = cursor.getString(TASKS_DATE_CREATE_COLUMN);
+			String date_update = cursor.getString(TASKS_DATE_UPDATE_COLUMN); 
+			System.out.println("get task4");
+			if(added_conditions_id.equals("") && added_acions_id.equals(""))
+				return true;
+			return false;
+		}
+			return true;
+		
+	}
+	
+	public ArrayList<HashMap<String, String>> getArrayAddedActionsFrmDatabase(long idTask){
+		ArrayList<HashMap<String, String>> getActionsLists = new ArrayList<HashMap<String,String>>();
+		
+		String whereCon2 = ADDED_ACTIONS_KEY_TASK_ID_ACTIONS +"="+idTask;
+		Cursor cursorAct = db.query(DB_ADDED_ACTIONS_TABLE, column_keys_added_actions, whereCon2, null, null, null, null);
+		cursorAct.moveToFirst();
+		if(cursorAct != null && cursorAct.moveToFirst()){
+			do{
+				/*ADDED_CONDITIONS_KEY_ID_ADDEDD_CONDITIONS, 
+				ADDED_CONDITIONS_KEY_CONDITION_ID,
+ADDED_CONDITIONS_KEY_TASK_ID_CONDITIONS, 
+ADDED_CONDITIONS_KEY_GROUP_ID, 
+ADDED_CONDITIONS_KEY_PARAMETERS_CONDITIONS, 
+ADDED_CONDITIONS_KEY_EXECUTED_CONDITION*/
+				System.out.println("ilosc wierszy = "+cursorAct.getCount());
+				System.out.println("pozycja = "+cursorAct.getPosition());
+				System.out.println("fdefes");
+				HashMap<String, String> map = new HashMap<String, String>();
+				//System.out.println("pierwsza kolumna = "+cursorCon.getColumnName(21));
+				/*
+				 * ADDED_ACTIONS_KEY_ID_ADDEDD_ACTIONS, ADDED_ACTIONS_KEY_ACTION_ID, ADDED_ACTIONS_KEY_TASK_ID_ACTIONS, 
+				 * ADDED_ACTIONS_KEY_PARAMETERS_ACTIONS, ADDED_ACTIONS_KEY_EXECUTED_ACTION, ADDED_ACTIONS_KEY_BEFORE_ACTION
+				 * 
+				 * */
+				String id_add_act = cursorAct.getString(ADDED_ACTIONS_ID_ADDEDD_ACTIONS_COLUMN);
+				String id_act = cursorAct.getString(ADDED_ACTIONS_ACTION_ID_COLUMN);
+				String id_task = cursorAct.getString(ADDED_ACTIONS_TASK_ID_ACTIONS_COLUMN);
+				String params = cursorAct.getString(ADDED_ACTIONS_PARAMETERS_ACTIONS_COLUMN);
+				String exec = cursorAct.getString(ADDED_ACTIONS_EXECUTED_ACTION_COLUMN);
+				String before = cursorAct.getString(ADDED_ACTIONS_BEFORE_ACTION_COLUMN);
+				HashMap<String, String> tempMap = new HashMap<String, String>();
+				//AddedCondition ac = new AddedCondition();
+				map.put(ADDED_ACTIONS_KEY_ID_ADDEDD_ACTIONS, id_add_act);
+				map.put(ADDED_ACTIONS_KEY_ACTION_ID, id_act);
+				map.put(ADDED_ACTIONS_KEY_TASK_ID_ACTIONS, id_task);
+				map.put(ADDED_ACTIONS_KEY_PARAMETERS_ACTIONS, params);
+				map.put(ADDED_ACTIONS_KEY_EXECUTED_ACTION, exec);
+				map.put(ADDED_ACTIONS_KEY_BEFORE_ACTION, before);
+				
+				getActionsLists.add(map);
+				
+				
+			}
+			while(cursorAct.moveToNext());
+			
+		}
+		
+		return getActionsLists;
 	}
 	/*
 	public Task addConditionToTask(Task task, long addedConditionID){

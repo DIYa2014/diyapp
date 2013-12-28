@@ -33,9 +33,10 @@ public class DbMethods {
 		//TODO zwraca id dla nowej DIYi
 		return db.insertTask();
 	}
-	public boolean isDIYaEmpty(int id){
+	public boolean isDIYaEmpty(long id){
 		//TODO zwraaca czy DIA o podanym id ma ju¿ jakie warunki lub akcje
-		return true;
+		//sprawdzam, czy ma jakies warunki i czy ma jakies akcje, jesli nie ma obu - zwracam true, zwracam true tez gdy nie ma takiego zadania
+		return db.isTaskEmpty(id);
 	}
 	public ArrayList<ArrayList<HashMap<String, String>>> getConditonLists(int idDIYa){
 		/*
@@ -49,12 +50,12 @@ public class DbMethods {
 	
 		return db.getArrayAddedConditionFromDatabase(idDIYa);
 	} 
-	public ArrayList<HashMap<String, String>> getActionsLists(int idDIYa){
+	public ArrayList<HashMap<String, String>> getActionsLists(long idDIYa){
 		/*
 		 * Tutaj jedna lista HashMap
 		 */
 		
-		return null;
+		return db.getArrayAddedActionsFrmDatabase(idDIYa);
 	} 
 	
 	public int addTimeCondition(int groupId, int timeSinceHour, int timeSinceMinutes, int timeToHour, int timeToMinutes, boolean [] days){
