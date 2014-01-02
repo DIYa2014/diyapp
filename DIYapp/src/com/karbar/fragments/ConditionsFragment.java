@@ -68,21 +68,22 @@ public class ConditionsFragment extends Fragment{
 	private Dialog dialog;
 	private RelativeLayout mButton1;
 	private RelativeLayout mButton2;
-	private int diyaID =-1;
+	private int diyaID =-2;
 
 	private FragmentManager mFragmentManager;
 	private ActionsFragment actions;
 	private ConditionsFragment conditions;
 	private Bundle bundle;
-	
+	private DbMethods dbMethods;
 	
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 	
-	 mainView = inflater.inflate(R.layout.conditions_fragment, container, false);
-	 mButton1 = (RelativeLayout) mainView.findViewById(R.id.conditionsButtonRelative);
-	 mButton2 = (RelativeLayout) mainView.findViewById(R.id.actionsButtonRelative);
-	 mButton1.setOnClickListener(changeToConditionsListener);
-	 mButton2.setOnClickListener(changeToActionsListener);
+		 mainView = inflater.inflate(R.layout.conditions_fragment, container, false);
+		 dbMethods = new DbMethods(getActivity());
+		 mButton1 = (RelativeLayout) mainView.findViewById(R.id.conditionsButtonRelative);
+		 mButton2 = (RelativeLayout) mainView.findViewById(R.id.actionsButtonRelative);
+		 mButton1.setOnClickListener(changeToConditionsListener);
+		 mButton2.setOnClickListener(changeToActionsListener);
 	 return mainView;
 	 }
 
@@ -98,9 +99,8 @@ public class ConditionsFragment extends Fragment{
 			createDraggedIco(400);
 			
 			if (bundle !=null){
-				diyaID = bundle.getInt(Constant.KEY_DIYAID);
-				Log.d("kkams", "Conditions - bundle is not null. DIYa id:" +diyaID);
-				DbMethods dbMethods = new DbMethods(getActivity(),getActivity());
+				diyaID = Integer.parseInt(String.valueOf(bundle.getLong(Constant.KEY_DIYAID)));
+				Log.d("kkams", "Conditions - bundle is not null. DIYa id:" +bundle.getLong(Constant.KEY_DIYAID));
 				if(dbMethods.isDIYaEmpty(diyaID))
 					createFirstConditionsList();
 				else{
@@ -147,18 +147,20 @@ public class ConditionsFragment extends Fragment{
 		ArrayList<HashMap<String, String>> list;
 		list = new ArrayList<HashMap<String, String>>();
 		
-		add(-1, R.drawable.empty, list); 
-		add(-1, R.drawable.empty, list);
-		add(-1, R.drawable.empty, list);
-		add(-1, R.drawable.empty, list);
-		add(-1, R.drawable.empty, list);
+		add(-1, list); 
+		add(-1, list);
+		add(-1, list);
+		add(-1, list);
+		add(-1, list);
 		addGroup(list);
 		
 	}
 	private void createConditionsLists(ArrayList<ArrayList<HashMap<String, String>>> list){
-		
-		for(int i=0;i<list.size();i++)
-			addGroup(list.get(i));
+
+		Log.d("kkams", "dlugosc listy: " + list.size());
+			for(int i=0; i<list.size(); i++){
+				Log.d("kkams", "lista: " + list.get(i).toString());
+			}
 		}
 	public void add(String title, int id, int ico){
 			
@@ -226,17 +228,16 @@ public class ConditionsFragment extends Fragment{
 	}
 	
 	
-	public void add( int id, int ico, ArrayList<HashMap<String, String>> optionList){
+	public void add(int id, ArrayList<HashMap<String, String>> optionList){
 		
 		HashMap<String, String> map = new HashMap<String, String>(); 
 	    map.put(Constant.KEY_ID, Integer.toString(id));
-	    map.put(Constant.KEY_ICO, Integer.toString(ico));
 	    optionList.add(map);
 	}
 	
-	public void addElemToList(int elemId, int listId){
+	public void addElemToList(int conditionId, int listId){
 		HorizontalListView listview = (HorizontalListView)getActivity().findViewById(listId);
-		listview.add(listview.getAdapter().getCount()+1, elemId);
+		listview.add(conditionId);
 		listview.setAdapter(listview.getAdapter());
 	}
 	public void removeElemfromList(int elemId, int listId){
@@ -250,11 +251,11 @@ public class ConditionsFragment extends Fragment{
 	        
 			ArrayList<HashMap<String, String>> list = new ArrayList<HashMap<String, String>>();
 	
-			add(-1, R.drawable.empty, list); 
-			add(-1, R.drawable.empty, list);
-			add(-1, R.drawable.empty, list);
-			add(-1, R.drawable.empty, list);
-			add(-1, R.drawable.empty, list);
+			add(-1, list); 
+			add(-1, list);
+			add(-1, list);
+			add(-1, list);
+			add(-1, list);
 			addGroup(list);
 		}
 	};
@@ -410,13 +411,12 @@ public class ConditionsFragment extends Fragment{
 		    			" Do:"+tpTo.getCurrentHour().toString()+":"+tpTo.getCurrentMinute().toString());
 		    	Log.d("kkams",Boolean.toString(cb1.isChecked())+ " " +Boolean.toString(cb2.isChecked())+ " " +Boolean.toString(cb3.isChecked())+ " " +Boolean.toString(cb4.isChecked())+ " " +Boolean.toString(cb5.isChecked())+ " " +Boolean.toString(cb6.isChecked())+ " " +Boolean.toString(cb7.isChecked()));
 		    	*/
-		    	DbMethods dbMethods = new DbMethods(getActivity(),getActivity());
 		    	long diyaID = bundle.getLong(Constant.KEY_DIYAID);
 		    	dbMethods.addTimeCondition(diyaID, idGroupFinal, tpSince.getCurrentHour(), tpSince.getCurrentMinute(), 
 		    			tpTo.getCurrentHour(), tpTo.getCurrentMinute(), new boolean[]{cb1.isChecked(),cb2.isChecked(),cb3.isChecked(),cb4.isChecked(),cb5.isChecked(),cb6.isChecked(),cb7.isChecked()});
 
 		    	dialog.dismiss();
-				addElemToList(draggedImgId, idGroupFinal);
+				addElemToList(Constant.ID_TIME, idGroupFinal);
 				removeEmptyElem(idGroupFinal);
 		    }});
 		
@@ -437,12 +437,11 @@ public class ConditionsFragment extends Fragment{
 		anuluj.setOnClickListener(anulujListener);
 		ok.setOnClickListener(new OnClickListener() {
 		    public void onClick(View v) {
-		    	DbMethods dbMethods = new DbMethods(getActivity(),getActivity());
 		    	long diyaID = bundle.getLong(Constant.KEY_DIYAID);
 		    	dbMethods.addDateCondition(diyaID, idGroupFinal, since.getDayOfMonth(), since.getMonth(), since.getYear(), 
 		    			to.getDayOfMonth(), to.getMonth(), to.getYear());
 		    	dialog.dismiss();
-				addElemToList(draggedImgId, idGroupFinal);
+				addElemToList(Constant.ID_CALENDAR, idGroupFinal);
 				removeEmptyElem(idGroupFinal);
 		    }});
 	}
@@ -475,11 +474,10 @@ public class ConditionsFragment extends Fragment{
 		anuluj.setOnClickListener(anulujListener);
 		ok.setOnClickListener(new OnClickListener() {
 		    public void onClick(View v) {
-		    	DbMethods dbMethods = new DbMethods(getActivity(),getActivity());
 		    	long diyaID = bundle.getLong(Constant.KEY_DIYAID);
 		    	dbMethods.addWiFiCondition(diyaID, idGroupFinal, wifi.isActivated(), et.getText().toString());
 		    	dialog.dismiss();
-				addElemToList(draggedImgId, idGroupFinal);
+				addElemToList(Constant.ID_WIFI, idGroupFinal);
 				removeEmptyElem(idGroupFinal);
 		    }
 		    }
@@ -501,12 +499,11 @@ public class ConditionsFragment extends Fragment{
 		anuluj.setOnClickListener(anulujListener);
 		ok.setOnClickListener(new OnClickListener() {
 		    public void onClick(View v) {
-		    	DbMethods dbMethods = new DbMethods(getActivity(),getActivity());
 		    	long diyaID = bundle.getLong(Constant.KEY_DIYAID);
 		    	dbMethods.addGpsCondition(diyaID, idGroupFinal,Double.parseDouble(etX.getText().toString()), Double.parseDouble(etY.getText().toString()), Double.parseDouble(etR.getText().toString()), reversed.isChecked());
 
 		    	dialog.dismiss();
-				addElemToList(draggedImgId, idGroupFinal);
+				addElemToList(Constant.ID_GPS, idGroupFinal);
 				removeEmptyElem(idGroupFinal);
 		    }});
 	}

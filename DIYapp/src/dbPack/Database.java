@@ -235,7 +235,6 @@ public class Database {
 	private SQLiteDatabase db;
 	private Context context;
 	private DatabaseHelper dbHelper;
-	private Activity activity;
 	
 	private static class DatabaseHelper extends SQLiteOpenHelper{
 		public DatabaseHelper(Context context, String name,
@@ -279,9 +278,8 @@ public class Database {
 		
 	}
 	
-	public Database(Context c, Activity act){
+	public Database(Context c){
 		context = c;
-		activity = act;
 	}
 	
 	public Database open(){
@@ -349,7 +347,7 @@ public class Database {
 	
 	public boolean isServiceRunning(){
 
-		Cursor cursor = db.query(DB_TASKS_TABLE, column_keys_service, null, null, null, null, null);
+		Cursor cursor = db.query(DB_SERVICE_TABLE, column_keys_service, null, null, null, null, null);
 		cursor.moveToFirst();
 		if(cursor != null && cursor.moveToFirst()){
 			int running = cursor.getInt(SERVICE_RUNNING_COLUMN);
@@ -606,6 +604,7 @@ ADDED_CONDITIONS_KEY_EXECUTED_CONDITION*/
 		
 		
 		for(String str : groupsListStrings){
+			Log.d("kkams", "group: "+str + " id= " + getArrayConditionFromOneGrup(str, idTask));
 			getConditonLists.add(
 					getArrayConditionFromOneGrup(str, idTask)
 					);

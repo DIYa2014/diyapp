@@ -20,13 +20,11 @@ import android.util.Log;
 
 public class DbMethods {
 	private Context context;
-	private Activity activity;
-	Database db;
+	private Database db;
 	
-	public DbMethods(Context c, Activity a){
+	public DbMethods(Context c){
 		context = c;
-		activity = a;
-		db = new Database (context, activity);
+		db = new Database (context);
 		db.open();
 		
 	}

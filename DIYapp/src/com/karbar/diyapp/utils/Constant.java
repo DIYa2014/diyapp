@@ -1,5 +1,7 @@
 package com.karbar.diyapp.utils;
 
+import com.karbar.diyapp.R;
+
 public class Constant {
 	
 	public static final String KEY_OPTION = "option"; // nazwa warunku
@@ -7,7 +9,18 @@ public class Constant {
 	public static final String KEY_ICO = "ico_url";
 	public static final String KEY_BUNDLE = "bundle";
 	
-
+	public static final int ID_TIME = 1;
+	public static final int ID_WIFI =  2;
+	public static final int ID_GPS = 3;
+	public static final int ID_CALENDAR = 4;
+	public static final int ID_EMPTY = -1;
+	
+	public static final int ICO_TIME = R.drawable.perm_group_system_clock;
+	public static final int ICO_WIFI =  R.drawable.perm_group_network;
+	public static final int ICO_GPS = R.drawable.perm_group_location;
+	public static final int ICO_CALENDAR = R.drawable.perm_group_calendar;
+	public static final int ICO_EMPTY = R.drawable.empty;
+	
 	public static final String KEY_DIYAID = "diyid";
 	
 	//u¿ywam ich ja

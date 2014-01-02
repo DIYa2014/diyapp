@@ -34,6 +34,7 @@ import com.karbar.diyapp.R;
 import com.karbar.diyapp.utils.Constant;
 import com.karbar.diyapp.utils.HorizontalListView;
 import com.karbar.diyapp.utils.MenuListViewAdapter;
+import com.karbar.service.Execute;
 
 import dbPack.DbMethods;
 
@@ -44,12 +45,21 @@ public class StartFragment extends Fragment{
 	private Button button;
 	private ListView listView;
 	ConditionsFragment conditions;
-
-	
+	private long id;
+	DbMethods dbMethods;
+	private Intent intent;
 	
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 	
 	 mainView = inflater.inflate(R.layout.start_view, container, false);
+	 dbMethods = new DbMethods(getActivity());
+	 intent = new Intent(getActivity(), Execute.class);
+	 
+		
+	 if(!dbMethods.isServiceRunning()){
+			getActivity().startService(intent);
+			dbMethods.setServiceRunning(true);
+	 }
 	 button = (Button)mainView.findViewById(R.id.addNewDiya);
 	 button.setOnClickListener(change);
 	 listView = (ListView)mainView.findViewById(R.id.diyaList);
@@ -58,8 +68,7 @@ public class StartFragment extends Fragment{
 
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
-		        
-		 
+		
 		
 		super.onActivityCreated(savedInstanceState);
 	}	
@@ -68,10 +77,11 @@ public class StartFragment extends Fragment{
 	    	FragmentTransaction ft = getFragmentManager().beginTransaction();
 	    	//ft.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out);
 	    	Bundle bundle = new Bundle();
+
+	    	id = dbMethods.getNewDIYaID();   
 	    	
-	    	// w konstruktorze pobieram getActivity() i getActivity()
-	    	DbMethods dbMethods = new DbMethods(getActivity(), getActivity());
-	    	bundle.putLong(Constant.KEY_DIYAID, dbMethods.getNewDIYaID());
+	    	bundle.putLong(Constant.KEY_DIYAID, id );
+	    	Log.d("kkams", "Nadaje nowe id dla DIYi: "+ id);
 			 conditions = new ConditionsFragment();
 			 conditions.setArguments(bundle);
 	    	ft.replace(R.id.contentFrag, conditions);

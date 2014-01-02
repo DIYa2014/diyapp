@@ -124,13 +124,31 @@ public class MenuListViewAdapter extends BaseAdapter {
 	        View listview = getListView();
 	        
 	    	map = data.get(position);
-	        
+	        if(map.get(Constant.KEY_ID) != null){
 	    	id=Integer.parseInt(map.get(Constant.KEY_ID));
-	        ico = activity.getResources().getDrawable(Integer.parseInt(map.get(Constant.KEY_ICO)));
+	    	Log.d("kkams", "id: "+ id);
+	    	switch(id){
+		    	case 1:
+			        ico = activity.getResources().getDrawable(Constant.ICO_TIME);
+		    		break;
+		    	case 2:
+			        ico = activity.getResources().getDrawable(Constant.ICO_WIFI);
+		    		break;
+		    	case 3:
+			        ico = activity.getResources().getDrawable(Constant.ICO_GPS);
+		    		break;
+		    	case 4:
+			        ico = activity.getResources().getDrawable(Constant.ICO_CALENDAR);
+		    		break;
+		    	default:
+		    		ico = activity.getResources().getDrawable(Constant.ICO_EMPTY);
+		    		break;
+	    	}
+	       
 	        
-	        ico_image=(ImageView)vi.findViewById(R.id.menu_element_ico); // ico image
-	        ico_image.setImageDrawable(ico);
-	    	
+		        ico_image=(ImageView)vi.findViewById(R.id.menu_element_ico); // ico image
+		        ico_image.setImageDrawable(ico);
+	        }
 	    
 	    	listview.setVerticalFadingEdgeEnabled(false);
 	    	listview.setVerticalScrollBarEnabled(false);

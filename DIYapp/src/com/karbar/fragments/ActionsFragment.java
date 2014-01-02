@@ -84,7 +84,7 @@ public class ActionsFragment extends Fragment{
 	private ActionsFragment actions;
 	private ConditionsFragment conditions;
 	private Bundle bundle;
-	
+	private DbMethods dbMethods;
 		
 	 
 	
@@ -92,6 +92,7 @@ public class ActionsFragment extends Fragment{
 		
 		
 		mView = inflater.inflate(R.layout.actions_fragment, container, false);
+		dbMethods = new DbMethods(getActivity());
 		
 		 mButton1 = (RelativeLayout) mView.findViewById(R.id.conditionsButtonRelative);
 		 mButton2 = (RelativeLayout) mView.findViewById(R.id.actionsButtonRelative);
@@ -121,9 +122,8 @@ public class ActionsFragment extends Fragment{
 			createGrid();
 			bundle = getArguments();
 				if (bundle !=null){
-					diyaID = bundle.getInt(Constant.KEY_DIYAID);
+					diyaID = Integer.parseInt(String.valueOf(bundle.getLong(Constant.KEY_DIYAID)));
 					Log.d("kkams", "Actions - bundle is not null. DIYa id:" +diyaID);
-					DbMethods dbMethods = new DbMethods(getActivity(),getActivity());
 					if(!dbMethods.isDIYaEmpty(diyaID)){
 						dbMethods.getActionsLists(diyaID);
 					}
@@ -228,7 +228,7 @@ public class ActionsFragment extends Fragment{
 	}
 	public void addElemToList(int elemId, int listId){
 		HorizontalListView listview = (HorizontalListView)getActivity().findViewById(listId);
-		listview.add(listview.getAdapter().getCount()+1, elemId);
+		listview.add(elemId);
 		listview.setAdapter(listview.getAdapter());
 	}
 	public void removeElemfromList(int elemId, int listId){
@@ -460,7 +460,6 @@ public class ActionsFragment extends Fragment{
 							ssid = et.getText().toString();
 						}
 					}
-					DbMethods dbMethods = new DbMethods(getActivity(),getActivity());
 					long diyaID = bundle.getLong(Constant.KEY_DIYAID);
 					dbMethods.addWiFiAction(diyaID,tryb, ssid);
 			    	dialog.dismiss();
@@ -485,7 +484,6 @@ public class ActionsFragment extends Fragment{
 			    	//DbMethods.addWiFiCondition( wifi.isActivated(), et.getText().toString());
 					add( 0, draggedImgId, optionList2);
 					mGrid.setAdapter(mGridAdapter);
-					DbMethods dbMethods = new DbMethods(getActivity(),getActivity());
 					long diyaID = bundle.getLong(Constant.KEY_DIYAID);
 					dbMethods.addnotificationAction(diyaID, ticker.getText().toString(), title.getText().toString(), content.getText().toString());
 			    	dialog.dismiss();
@@ -508,7 +506,6 @@ public class ActionsFragment extends Fragment{
 			    	//DbMethods.addWiFiCondition( wifi.isActivated(), et.getText().toString());
 					add( 0, draggedImgId, optionList2);
 					mGrid.setAdapter(mGridAdapter);
-					DbMethods dbMethods = new DbMethods(getActivity(),getActivity());
 					long diyaID = bundle.getLong(Constant.KEY_DIYAID);
 					dbMethods.addSoundAction(diyaID, level.getProgress());
 			    	dialog.dismiss();
@@ -520,7 +517,6 @@ public class ActionsFragment extends Fragment{
 					
 					add( 0, draggedImgId, optionList2);
 					mGrid.setAdapter(mGridAdapter);
-					DbMethods dbMethods = new DbMethods(getActivity(),getActivity());
 					long diyaID = bundle.getLong(Constant.KEY_DIYAID);
 					dbMethods.addVibrationAction(diyaID);
 			    	
