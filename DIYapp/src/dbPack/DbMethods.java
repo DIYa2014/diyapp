@@ -102,6 +102,9 @@ public class DbMethods {
 		return db.setServiceRunning(run);
 	}
 	
+	public boolean addGroupToTask(long idDIYa, int idGroup){
+		return db.addGroupToTask(idDIYa, idGroup);
+	}
 	
 	public int addWiFiAction(long idDIYa, int tryb, String ssid){
 		

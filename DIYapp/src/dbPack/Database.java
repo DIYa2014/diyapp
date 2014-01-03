@@ -357,7 +357,7 @@ public class Database {
 		return false;
 	}
 	
-	public boolean initServiceRunning(){
+	/*public boolean initServiceRunning(){
 		ContentValues newValues = new ContentValues();
 		newValues.put(SERVICE_KEY_RUNNING, 0);
 		long id = dbHelper.getWritableDatabase().insert(DB_SERVICE_TABLE, null, newValues);
@@ -366,6 +366,7 @@ public class Database {
 		}
 		return false;
 	}
+	*/
 	
 	public boolean setServiceRunning(boolean run){
 		String where = SERVICE_KEY_ID_SERVICE + "=" + 1;
@@ -527,28 +528,26 @@ public class Database {
 		}
 		return groupsListStrings;
 	}
-	/*
-	public Task addGroupToTask(Task task, int group ){
-		long id = task.getId();
+	
+	public boolean addGroupToTask(long idTask, int group ){
 		//Task task2 = task;
-		String where = TASKS_KEY_ID + "=" + id;
+		String where = TASKS_KEY_ID + "=" + idTask;
 		Cursor cursor = db.query(DB_TASKS_TABLE, column_keys_task, where, null, null, null, null);
 		cursor.moveToFirst();
 		if(cursor != null && cursor.moveToFirst()){
 			String groups = cursor.getString(TASKS_GROUPS_OF_CONDITIONS_COLUMN);
 			groups += ","+group;
-			task.setGroups_of_conditions(groups);
 			
 			ContentValues updateValues = new ContentValues();
 			updateValues.put(TASKS_KEY_GROUPS_OF_CONDITIONS, groups);
 			
 			if(db.update(DB_TASKS_TABLE, updateValues, where, null) > 0){
-				return task;
+				return true;
 			}
 		}
 		
-		return null;
-	}*/
+		return false;
+	}
 	
 	public ArrayList<HashMap<String, String>> getArrayConditionFromOneGrup(String idGroup, long idTask){
 		ArrayList<HashMap<String, String>> ret =  new ArrayList<HashMap<String,String>>();

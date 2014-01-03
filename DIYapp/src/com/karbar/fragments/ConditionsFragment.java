@@ -257,6 +257,8 @@ public class ConditionsFragment extends Fragment{
 			add(-1, list);
 			add(-1, list);
 			addGroup(list);
+			long diyaID = bundle.getLong(Constant.KEY_DIYAID);
+	    	dbMethods.addGroupToTask(diyaID, groupCounter);
 		}
 	};
 	public AdapterView.OnItemLongClickListener onLongClick = new AdapterView.OnItemLongClickListener() {
