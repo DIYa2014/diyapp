@@ -38,6 +38,13 @@ public class DbMethods {
 		//sprawdzam, czy ma jakies warunki i czy ma jakies akcje, jesli nie ma obu - zwracam true, zwracam true tez gdy nie ma takiego zadania
 		return db.isTaskEmpty(id);
 	}
+	
+	public ArrayList<HashMap<String, String>> getDIYaList(){
+		
+		return db.getAllTasks();
+	}
+	
+	
 	public ArrayList<ArrayList<HashMap<String, String>>> getConditonLists(int idDIYa){
 		/*
 		 * W HashMap masz dane dla pojedyñczego warunku. Zapisauj tam takie rzeczy jak id, nazwe czy adres obraska (R.drawable...).

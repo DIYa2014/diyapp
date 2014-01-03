@@ -66,6 +66,8 @@ public class Database {
 	public static final String TASKS_ACTIVE_OPTIONS = "INTEGER "; /*boolean: 0 false 1 true*/
 	public static final int TASKS_ACTIVE_COLUMN = 8;
 	
+	public static final String TASKS_QUANTITY_OF_GROUPS = "quantity_of_groups"; //-~~**~~-UWAGA-~~**~~- tego nie ma w bazie
+	
 	
 	/*tabela actions*/
 	public static final String ACTIONS_KEY_ID_ACTIONS = "_id_actions";
@@ -452,15 +454,14 @@ public class Database {
 		else
 			return false;
 	}*/
-/*	
-	public ArrayList<Task> getAllTasks(){
-		ArrayList<Task> tasks = new ArrayList<Task>();
+
+	public ArrayList<HashMap<String, String>> getAllTasks(){
+		ArrayList<HashMap<String, String>> getAllTasks = new ArrayList<HashMap<String,String>>();
 		Cursor cursor = db.query( DB_TASKS_TABLE, column_keys_task, null, null, null, null, null); 
 		if(cursor != null){
-			activity.startManagingCursor(cursor);
 			cursor.moveToFirst();
 			do{
-				long id = cursor.getLong(TASKS_ID_TASKS_COLUMN);
+				String id = cursor.getString(TASKS_ID_TASKS_COLUMN);
 				String name = cursor.getString(TASKS_NAME_TASKS_COLUMN);
 				String description = cursor.getString(TASKS_DESCRIPTION_COLUMN);
 				String groups_of_conditions = cursor.getString(TASKS_GROUPS_OF_CONDITIONS_COLUMN);
@@ -471,24 +472,49 @@ public class Database {
 				String date_create = cursor.getString(TASKS_DATE_CREATE_COLUMN);
 				String date_update = cursor.getString(TASKS_DATE_UPDATE_COLUMN); 
 				
-				Task task = new Task();
+				HashMap<String, String> task = new HashMap<String, String>();
+				/*
+				 * public static final String TASKS_KEY_ID = "_id_tasks";
+	public static final String TASKS_KEY_NAME_TASKS = "name_tasks";
+	public static final String TASKS_KEY_DESCRIPTION = "descrition";
+	public static final String TASKS_KEY_GROUPS_OF_CONDITIONS = "groups_of_conditions";
+	public static final String TASKS_KEY_ADDED_CONDITIONS_ID = "added_conditions_id";
+	public static final String TASKS_KEY_ADDED_ACTIONS_ID = "added_actions_id";	
+	public static final String TASKS_KEY_DATE_CREATE = "date_create";
+	public static final String TASKS_KEY_DATE_UPDATE = "date_update";
+	public static final String TASKS_KEY_ACTIVE = "active";
+	public static final String TASKS_QUANTITY_OF_GROUPS = "quantity_of_groups";
+				 * 
+				 * 
+				 * 
+				 * 
+				 * 
+				 * */
 				
-				task.setId(id);
-				task.setName(name);
-				task.setDescription(description);
-				task.setGroups_of_conditions(groups_of_conditions);
-				task.setAdded_acions_id(added_acions_id);
-				task.setAdded_conditions_id(added_conditions_id);
-				task.setActive(act);
-				task.setDate_create(date_create);
-				task.setDate_update(date_update);
-				tasks.add(task);
+				String [] gr = groups_of_conditions.split(",");
+				int quant_gr = gr.length;
+				
+				
+				task.put(TASKS_KEY_ID, id);
+				task.put(TASKS_KEY_NAME_TASKS, name);
+				task.put(TASKS_KEY_DESCRIPTION, description);
+				task.put(TASKS_KEY_GROUPS_OF_CONDITIONS, groups_of_conditions);
+				task.put(TASKS_KEY_ADDED_CONDITIONS_ID, added_conditions_id);
+				task.put(TASKS_KEY_ADDED_ACTIONS_ID, added_acions_id);
+				task.put(TASKS_KEY_DATE_CREATE, date_create);
+				task.put(TASKS_KEY_DATE_UPDATE, date_update);
+				task.put(TASKS_KEY_ACTIVE, ""+act);
+				task.put(TASKS_QUANTITY_OF_GROUPS, ""+quant_gr);
+				
+				
+				
+				getAllTasks.add(task);
 			} while (cursor.moveToNext());
 			
 			
 		}
-		return tasks;
-	}*/
+		return getAllTasks;
+	}
 	
 	public String[] getTaskReturnGroups(long id){
 		//Task task = null;

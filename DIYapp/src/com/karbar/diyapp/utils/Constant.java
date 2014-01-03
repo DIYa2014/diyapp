@@ -35,6 +35,7 @@ public class Constant {
 	public static final String TASKS_KEY_DATE_CREATE = "date_create";
 	public static final String TASKS_KEY_DATE_UPDATE = "date_update";
 	public static final String TASKS_KEY_ACTIVE = "active";
+	public static final String TASKS_QUANTITY_OF_GROUPS = "quantity_of_groups"; //-~~**~~-UWAGA-~~**~~- tego nie ma w bazie
 	
 	/*tabela actions*/
 	public static final String ACTIONS_KEY_ID_ACTIONS = "_id_actions";
