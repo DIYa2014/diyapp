@@ -3,6 +3,8 @@ package dbPack;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import com.karbar.diyapp.utils.Constant;
+
 //import com.example.testbazy.model.*;
 
 import android.app.Activity;
@@ -397,7 +399,7 @@ public class Database {
 		newValues.put(TASKS_KEY_NAME_TASKS, "");
 		newValues.put(TASKS_KEY_ADDED_ACTIONS_ID, "");
 		newValues.put(TASKS_KEY_ADDED_CONDITIONS_ID, "");
-		newValues.put(TASKS_KEY_GROUPS_OF_CONDITIONS, "1");
+		newValues.put(TASKS_KEY_GROUPS_OF_CONDITIONS, "0");
 		//task.setDate_create(nowString);
 		//task.setDate_update(nowString);
 		//task.setActive(true);
@@ -597,7 +599,7 @@ ADDED_CONDITIONS_KEY_EXECUTED_CONDITION*/
 				HashMap<String, String> tempMap = new HashMap<String, String>();
 				//AddedCondition ac = new AddedCondition();
 				map.put(ADDED_CONDITIONS_KEY_ID_ADDEDD_CONDITIONS, id_add_con);
-				map.put(ADDED_CONDITIONS_KEY_CONDITION_ID, id_con);
+				map.put(Constant.KEY_ID, id_con);
 				map.put(ADDED_CONDITIONS_KEY_TASK_ID_CONDITIONS, id_task);
 				map.put(ADDED_CONDITIONS_KEY_GROUP_ID, id_group);
 				map.put(ADDED_CONDITIONS_KEY_PARAMETERS_CONDITIONS, params);
@@ -620,7 +622,6 @@ ADDED_CONDITIONS_KEY_EXECUTED_CONDITION*/
 		//String whereCon = ADDED_CONDITIONS_KEY_ID_ADDEDD_CONDITIONS +" IN (" + addedConditions + ")";
 		
 		String [] groupsListStrings = getTaskReturnGroups(idTask);
-		
 		
 		for(String str : groupsListStrings){
 			Log.d("kkams", "group: "+str + " id= " + getArrayConditionFromOneGrup(str, idTask));

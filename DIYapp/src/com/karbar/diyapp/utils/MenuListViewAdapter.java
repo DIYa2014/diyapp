@@ -128,16 +128,16 @@ public class MenuListViewAdapter extends BaseAdapter {
 	    	id=Integer.parseInt(map.get(Constant.KEY_ID));
 	    	Log.d("kkams", "id: "+ id);
 	    	switch(id){
-		    	case 1:
+		    	case Constant.ID_TIME:
 			        ico = activity.getResources().getDrawable(Constant.ICO_TIME);
 		    		break;
-		    	case 2:
+		    	case Constant.ID_WIFI:
 			        ico = activity.getResources().getDrawable(Constant.ICO_WIFI);
 		    		break;
-		    	case 3:
+		    	case Constant.ID_GPS:
 			        ico = activity.getResources().getDrawable(Constant.ICO_GPS);
 		    		break;
-		    	case 4:
+		    	case Constant.ID_CALENDAR:
 			        ico = activity.getResources().getDrawable(Constant.ICO_CALENDAR);
 		    		break;
 		    	default:

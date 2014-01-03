@@ -158,8 +158,13 @@ public class ConditionsFragment extends Fragment{
 	private void createConditionsLists(ArrayList<ArrayList<HashMap<String, String>>> list){
 
 		Log.d("kkams", "dlugosc listy: " + list.size());
-			for(int i=0; i<list.size(); i++){
-				Log.d("kkams", "lista: " + list.get(i).toString());
+			for(ArrayList<HashMap<String, String>> i:list){
+				Log.d("kkams", "grupa: " + i);
+				for(int j = 0; j < i.size(); j++)
+				{
+					Log.d("kkams", i.get(j).get(Constant.KEY_ID));
+				}
+				addGroup(i);
 			}
 		}
 	public void add(String title, int id, int ico){
@@ -256,9 +261,9 @@ public class ConditionsFragment extends Fragment{
 			add(-1, list);
 			add(-1, list);
 			add(-1, list);
-			addGroup(list);
 			long diyaID = bundle.getLong(Constant.KEY_DIYAID);
 	    	dbMethods.addGroupToTask(diyaID, groupCounter);
+			addGroup(list);
 		}
 	};
 	public AdapterView.OnItemLongClickListener onLongClick = new AdapterView.OnItemLongClickListener() {

@@ -9,11 +9,7 @@ public class Constant {
 	public static final String KEY_ICO = "ico_url";
 	public static final String KEY_BUNDLE = "bundle";
 	
-	public static final int ID_TIME = 1;
-	public static final int ID_WIFI =  2;
-	public static final int ID_GPS = 3;
-	public static final int ID_CALENDAR = 4;
-	public static final int ID_EMPTY = -1;
+	
 	
 	public static final int ICO_TIME = R.drawable.perm_group_system_clock;
 	public static final int ICO_WIFI =  R.drawable.perm_group_network;
@@ -69,6 +65,12 @@ public class Constant {
 	public static final long CONDITION_GPS = 3;
 	public static final long CONDITION_WIFI = 4;
 	
+	
+	public static final int ID_TIME = 1;
+	public static final int ID_CALENDAR = 2;
+	public static final int ID_GPS = 3;
+	public static final int ID_WIFI =  4;
+	public static final int ID_EMPTY = -1;
 	/*mo¿liwe akcje*/
 	public static final long ACTION_WIFI = 1;
 	public static final long ACTION_VIBRATION = 2;
