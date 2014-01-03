@@ -130,4 +130,19 @@ public class DbMethods {
 		return 0;
 	}
 	
+	public String[] convertParamsIntoTab(String params){
+		String [] p = params.split("/~/");
+		return p;
+		
+	}
+	
+	//updateDIYa wywo³aj, gdy na koncu klikniesz zapisz lub w momencie zmiany aktywnoœci
+	public boolean updateDIYa(long idDIYa, String act, String description, String name){
+		return db.updateTask(idDIYa, act, description, name);
+	}
+	
+	public boolean deleteDIYa(long idDIYa){
+		return db.deleteTask(idDIYa);
+	}
+	
 }

@@ -412,26 +412,21 @@ public class Database {
 
 	}
 	
-	/*public boolean updateTask(Task task){
-		if(task != null){
+	public boolean updateTask(long idTask, String act, String description, String name){
+		if(idTask > 0){
 			Time now = new Time();
 			now.setToNow();
 			String nowString = now.toString();
 			ContentValues updateValues = new ContentValues();
-			int active = task.isActive() ? 1 : 0;
+			int active = Integer.parseInt(act);
 			updateValues.put(TASKS_KEY_ACTIVE, active);
 			updateValues.put(TASKS_KEY_DATE_UPDATE, nowString);
-			if(!task.getDescription().equals(""))
-				updateValues.put(TASKS_KEY_DESCRIPTION, task.getDescription());
-			if(!task.getName().equals(""))
-				updateValues.put(TASKS_KEY_NAME_TASKS, task.getName());
-			if(!task.getAdded_acions_id().equals(""))
-					updateValues.put(TASKS_KEY_ADDED_ACTIONS_ID, task.getAdded_acions_id());
-			if(!task.getAdded_conditions_id().equals(""))
-				updateValues.put(TASKS_KEY_ADDED_CONDITIONS_ID, task.getAdded_conditions_id());
-			if(!task.getGroups_of_conditions().equals(""))
-				updateValues.put(TASKS_KEY_GROUPS_OF_CONDITIONS, task.getGroups_of_conditions());
-			String where = TASKS_KEY_ID + "=" + task.getId();
+			if(!description.equals(""))
+				updateValues.put(TASKS_KEY_DESCRIPTION, description);
+			if(!name.equals(""))
+				updateValues.put(TASKS_KEY_NAME_TASKS, name);
+
+			String where = TASKS_KEY_ID + "=" + idTask;
 
 			return db.update(DB_TASKS_TABLE, updateValues, where, null) > 0;
 		}
@@ -439,12 +434,11 @@ public class Database {
 			return false;
 	}
 	
-	public boolean deleteTask(Task task){
-		if(task != null){
-			
-			String where_task = TASKS_KEY_ID + " IN (" + task.getId() + ")";
-			String where_cond = TASKS_KEY_ID + " IN (" + task.getAdded_conditions_id() + ")";
-			String where_act = TASKS_KEY_ID + " IN (" + task.getAdded_acions_id() + ")";
+	public boolean deleteTask(long idTask){
+		if(idTask > 0){
+			String where_task = TASKS_KEY_ID + " IN (" + idTask + ")";
+			String where_act = ADDED_ACTIONS_KEY_TASK_ID_ACTIONS + " IN (" + idTask + ")";
+			String where_cond = ADDED_CONDITIONS_KEY_TASK_ID_CONDITIONS + " IN (" + idTask + ")";
 			
 			if( db.delete(DB_TASKS_TABLE, where_task, null) > 0 && db.delete(DB_ADDED_ACTIONS_TABLE, where_act, null) > 0 && db.delete(DB_ADDED_CONDITIONS_TABLE, where_cond, null) > 0 )
 				return true;
@@ -453,7 +447,7 @@ public class Database {
 		}
 		else
 			return false;
-	}*/
+	}
 
 	public ArrayList<HashMap<String, String>> getAllTasks(){
 		ArrayList<HashMap<String, String>> getAllTasks = new ArrayList<HashMap<String,String>>();
