@@ -41,4 +41,8 @@
 		
 		<string name="ok">Zapisz</string>
 		<string name="anuluj">Anuluj</string>
+		
+		
+        <string name="quickaction_edit">Edytuj</string>
+        <string name="quickaction_remove">Usuń</string>
 </resources>

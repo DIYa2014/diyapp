@@ -3,6 +3,8 @@ package com.karbar.diyapp.utils;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+
+
 import com.karbar.diyapp.R;
 
 
@@ -14,8 +16,8 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -42,6 +44,7 @@ public class MenuListViewAdapter extends BaseAdapter {
     public View vi;
     private OnTouchListener onTouchListener;
     private boolean isMenu;
+    
 
    
     public MenuListViewAdapter(Activity a, ArrayList<HashMap<String, String>> d, View list, View.OnTouchListener otl, boolean isMenu) {
@@ -124,6 +127,7 @@ public class MenuListViewAdapter extends BaseAdapter {
 	        View listview = getListView();
 	        
 	    	map = data.get(position);
+	    	Log.d("kkams", "adapter uniqe "+ map.get(Constant.KEY_UNIQE_ID));
 	        if(map.get(Constant.KEY_ID) != null){
 	    	id=Integer.parseInt(map.get(Constant.KEY_ID));
 	    	Log.d("kkams", "id: "+ id);
@@ -152,9 +156,15 @@ public class MenuListViewAdapter extends BaseAdapter {
 	    
 	    	listview.setVerticalFadingEdgeEnabled(false);
 	    	listview.setVerticalScrollBarEnabled(false);
-    	}
+	    	if(id != Constant.ID_EMPTY){
+		    	Log.d("kkams", "id kliknietego elementu1: "+id);
+	    	}
+	    	}
         return vi;
     }
+    
+    
+  
    
 
       

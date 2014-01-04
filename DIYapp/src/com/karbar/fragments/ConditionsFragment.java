@@ -3,6 +3,10 @@ package com.karbar.fragments;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+
+import net.londatiga.android.ActionItem;
+import net.londatiga.android.QuickAction;
+
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
@@ -60,6 +64,7 @@ public class ConditionsFragment extends Fragment{
 	private Drawable img_drawable;
 	private String dragElemId;
 	private HorizontalListView mMenuListview;
+	private HorizontalListView mGroupListview;
 	private Button button;
 	private int groupCounter = 0;
 	private int draggedImgId = -1;
@@ -75,11 +80,14 @@ public class ConditionsFragment extends Fragment{
 	private ConditionsFragment conditions;
 	private Bundle bundle;
 	private DbMethods dbMethods;
+	private int howManyEmptyElementsOnEachList = 0;
+    private QuickAction mQuickAction;
 	
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 	
 		 mainView = inflater.inflate(R.layout.conditions_fragment, container, false);
 		 dbMethods = new DbMethods(getActivity());
+		 howManyEmptyElementsOnEachList = howManyEmptyElementsOnList();
 		 mButton1 = (RelativeLayout) mainView.findViewById(R.id.conditionsButtonRelative);
 		 mButton2 = (RelativeLayout) mainView.findViewById(R.id.actionsButtonRelative);
 		 mButton1.setOnClickListener(changeToConditionsListener);
@@ -143,26 +151,33 @@ public class ConditionsFragment extends Fragment{
 	    mMenuListview.setOnItemLongClickListener(onLongClick);
 		
 	}
+	
+	
+	public int howManyEmptyElementsOnList(){
+		//TODO Zmierzyc szerokoscc ekranu, odjac marginesy, podzielic przez szerokosc jednego pola i zwrocic wartosc z odcita koñcówka dziesitna
+		return 5;
+	}
+	
+	
 	private void createFirstConditionsList(){
 		ArrayList<HashMap<String, String>> list;
 		list = new ArrayList<HashMap<String, String>>();
+		list = makeEmptyList(list, howManyEmptyElementsOnEachList);
 		
-		add(-1, list); 
-		add(-1, list);
-		add(-1, list);
-		add(-1, list);
-		add(-1, list);
 		addGroup(list);
 		
 	}
 	private void createConditionsLists(ArrayList<ArrayList<HashMap<String, String>>> list){
 
-		Log.d("kkams", "dlugosc listy: " + list.size());
 			for(ArrayList<HashMap<String, String>> i:list){
-				Log.d("kkams", "grupa: " + i);
-				for(int j = 0; j < i.size(); j++)
-				{
-					Log.d("kkams", i.get(j).get(Constant.KEY_ID));
+				Log.d("kkams", "rozmiar i: " + i.size());
+				if(i.size()<howManyEmptyElementsOnEachList){
+					int tmp = howManyEmptyElementsOnEachList -i.size() ;
+					for(int j= 0; j < tmp;j++){
+						HashMap<String, String> a = new HashMap<String, String>();
+						a.put(Constant.KEY_ID, Integer.toString(Constant.ID_EMPTY));
+						i.add(a);
+					}
 				}
 				addGroup(i);
 			}
@@ -214,6 +229,7 @@ public class ConditionsFragment extends Fragment{
 		mMenuAdapter=new MenuListViewAdapter(getActivity(), array, mainView,onTouch, false);
 		
 	    listview.setAdapter(mMenuAdapter);
+	    listview.setOnItemClickListener(onConditionItemClickListener);
 	    if(!isFirstGroup){
 	    	params.setMargins(80, 40, 80, 40);
 	    	ll.addView(lub);
@@ -221,9 +237,7 @@ public class ConditionsFragment extends Fragment{
 		listview.setLayoutParams(params);
     	isFirstGroup = false;
 	    ll.addView(listview);
-	    
 	    groupCounter++;
-		
 	}
 	public int getListCount(){
 		return groupCounter;
@@ -233,34 +247,41 @@ public class ConditionsFragment extends Fragment{
 	}
 	
 	
-	public void add(int id, ArrayList<HashMap<String, String>> optionList){
+	public void add(int id, ArrayList<HashMap<String, String>> optionList, int uniqeID){
 		
 		HashMap<String, String> map = new HashMap<String, String>(); 
 	    map.put(Constant.KEY_ID, Integer.toString(id));
+	    map.put(Constant.KEY_UNIQE_ID, Integer.toString(uniqeID));
 	    optionList.add(map);
 	}
 	
-	public void addElemToList(int conditionId, int listId){
+	public void addElemToList(int conditionId, int listId, long conditionUniqeID){
+		Log.d("kkams", "addElemToList, uniqeID =  " +conditionUniqeID);
 		HorizontalListView listview = (HorizontalListView)getActivity().findViewById(listId);
-		listview.add(conditionId);
+		
+		listview.add(conditionId, Long.valueOf(conditionUniqeID).intValue());
 		listview.setAdapter(listview.getAdapter());
+	    listview.setOnItemClickListener(onConditionItemClickListener);
 	}
 	public void removeElemfromList(int elemId, int listId){
 		HorizontalListView listview = (HorizontalListView)getActivity().findViewById(listId);
 		listview.remove(elemId);
 		listview.setAdapter(listview.getAdapter());
+	    listview.setOnItemClickListener(onConditionItemClickListener);
+	}
+	public ArrayList<HashMap<String, String>> makeEmptyList(ArrayList<HashMap<String, String>> list, int howManyPlaces){
+		for(int i=0; i<howManyPlaces; i++)
+			add(Constant.ID_EMPTY, list, Constant.ID_EMPTY); 
+		
+		return list;
 	}
 	View.OnClickListener addConditionButtonListener = new View.OnClickListener() {
 		@Override
 		public void onClick(View v) {
 	        
 			ArrayList<HashMap<String, String>> list = new ArrayList<HashMap<String, String>>();
-	
-			add(-1, list); 
-			add(-1, list);
-			add(-1, list);
-			add(-1, list);
-			add(-1, list);
+			list = makeEmptyList(list, howManyEmptyElementsOnEachList);
+
 			long diyaID = bundle.getLong(Constant.KEY_DIYAID);
 	    	dbMethods.addGroupToTask(diyaID, groupCounter);
 			addGroup(list);
@@ -273,7 +294,7 @@ public class ConditionsFragment extends Fragment{
 	     	ifLongPressed=true;
 				//Log.d("kkams", ""+id);
 			draggedId = Integer.parseInt(Long.toString(id));	
-	     	MenuListViewAdapter a = (MenuListViewAdapter)mMenuListview.getAdapter();
+	     	MenuListViewAdapter a = (MenuListViewAdapter)av.getAdapter();
 	     	HashMap<String, String> map = new HashMap<String, String>();
 	     	map = a.data.get(pos);
 	     	dragElemId = map.get(Constant.KEY_ID);
@@ -285,7 +306,38 @@ public class ConditionsFragment extends Fragment{
 	     }
 	
 	};
-	
+	public AdapterView.OnItemClickListener onConditionItemClickListener = new AdapterView.OnItemClickListener() {
+
+		@Override
+		public void onItemClick(AdapterView<?> av, View v, int pos, long id) {
+			MenuListViewAdapter a = (MenuListViewAdapter)av.getAdapter();
+	     	HashMap<String, String> map = new HashMap<String, String>();
+	     	map = a.data.get(pos);
+	     	
+	     	String uniqeID = map.get(Constant.KEY_UNIQE_ID);
+			Log.d("kkams", "id kliknietego elementu2: "+uniqeID);
+	    	ActionItem editItem  = new ActionItem(Constant.QUICKACTION_EDIT, getActivity().getString(R.string.quickaction_edit), getActivity().getResources().getDrawable(android.R.drawable.ic_menu_edit));
+	        ActionItem removeItem   = new ActionItem(Constant.QUICKACTION_REMOVE, getActivity().getString(R.string.quickaction_remove), getActivity().getResources().getDrawable(android.R.drawable.ic_menu_delete));
+	        mQuickAction  = new QuickAction(getActivity());
+			mQuickAction.addActionItem(editItem);
+			mQuickAction.addActionItem(removeItem);
+			mQuickAction.show(v, 1);
+			mQuickAction.setOnActionItemClickListener(new QuickAction.OnActionItemClickListener() {		
+				@Override
+	            public void onItemClick(QuickAction quickAction, int pos, int actionId, int position) {
+		
+	            	//Log.d("kkams" ,"ITEM = " +historyManager.getHistoryItem(position) );
+	                
+	            	//switch (actionId) {
+		               
+	                         
+	            	
+	            }
+	        });
+			
+		}
+		
+	};
 	public View.OnTouchListener onTouch = new View.OnTouchListener() {
 			@Override
 			public boolean onTouch(View arg0, MotionEvent event) {
@@ -311,7 +363,7 @@ public class ConditionsFragment extends Fragment{
 		            				x_cord = (int)event.getRawX();
 		            				y_cord = (int)event.getRawY();
 		            				if(( id = getContainViewId(x_cord, y_cord))!=-2){
-		            					Log.d("kkams", ""+draggedId);
+		            					//Log.d("kkams", ""+draggedId);
 		            					if(draggedId == 0){
 		            						runDialogTime(id);
 		            					}
@@ -378,6 +430,9 @@ public class ConditionsFragment extends Fragment{
 		    	dialog.cancel();
 		    }
 		};
+		
+	
+		
 	public void removeEmptyElem(int id){
 
 		HorizontalListView listview = (HorizontalListView)getActivity().findViewById(id);
@@ -418,12 +473,11 @@ public class ConditionsFragment extends Fragment{
 		    			" Do:"+tpTo.getCurrentHour().toString()+":"+tpTo.getCurrentMinute().toString());
 		    	Log.d("kkams",Boolean.toString(cb1.isChecked())+ " " +Boolean.toString(cb2.isChecked())+ " " +Boolean.toString(cb3.isChecked())+ " " +Boolean.toString(cb4.isChecked())+ " " +Boolean.toString(cb5.isChecked())+ " " +Boolean.toString(cb6.isChecked())+ " " +Boolean.toString(cb7.isChecked()));
 		    	*/
-		    	long diyaID = bundle.getLong(Constant.KEY_DIYAID);
-		    	dbMethods.addTimeCondition(diyaID, idGroupFinal, tpSince.getCurrentHour(), tpSince.getCurrentMinute(), 
+		    	long conditionID = dbMethods.addTimeCondition(diyaID, idGroupFinal, tpSince.getCurrentHour(), tpSince.getCurrentMinute(), 
 		    			tpTo.getCurrentHour(), tpTo.getCurrentMinute(), new boolean[]{cb1.isChecked(),cb2.isChecked(),cb3.isChecked(),cb4.isChecked(),cb5.isChecked(),cb6.isChecked(),cb7.isChecked()});
 
 		    	dialog.dismiss();
-				addElemToList(Constant.ID_TIME, idGroupFinal);
+				addElemToList(Constant.ID_TIME, idGroupFinal, conditionID);
 				removeEmptyElem(idGroupFinal);
 		    }});
 		
@@ -444,11 +498,10 @@ public class ConditionsFragment extends Fragment{
 		anuluj.setOnClickListener(anulujListener);
 		ok.setOnClickListener(new OnClickListener() {
 		    public void onClick(View v) {
-		    	long diyaID = bundle.getLong(Constant.KEY_DIYAID);
-		    	dbMethods.addDateCondition(diyaID, idGroupFinal, since.getDayOfMonth(), since.getMonth(), since.getYear(), 
+		    	long conditionID = dbMethods.addDateCondition(diyaID, idGroupFinal, since.getDayOfMonth(), since.getMonth(), since.getYear(), 
 		    			to.getDayOfMonth(), to.getMonth(), to.getYear());
 		    	dialog.dismiss();
-				addElemToList(Constant.ID_CALENDAR, idGroupFinal);
+				addElemToList(Constant.ID_CALENDAR, idGroupFinal, conditionID);
 				removeEmptyElem(idGroupFinal);
 		    }});
 	}
@@ -481,10 +534,9 @@ public class ConditionsFragment extends Fragment{
 		anuluj.setOnClickListener(anulujListener);
 		ok.setOnClickListener(new OnClickListener() {
 		    public void onClick(View v) {
-		    	long diyaID = bundle.getLong(Constant.KEY_DIYAID);
-		    	dbMethods.addWiFiCondition(diyaID, idGroupFinal, wifi.isActivated(), et.getText().toString());
+		    	long conditionID = dbMethods.addWiFiCondition(diyaID, idGroupFinal, wifi.isActivated(), et.getText().toString());
 		    	dialog.dismiss();
-				addElemToList(Constant.ID_WIFI, idGroupFinal);
+				addElemToList(Constant.ID_WIFI, idGroupFinal, conditionID);
 				removeEmptyElem(idGroupFinal);
 		    }
 		    }
@@ -506,11 +558,10 @@ public class ConditionsFragment extends Fragment{
 		anuluj.setOnClickListener(anulujListener);
 		ok.setOnClickListener(new OnClickListener() {
 		    public void onClick(View v) {
-		    	long diyaID = bundle.getLong(Constant.KEY_DIYAID);
-		    	dbMethods.addGpsCondition(diyaID, idGroupFinal,Double.parseDouble(etX.getText().toString()), Double.parseDouble(etY.getText().toString()), Double.parseDouble(etR.getText().toString()), reversed.isChecked());
+		    	long conditionID = dbMethods.addGpsCondition(diyaID, idGroupFinal,Double.parseDouble(etX.getText().toString()), Double.parseDouble(etY.getText().toString()), Double.parseDouble(etR.getText().toString()), reversed.isChecked());
 
 		    	dialog.dismiss();
-				addElemToList(Constant.ID_GPS, idGroupFinal);
+				addElemToList(Constant.ID_GPS, idGroupFinal, conditionID);
 				removeEmptyElem(idGroupFinal);
 		    }});
 	}

@@ -8,7 +8,8 @@ public class Constant {
 	public static final String KEY_ID = "id";
 	public static final String KEY_ICO = "ico_url";
 	public static final String KEY_BUNDLE = "bundle";
-	
+	public static final int QUICKACTION_EDIT = 1;
+	public static final int QUICKACTION_REMOVE = 2;
 	
 	
 	public static final int ICO_TIME = R.drawable.perm_group_system_clock;
@@ -16,6 +17,13 @@ public class Constant {
 	public static final int ICO_GPS = R.drawable.perm_group_location;
 	public static final int ICO_CALENDAR = R.drawable.perm_group_calendar;
 	public static final int ICO_EMPTY = R.drawable.empty;
+
+	public static final int ID_TIME = 1;
+	public static final int ID_CALENDAR = 2;
+	public static final int ID_GPS = 3;
+	public static final int ID_WIFI =  4;
+	public static final int ID_EMPTY = -1;
+	public static final String KEY_UNIQE_ID = "uniqeID";
 	
 	public static final String KEY_DIYAID = "diyid";
 	
@@ -66,11 +74,6 @@ public class Constant {
 	public static final long CONDITION_WIFI = 4;
 	
 	
-	public static final int ID_TIME = 1;
-	public static final int ID_CALENDAR = 2;
-	public static final int ID_GPS = 3;
-	public static final int ID_WIFI =  4;
-	public static final int ID_EMPTY = -1;
 	/*mo¿liwe akcje*/
 	public static final long ACTION_WIFI = 1;
 	public static final long ACTION_VIBRATION = 2;

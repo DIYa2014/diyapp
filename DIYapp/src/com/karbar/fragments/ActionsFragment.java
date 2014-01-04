@@ -222,20 +222,7 @@ public class ActionsFragment extends Fragment{
 	    map.put(Constant.KEY_ICO, Integer.toString(ico));
 	    optionList.add(map);
 	}
-	public void addElemToList(int ListId){
-		HorizontalListView listview = (HorizontalListView)getActivity().findViewById(ListId);
-		
-	}
-	public void addElemToList(int elemId, int listId){
-		HorizontalListView listview = (HorizontalListView)getActivity().findViewById(listId);
-		listview.add(elemId);
-		listview.setAdapter(listview.getAdapter());
-	}
-	public void removeElemfromList(int elemId, int listId){
-		HorizontalListView listview = (HorizontalListView)getActivity().findViewById(listId);
-		listview.remove(elemId);
-		listview.setAdapter(listview.getAdapter());
-	}
+	
 	View.OnClickListener addConditionButtonListener = new View.OnClickListener() {
 		@Override
 		public void onClick(View v) {
@@ -403,19 +390,7 @@ public class ActionsFragment extends Fragment{
 		    	dialog.cancel();
 		    }
 		};
-	public void removeEmptyElem(int id){
-
-		HorizontalListView listview = (HorizontalListView)getActivity().findViewById(id);
-		MenuListViewAdapter a = (MenuListViewAdapter)listview.getAdapter();
-		
-		HashMap<String, String> h = a.data.get(a.getCount()-1);
-		
-		
-		int elemId = Integer.parseInt(h.get(Constant.KEY_ID));
-		
-		if(elemId == -1)
-			removeElemfromList(a.getCount()-1, id);
-	}
+	
 		public void runDialogWiFi(){
 			dialog = new Dialog(getActivity(), R.style.MyDialogTheme);
 			dialog.setContentView(R.layout.condition_wifi);
