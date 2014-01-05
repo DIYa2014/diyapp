@@ -10,15 +10,15 @@
 -->
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
+    android:layout_width="wrap_content"
     android:layout_height="wrap_content">
         
      <FrameLayout
   		android:layout_marginTop="10dip"
         android:id="@+id/header2"
-    	android:layout_width="match_parent"
-        android:layout_height="5dp"
-        android:background="@color/orange"/>
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/quickaction_top_frame"/>
         
   	<ImageView
         android:id="@+id/arrow_up"
@@ -33,7 +33,7 @@
         android:fadingEdgeLength="0dip"
         android:layout_below="@id/header2"
         android:paddingLeft="1dip"
-        android:background="@drawable/background_shape"
+        android:background="@drawable/bg"
         android:scrollbars="none">
 
         <LinearLayout
@@ -53,8 +53,9 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/quickaction_slider_grip_right"  
+                android:src="@drawable/quickaction_slider_grip_right"
                 android:visibility="gone"/>
+
                 
         </LinearLayout>
             
@@ -63,9 +64,9 @@
     <FrameLayout
         android:id="@+id/footer"
         android:layout_width="fill_parent"
-        android:layout_height="5dp"
+        android:layout_height="wrap_content"
         android:layout_below="@id/scroll"
-        android:background="@color/orange" />
+        android:background="@drawable/quickaction_bottom_frame" />
 
     <ImageView
         android:id="@+id/arrow_down"

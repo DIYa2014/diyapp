@@ -5,13 +5,11 @@ import java.util.HashMap;
 
 import android.app.Activity;
 import android.app.Dialog;
-import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -56,10 +54,8 @@ public class ActionsFragment extends Fragment{
 	private Drawable img_drawable;
 	private String dragElemId;
 	private HorizontalListView mMenuListview;
-	private Button button;
 	private int groupCounter = 0;
 	private int draggedImgId = -1;
-	private int draggedId = -1;
 	private int diyaID =-1;
 
 	
@@ -68,18 +64,10 @@ public class ActionsFragment extends Fragment{
 	
 	private RelativeLayout mButton1;
 	private RelativeLayout mButton2;
-	private TextView mButtonText1;
-	private TextView mButtonText2;
-	private ImageView mButtonImage1;
-	private ImageView mButtonImage2;
 	private Button buttonAdd;
 	private Dialog dialog;
 
-	private ImageView mButtonArrow1;
-	private ImageView mButtonArrow2;
-	private Intent mIntent;
 	private FragmentManager mFragmentManager;
-	private ConditionsFragment content;
 	private StartFragment start;
 	private ActionsFragment actions;
 	private ConditionsFragment conditions;
@@ -96,12 +84,7 @@ public class ActionsFragment extends Fragment{
 		
 		 mButton1 = (RelativeLayout) mView.findViewById(R.id.conditionsButtonRelative);
 		 mButton2 = (RelativeLayout) mView.findViewById(R.id.actionsButtonRelative);
-		 mButtonText1 = (TextView)mView.findViewById(R.id.textViewCondition);
-		 mButtonText2 = (TextView)mView.findViewById(R.id.textViewAction);
-		 mButtonImage1 = (ImageView)mView.findViewById(R.id.imageViewCondition);
-		 mButtonImage2 = (ImageView)mView.findViewById(R.id.imageViewAction);
-		 mButtonArrow1 = (ImageView)mView.findViewById(R.id.arrowCondition);
-		 mButtonArrow2 = (ImageView)mView.findViewById(R.id.arrowAction);
+		 
 		 mButton1.setOnClickListener(changeToConditionsListener);
 		 mButton2.setOnClickListener(changeToActionsListener);
 		 
@@ -123,7 +106,6 @@ public class ActionsFragment extends Fragment{
 			bundle = getArguments();
 				if (bundle !=null){
 					diyaID = Integer.parseInt(String.valueOf(bundle.getLong(Constant.KEY_DIYAID)));
-					Log.d("kkams", "Actions - bundle is not null. DIYa id:" +diyaID);
 					if(!dbMethods.isDIYaEmpty(diyaID)){
 						dbMethods.getActionsLists(diyaID);
 					}
@@ -293,12 +275,11 @@ public class ActionsFragment extends Fragment{
 				int y_cord;
 				if(ifLongPressed){
 					if(oneElemDragedFlag){
-						RelativeLayout a = (RelativeLayout)arg0;
 						
 						if(img_drawable!=null)
 							img.setBackgroundDrawable(img_drawable);
 						
-						Log.d("kkams", dragElemId);
+						
 			        	imgParams.leftMargin = (int)event.getRawX();
 						imgParams.topMargin = (int)event.getRawY();
 						
@@ -308,12 +289,10 @@ public class ActionsFragment extends Fragment{
 		            switch(event.getAction())
 		            {
 		            case MotionEvent.ACTION_UP:   
-		            				final int id;
 		            				x_cord = (int)event.getRawX();
 		            				y_cord = (int)event.getRawY();
 		            				if(isViewContains(getActivity().findViewById(R.id.action_grid), x_cord, y_cord)){
 		            					
-		            					Log.d("kkams", ""+Integer.parseInt(dragElemId));//wiem, ¿e to glupie...
 		            					if(Integer.parseInt(dragElemId) == 0)
 		            						runDialogWiFi();
 		            					else if(Integer.parseInt(dragElemId) == 1)
@@ -374,7 +353,6 @@ public class ActionsFragment extends Fragment{
 		};	
 	View.OnClickListener changeToConditionsListener= new OnClickListener() {
 		    public void onClick(View v) {
-
 		    	 mFragmentManager = getFragmentManager(); 
 		    	 conditions = new ConditionsFragment();
 		    	 conditions.setArguments(bundle);

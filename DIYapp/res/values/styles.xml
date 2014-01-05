@@ -2,7 +2,7 @@
 
   
     
-	<style name="MyDialogTheme" parent="@android:style/Theme.Holo.Light">
+	<style name="MyDialogTheme" >
 		<item name="android:windowBackground">@color/halfTransparent</item>
 		<item name="android:windowIsFloating">false</item>
 		<item name="android:windowNoTitle">true</item>

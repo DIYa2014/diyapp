@@ -598,7 +598,7 @@ ADDED_CONDITIONS_KEY_EXECUTED_CONDITION*/
 				HashMap<String, String> tempMap = new HashMap<String, String>();
 				//AddedCondition ac = new AddedCondition();
 				map.put(ADDED_CONDITIONS_KEY_ID_ADDEDD_CONDITIONS, id_add_con);
-				map.put(ADDED_CONDITIONS_KEY_CONDITION_ID, id_con);
+				map.put(Constant.KEY_ID, id_con);//Nie zmieniaj tego klucza!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 				map.put(ADDED_CONDITIONS_KEY_TASK_ID_CONDITIONS, id_task);
 				map.put(ADDED_CONDITIONS_KEY_GROUP_ID, id_group);
 				map.put(ADDED_CONDITIONS_KEY_PARAMETERS_CONDITIONS, params);
@@ -624,7 +624,6 @@ ADDED_CONDITIONS_KEY_EXECUTED_CONDITION*/
 		
 		
 		for(String str : groupsListStrings){
-			Log.d("kkams", "group: "+str + " id= " + getArrayConditionFromOneGrup(str, idTask));
 			getConditonLists.add(
 					getArrayConditionFromOneGrup(str, idTask)
 					);
@@ -692,7 +691,7 @@ ADDED_CONDITIONS_KEY_EXECUTED_CONDITION*/
 				HashMap<String, String> tempMap = new HashMap<String, String>();
 				//AddedCondition ac = new AddedCondition();
 				map.put(ADDED_ACTIONS_KEY_ID_ADDEDD_ACTIONS, id_add_act);
-				map.put(ADDED_ACTIONS_KEY_ACTION_ID, id_act);
+				map.put(Constant.KEY_ID, id_act);//Nie zmieniaj tego klucza
 				map.put(ADDED_ACTIONS_KEY_TASK_ID_ACTIONS, id_task);
 				map.put(ADDED_ACTIONS_KEY_PARAMETERS_ACTIONS, params);
 				map.put(ADDED_ACTIONS_KEY_EXECUTED_ACTION, exec);

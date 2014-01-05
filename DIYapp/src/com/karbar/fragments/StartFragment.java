@@ -48,6 +48,8 @@ public class StartFragment extends Fragment{
 	private long id;
 	DbMethods dbMethods;
 	private Intent intent;
+	private Activity a;
+	
 	
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 	
@@ -74,6 +76,7 @@ public class StartFragment extends Fragment{
 	}	
 	View.OnClickListener change= new OnClickListener() {
 	    public void onClick(View v) {
+	    	
 	    	FragmentTransaction ft = getFragmentManager().beginTransaction();
 	    	//ft.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out);
 	    	Bundle bundle = new Bundle();

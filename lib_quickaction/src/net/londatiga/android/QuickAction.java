@@ -12,7 +12,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.PopupWindow.OnDismissListener;
 
-
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -48,7 +48,6 @@ public class QuickAction extends PopupWindows implements OnDismissListener {
 	
 	private int mChildPos;    
     private int mAnimStyle;
-    private int mPosition;
     
 	public static final int ANIM_GROW_FROM_LEFT = 1;
 	public static final int ANIM_GROW_FROM_RIGHT = 2;
@@ -79,7 +78,7 @@ public class QuickAction extends PopupWindows implements OnDismissListener {
 	        
 		setRootViewId(R.layout.quickaction);
 		
-		mAnimStyle		= ANIM_AUTO;
+		mAnimStyle		= ANIM_GROW_FROM_LEFT;
 		mAnimateTrack	= true;
 		mChildPos		= 0;
 	}
@@ -110,7 +109,7 @@ public class QuickAction extends PopupWindows implements OnDismissListener {
 		//This was previously defined on show() method, moved here to prevent force close that occured
 		//when tapping fastly on a view to show quickaction dialog.
 		//Thanx to zammbi (github.com/zammbi)
-		mRootView.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
+		mRootView.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
 		
 		setContentView(mRootView);
 	}
@@ -149,7 +148,6 @@ public class QuickAction extends PopupWindows implements OnDismissListener {
 		ImageView img 	= (ImageView) container.findViewById(R.id.iv_icon);
 		TextView text 	= (TextView) container.findViewById(R.id.tv_title);
 		
-		
 		if (icon != null) { 
 			img.setImageDrawable(icon);
 		} else {
@@ -169,7 +167,7 @@ public class QuickAction extends PopupWindows implements OnDismissListener {
 			@Override
 			public void onClick(View v) {
 				if (mItemClickListener != null) {
-                    mItemClickListener.onItemClick(QuickAction.this, pos, actionId, mPosition);
+                    mItemClickListener.onItemClick(QuickAction.this, pos, actionId);
                 }
 				
                 if (!getActionItem(pos).isSticky()) {  
@@ -202,9 +200,9 @@ public class QuickAction extends PopupWindows implements OnDismissListener {
 	/**
 	 * Show popup mWindow
 	 */
-	public void show (View anchor, int position) {
+	public void show (View anchor) {
 		preShow();
-		mPosition = position;
+
 		int[] location 		= new int[2];
 		
 		mDidAction 			= false;
@@ -213,17 +211,19 @@ public class QuickAction extends PopupWindows implements OnDismissListener {
 
 		Rect anchorRect 	= new Rect(location[0], location[1], location[0] + anchor.getWidth(), location[1] 
 		                	+ anchor.getHeight());
-
+		Log.d("kkams", "szerokosc anchor: " +location[0]);
 		//mRootView.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
-		mRootView.measure(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+		mRootView.measure(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT);
 		
+
 		int rootWidth 		= mRootView.getMeasuredWidth();
 		int rootHeight 		= mRootView.getMeasuredHeight();
 
 		int screenWidth 	= mWindowManager.getDefaultDisplay().getWidth();
+		Log.d("kkams", "screenWidth: " + mRootView.getMeasuredWidth());
 		//int screenHeight 	= mWindowManager.getDefaultDisplay().getHeight();
 
-		int xPos 			= (screenWidth - rootWidth) / 2;
+		int xPos 			= 0;
 		int yPos	 		= anchorRect.top - rootHeight;
 
 		boolean onTop		= true;
@@ -237,7 +237,7 @@ public class QuickAction extends PopupWindows implements OnDismissListener {
 		showArrow(((onTop) ? R.id.arrow_down : R.id.arrow_up), anchorRect.centerX());
 		
 		setAnimationStyle(screenWidth, anchorRect.centerX(), onTop);
-	
+		mWindow.setWidth(-1);
 		mWindow.showAtLocation(anchor, Gravity.NO_GRAVITY, xPos, yPos);
 		
 		if (mAnimateTrack) mTrack.startAnimation(mTrackAnim);
@@ -322,7 +322,7 @@ public class QuickAction extends PopupWindows implements OnDismissListener {
 	 *
 	 */
 	public interface OnActionItemClickListener {
-		public abstract void onItemClick(QuickAction source, int pos, int actionId, int position);
+		public abstract void onItemClick(QuickAction source, int pos, int actionId);
 	}
 	
 	/**

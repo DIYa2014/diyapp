@@ -4,13 +4,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 
-import net.londatiga.android.ActionItem;
-import net.londatiga.android.QuickAction;
+
 
 import android.app.Activity;
 import android.app.Dialog;
-import android.content.Context;
-import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -21,7 +18,6 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
-import android.view.TextureView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.View.OnClickListener;
@@ -32,7 +28,6 @@ import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
@@ -48,6 +43,8 @@ import com.karbar.diyapp.utils.HorizontalListView;
 import com.karbar.diyapp.utils.MenuListViewAdapter;
 
 import dbPack.DbMethods;
+import net.londatiga.android.QuickAction;
+import net.londatiga.android.ActionItem;
 
 public class ConditionsFragment extends Fragment{
 	
@@ -64,7 +61,6 @@ public class ConditionsFragment extends Fragment{
 	private Drawable img_drawable;
 	private String dragElemId;
 	private HorizontalListView mMenuListview;
-	private HorizontalListView mGroupListview;
 	private Button button;
 	private int groupCounter = 0;
 	private int draggedImgId = -1;
@@ -81,7 +77,7 @@ public class ConditionsFragment extends Fragment{
 	private Bundle bundle;
 	private DbMethods dbMethods;
 	private int howManyEmptyElementsOnEachList = 0;
-    private QuickAction mQuickAction;
+
 	
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 	
@@ -99,7 +95,7 @@ public class ConditionsFragment extends Fragment{
 	public void onActivityCreated(Bundle savedInstanceState) {
 		 mActivity = getActivity();
 			mainMenu = getResources().getStringArray(R.array.menu);
-
+			
 			button = (Button)getActivity().findViewById(R.id.add_condition_button);
 			button.setOnClickListener(addConditionButtonListener);
 			bundle = getArguments();
@@ -108,7 +104,6 @@ public class ConditionsFragment extends Fragment{
 			
 			if (bundle !=null){
 				diyaID = Integer.parseInt(String.valueOf(bundle.getLong(Constant.KEY_DIYAID)));
-				Log.d("kkams", "Conditions - bundle is not null. DIYa id:" +bundle.getLong(Constant.KEY_DIYAID));
 				if(dbMethods.isDIYaEmpty(diyaID))
 					createFirstConditionsList();
 				else{
@@ -170,7 +165,6 @@ public class ConditionsFragment extends Fragment{
 	private void createConditionsLists(ArrayList<ArrayList<HashMap<String, String>>> list){
 
 			for(ArrayList<HashMap<String, String>> i:list){
-				Log.d("kkams", "rozmiar i: " + i.size());
 				if(i.size()<howManyEmptyElementsOnEachList){
 					int tmp = howManyEmptyElementsOnEachList -i.size() ;
 					for(int j= 0; j < tmp;j++){
@@ -256,7 +250,6 @@ public class ConditionsFragment extends Fragment{
 	}
 	
 	public void addElemToList(int conditionId, int listId, long conditionUniqeID){
-		Log.d("kkams", "addElemToList, uniqeID =  " +conditionUniqeID);
 		HorizontalListView listview = (HorizontalListView)getActivity().findViewById(listId);
 		
 		listview.add(conditionId, Long.valueOf(conditionUniqeID).intValue());
@@ -292,7 +285,7 @@ public class ConditionsFragment extends Fragment{
 		 @Override
 	     public boolean onItemLongClick(AdapterView<?> av, View v, int pos, long id) {
 	     	ifLongPressed=true;
-				//Log.d("kkams", ""+id);
+			
 			draggedId = Integer.parseInt(Long.toString(id));	
 	     	MenuListViewAdapter a = (MenuListViewAdapter)av.getAdapter();
 	     	HashMap<String, String> map = new HashMap<String, String>();
@@ -315,25 +308,15 @@ public class ConditionsFragment extends Fragment{
 	     	map = a.data.get(pos);
 	     	
 	     	String uniqeID = map.get(Constant.KEY_UNIQE_ID);
-			Log.d("kkams", "id kliknietego elementu2: "+uniqeID);
-	    	ActionItem editItem  = new ActionItem(Constant.QUICKACTION_EDIT, getActivity().getString(R.string.quickaction_edit), getActivity().getResources().getDrawable(android.R.drawable.ic_menu_edit));
-	        ActionItem removeItem   = new ActionItem(Constant.QUICKACTION_REMOVE, getActivity().getString(R.string.quickaction_remove), getActivity().getResources().getDrawable(android.R.drawable.ic_menu_delete));
-	        mQuickAction  = new QuickAction(getActivity());
-			mQuickAction.addActionItem(editItem);
+			
+			ActionItem editItem 		= new ActionItem(Constant.QUICKACTION_EDIT, getString(R.string.quickaction_edit), getResources().getDrawable(R.drawable.ic_edit));
+			ActionItem removeItem 	= new ActionItem(Constant.QUICKACTION_REMOVE, getString(R.string.quickaction_remove), getResources().getDrawable(R.drawable.ic_delete));
+	       
+			final QuickAction mQuickAction 	= new QuickAction(getActivity());
+			
+			mQuickAction.addActionItem(editItem );
 			mQuickAction.addActionItem(removeItem);
-			mQuickAction.show(v, 1);
-			mQuickAction.setOnActionItemClickListener(new QuickAction.OnActionItemClickListener() {		
-				@Override
-	            public void onItemClick(QuickAction quickAction, int pos, int actionId, int position) {
-		
-	            	//Log.d("kkams" ,"ITEM = " +historyManager.getHistoryItem(position) );
-	                
-	            	//switch (actionId) {
-		               
-	                         
-	            	
-	            }
-	        });
+			mQuickAction.show(v);
 			
 		}
 		
@@ -349,7 +332,7 @@ public class ConditionsFragment extends Fragment{
 						if(img_drawable!=null)
 							img.setBackgroundDrawable(img_drawable);
 						
-						//Log.d("kkams", dragElemId);
+						
 			        	imgParams.leftMargin = (int)event.getRawX();
 						imgParams.topMargin = (int)event.getRawY();
 						
@@ -363,7 +346,7 @@ public class ConditionsFragment extends Fragment{
 		            				x_cord = (int)event.getRawX();
 		            				y_cord = (int)event.getRawY();
 		            				if(( id = getContainViewId(x_cord, y_cord))!=-2){
-		            					//Log.d("kkams", ""+draggedId);
+		            					
 		            					if(draggedId == 0){
 		            						runDialogTime(id);
 		            					}
@@ -469,10 +452,7 @@ public class ConditionsFragment extends Fragment{
 		anuluj.setOnClickListener(anulujListener);
 		ok.setOnClickListener(new OnClickListener() {
 		    public void onClick(View v) {
-		    	/*Log.d("kkams","Od: "+tpSince.getCurrentHour().toString()+":"+tpSince.getCurrentMinute().toString()+
-		    			" Do:"+tpTo.getCurrentHour().toString()+":"+tpTo.getCurrentMinute().toString());
-		    	Log.d("kkams",Boolean.toString(cb1.isChecked())+ " " +Boolean.toString(cb2.isChecked())+ " " +Boolean.toString(cb3.isChecked())+ " " +Boolean.toString(cb4.isChecked())+ " " +Boolean.toString(cb5.isChecked())+ " " +Boolean.toString(cb6.isChecked())+ " " +Boolean.toString(cb7.isChecked()));
-		    	*/
+		    	
 		    	long conditionID = dbMethods.addTimeCondition(diyaID, idGroupFinal, tpSince.getCurrentHour(), tpSince.getCurrentMinute(), 
 		    			tpTo.getCurrentHour(), tpTo.getCurrentMinute(), new boolean[]{cb1.isChecked(),cb2.isChecked(),cb3.isChecked(),cb4.isChecked(),cb5.isChecked(),cb6.isChecked(),cb7.isChecked()});
 

@@ -117,6 +117,7 @@ public class MenuListViewAdapter extends BaseAdapter {
 	    	vi.setOnTouchListener(onTouchListener);
     	}
     	else{
+    		Log.d("kkams", "jestem w else");
     		Drawable ico;
 	        HashMap<String, String> map = new HashMap<String, String>();
 	        vi=convertView;
@@ -127,24 +128,28 @@ public class MenuListViewAdapter extends BaseAdapter {
 	        View listview = getListView();
 	        
 	    	map = data.get(position);
-	    	Log.d("kkams", "adapter uniqe "+ map.get(Constant.KEY_UNIQE_ID));
 	        if(map.get(Constant.KEY_ID) != null){
 	    	id=Integer.parseInt(map.get(Constant.KEY_ID));
 	    	Log.d("kkams", "id: "+ id);
 	    	switch(id){
 		    	case Constant.ID_TIME:
+		    		Log.d("kkams", "mla TIME");
 			        ico = activity.getResources().getDrawable(Constant.ICO_TIME);
 		    		break;
 		    	case Constant.ID_WIFI:
+		    		Log.d("kkams", "mla WIFI");
 			        ico = activity.getResources().getDrawable(Constant.ICO_WIFI);
 		    		break;
 		    	case Constant.ID_GPS:
+		    		Log.d("kkams", "mla GPS");
 			        ico = activity.getResources().getDrawable(Constant.ICO_GPS);
 		    		break;
 		    	case Constant.ID_CALENDAR:
+		    		Log.d("kkams", "mla CALENDAR");
 			        ico = activity.getResources().getDrawable(Constant.ICO_CALENDAR);
 		    		break;
 		    	default:
+		    		Log.d("kkams", "mla EMPTY");
 		    		ico = activity.getResources().getDrawable(Constant.ICO_EMPTY);
 		    		break;
 	    	}
@@ -156,9 +161,7 @@ public class MenuListViewAdapter extends BaseAdapter {
 	    
 	    	listview.setVerticalFadingEdgeEnabled(false);
 	    	listview.setVerticalScrollBarEnabled(false);
-	    	if(id != Constant.ID_EMPTY){
-		    	Log.d("kkams", "id kliknietego elementu1: "+id);
-	    	}
+	    	
 	    	}
         return vi;
     }

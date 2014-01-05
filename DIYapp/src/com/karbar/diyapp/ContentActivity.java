@@ -1,7 +1,6 @@
 package com.karbar.diyapp;
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 
 
@@ -20,8 +19,6 @@ public class ContentActivity extends FragmentActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.content_view);
-		//w konstruktorach pobieram context i activity
-		conditions = new ConditionsFragment();
 		start = new StartFragment() ;
         getSupportFragmentManager().beginTransaction().replace(R.id.contentFrag, start).commit();
 		
