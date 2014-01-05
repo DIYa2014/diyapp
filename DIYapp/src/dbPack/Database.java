@@ -348,7 +348,6 @@ public class Database {
 	 * -usuniecie dodanej akcji
 	 * 
 	 * */
-	
 	public boolean isServiceRunning(){
 
 		Cursor cursor = db.query(DB_SERVICE_TABLE, column_keys_service, null, null, null, null, null);
@@ -599,7 +598,7 @@ ADDED_CONDITIONS_KEY_EXECUTED_CONDITION*/
 				HashMap<String, String> tempMap = new HashMap<String, String>();
 				//AddedCondition ac = new AddedCondition();
 				map.put(ADDED_CONDITIONS_KEY_ID_ADDEDD_CONDITIONS, id_add_con);
-				map.put(Constant.KEY_ID, id_con);
+				map.put(ADDED_CONDITIONS_KEY_CONDITION_ID, id_con);
 				map.put(ADDED_CONDITIONS_KEY_TASK_ID_CONDITIONS, id_task);
 				map.put(ADDED_CONDITIONS_KEY_GROUP_ID, id_group);
 				map.put(ADDED_CONDITIONS_KEY_PARAMETERS_CONDITIONS, params);
@@ -622,6 +621,7 @@ ADDED_CONDITIONS_KEY_EXECUTED_CONDITION*/
 		//String whereCon = ADDED_CONDITIONS_KEY_ID_ADDEDD_CONDITIONS +" IN (" + addedConditions + ")";
 		
 		String [] groupsListStrings = getTaskReturnGroups(idTask);
+		
 		
 		for(String str : groupsListStrings){
 			Log.d("kkams", "group: "+str + " id= " + getArrayConditionFromOneGrup(str, idTask));
@@ -708,6 +708,86 @@ ADDED_CONDITIONS_KEY_EXECUTED_CONDITION*/
 		
 		return getActionsLists;
 	}
+	
+	public HashMap<String, String> getAddedAction(long idAddAct){
+		HashMap<String, String> map = new HashMap<String, String>();
+		String whereCon2 = ADDED_ACTIONS_KEY_ID_ADDEDD_ACTIONS +"="+idAddAct;
+		Cursor cursorAct = db.query(DB_ADDED_ACTIONS_TABLE, column_keys_added_actions, whereCon2, null, null, null, null);
+		cursorAct.moveToFirst();
+		if(cursorAct != null && cursorAct.moveToFirst()){
+				/*ADDED_CONDITIONS_KEY_ID_ADDEDD_CONDITIONS, 
+				ADDED_CONDITIONS_KEY_CONDITION_ID,
+ADDED_CONDITIONS_KEY_TASK_ID_CONDITIONS, 
+ADDED_CONDITIONS_KEY_GROUP_ID, 
+ADDED_CONDITIONS_KEY_PARAMETERS_CONDITIONS, 
+ADDED_CONDITIONS_KEY_EXECUTED_CONDITION*/
+				System.out.println("ilosc wierszy = "+cursorAct.getCount());
+				System.out.println("pozycja = "+cursorAct.getPosition());
+				System.out.println("fdefes");
+				//System.out.println("pierwsza kolumna = "+cursorCon.getColumnName(21));
+				/*
+				 * ADDED_ACTIONS_KEY_ID_ADDEDD_ACTIONS, ADDED_ACTIONS_KEY_ACTION_ID, ADDED_ACTIONS_KEY_TASK_ID_ACTIONS, 
+				 * ADDED_ACTIONS_KEY_PARAMETERS_ACTIONS, ADDED_ACTIONS_KEY_EXECUTED_ACTION, ADDED_ACTIONS_KEY_BEFORE_ACTION
+				 * 
+				 * */
+				String id_add_act = cursorAct.getString(ADDED_ACTIONS_ID_ADDEDD_ACTIONS_COLUMN);
+				String id_act = cursorAct.getString(ADDED_ACTIONS_ACTION_ID_COLUMN);
+				String id_task = cursorAct.getString(ADDED_ACTIONS_TASK_ID_ACTIONS_COLUMN);
+				String params = cursorAct.getString(ADDED_ACTIONS_PARAMETERS_ACTIONS_COLUMN);
+				String exec = cursorAct.getString(ADDED_ACTIONS_EXECUTED_ACTION_COLUMN);
+				String before = cursorAct.getString(ADDED_ACTIONS_BEFORE_ACTION_COLUMN);
+				
+				//AddedCondition ac = new AddedCondition();
+				map.put(ADDED_ACTIONS_KEY_ID_ADDEDD_ACTIONS, id_add_act);
+				map.put(ADDED_ACTIONS_KEY_ACTION_ID, id_act);
+				map.put(ADDED_ACTIONS_KEY_TASK_ID_ACTIONS, id_task);
+				map.put(ADDED_ACTIONS_KEY_PARAMETERS_ACTIONS, params);
+				map.put(ADDED_ACTIONS_KEY_EXECUTED_ACTION, exec);
+				map.put(ADDED_ACTIONS_KEY_BEFORE_ACTION, before);
+				
+				
+			}
+		return map;
+	}
+	
+	public HashMap<String, String> getAddedCondition(long idAddCon){
+		HashMap<String, String> map = new HashMap<String, String>();
+		String whereCon2 = ADDED_CONDITIONS_KEY_ID_ADDEDD_CONDITIONS +"="+idAddCon;
+		Cursor cursorCon = db.query(DB_ADDED_CONDITIONS_TABLE, column_keys_added_condition, whereCon2, null, null, null, null);
+		cursorCon.moveToFirst();
+		if(cursorCon != null && cursorCon.moveToFirst()){
+				/*ADDED_CONDITIONS_KEY_ID_ADDEDD_CONDITIONS, 
+				ADDED_CONDITIONS_KEY_CONDITION_ID,
+ADDED_CONDITIONS_KEY_TASK_ID_CONDITIONS, 
+ADDED_CONDITIONS_KEY_GROUP_ID, 
+ADDED_CONDITIONS_KEY_PARAMETERS_CONDITIONS, 
+ADDED_CONDITIONS_KEY_EXECUTED_CONDITION*/
+				System.out.println("ilosc wierszy = "+cursorCon.getCount());
+				System.out.println("pozycja = "+cursorCon.getPosition());
+				System.out.println("fdefes");
+				
+				//System.out.println("pierwsza kolumna = "+cursorCon.getColumnName(21));
+				String id_add_con = cursorCon.getString(ADDED_CONDITIONS_ID_ADDEDD_CONDITIONS_COLUMN);
+				String id_con = cursorCon.getString(ADDED_CONDITIONS_CONDITION_ID_COLUMN);
+				String id_task = cursorCon.getString(ADDED_CONDITIONS_TASK_ID_CONDITIONS_COLUMN);
+				String id_group = cursorCon.getString(ADDED_CONDITIONS_GROUP_ID_COLUMN);
+				String params = cursorCon.getString(ADDED_CONDITIONS_PARAMETERS_CONDITIONS_COLUMN);
+				String exec = cursorCon.getString(ADDED_CONDITIONS_EXECUTED_CONDITION_COLUMN);
+				
+				//AddedCondition ac = new AddedCondition();
+				map.put(ADDED_CONDITIONS_KEY_ID_ADDEDD_CONDITIONS, id_add_con);
+				map.put(ADDED_CONDITIONS_KEY_CONDITION_ID, id_con);
+				map.put(ADDED_CONDITIONS_KEY_TASK_ID_CONDITIONS, id_task);
+				map.put(ADDED_CONDITIONS_KEY_GROUP_ID, id_group);
+				map.put(ADDED_CONDITIONS_KEY_PARAMETERS_CONDITIONS, params);
+				map.put(ADDED_CONDITIONS_KEY_EXECUTED_CONDITION, exec);
+			
+				
+				
+			}
+		
+		return map;
+	}
 
 	public long addConditionToTask(long idTask, long addedConditionID){
 		//long id = task.getId();
@@ -739,6 +819,8 @@ ADDED_CONDITIONS_KEY_EXECUTED_CONDITION*/
 		return -1;
 	}
 	
+	
+	
 
 	public long insertAddedCondition(long idCondition, long idTask, int idGroup, String params){
 		//AddedCondition addCon = new AddedCondition();
@@ -756,7 +838,7 @@ ADDED_CONDITIONS_KEY_EXECUTED_CONDITION*/
 		newValues.put(ADDED_CONDITIONS_KEY_CONDITION_ID, idCondition);
 		newValues.put(ADDED_CONDITIONS_KEY_TASK_ID_CONDITIONS, idTask);
 		newValues.put(ADDED_CONDITIONS_KEY_GROUP_ID, idGroup);
-		newValues.put(ADDED_CONDITIONS_KEY_PARAMETERS_CONDITIONS, "");
+		//newValues.put(ADDED_CONDITIONS_KEY_PARAMETERS_CONDITIONS, ""); //zakomentowalem, zobaczymy, czy bedzie odbrze
 		newValues.put(ADDED_CONDITIONS_KEY_EXECUTED_CONDITION, 0);
 		newValues.put(ADDED_CONDITIONS_KEY_PARAMETERS_CONDITIONS, params);
 		
@@ -773,4 +855,68 @@ ADDED_CONDITIONS_KEY_EXECUTED_CONDITION*/
 		return id;
 	}
 		
+	
+	public long insertAddedAction(long idAction, long idTask, String params){
+		//AddedCondition addCon = new AddedCondition();
+		/*ADDED_CONDITIONS_KEY_ID_ADDEDD_CONDITIONS	
+		ADDED_CONDITIONS_KEY_CONDITION_ID
+		ADDED_CONDITIONS_KEY_TASK_ID_CONDITIONS
+		ADDED_CONDITIONS_KEY_GROUP_ID
+		ADDED_CONDITIONS_KEY_PARAMETERS_CONDITIONS
+		ADDED_CONDITIONS_KEY_EXECUTED_CONDITION
+		
+		*/
+		//long idTask = task.getId();
+		
+		ContentValues newValues = new ContentValues();
+		newValues.put(ADDED_ACTIONS_KEY_ACTION_ID, idAction);
+		newValues.put(ADDED_ACTIONS_KEY_TASK_ID_ACTIONS, idTask);
+		
+		//newValues.put(ADDED_CONDITIONS_KEY_PARAMETERS_CONDITIONS, ""); 
+		newValues.put(ADDED_ACTIONS_KEY_EXECUTED_ACTION, 0);
+		newValues.put(ADDED_ACTIONS_KEY_PARAMETERS_ACTIONS, params);
+		
+
+		long id  = db.insert(DB_ADDED_ACTIONS_TABLE, null, newValues);
+		if(id == -1){
+			System.out.println("Blad przy tworzeniu dodanej akcji");
+			return -1;
+		}
+
+		System.out.println("insertAddedAction, id = " + id + " a task to " + idTask);
+		addActionToTask(idTask, id);
+		
+		return id;
+	}
+	
+	
+	public long addActionToTask(long idTask, long addedActionID){
+		//long id = task.getId();
+		//Task task2 = task;
+		String where = TASKS_KEY_ID + "=" + idTask;
+		Cursor cursor = db.query(DB_TASKS_TABLE, column_keys_task, where, null, null, null, null);
+		cursor.moveToFirst();
+		if(cursor != null && cursor.moveToFirst()){
+			System.out.println("cokolwiek");
+			//tu poprawiæ
+			String addedActions = cursor.getString(TASKS_ADDED_ACTIONS_ID_COLUMN);
+			System.out.println("addedActions = " + addedActions);
+			if(addedActions.equals("")){
+				addedActions += addedActions;
+			}
+			else
+				addedActions += ", " + addedActions;
+			
+			ContentValues updateValues = new ContentValues();
+			updateValues.put(TASKS_KEY_ADDED_ACTIONS_ID, addedActions);
+			int iloscZaktualizowanych = db.update(DB_TASKS_TABLE, updateValues, where, null);
+			//update wszystkich dodanych akcji - array
+		
+			if(iloscZaktualizowanych > 0){
+				return iloscZaktualizowanych;
+			}
+		}
+		
+		return -1;
+	}
 }

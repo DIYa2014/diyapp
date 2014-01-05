@@ -112,22 +112,30 @@ public class DbMethods {
 	public boolean addGroupToTask(long idDIYa, int idGroup){
 		return db.addGroupToTask(idDIYa, idGroup);
 	}
-	
-	public int addWiFiAction(long idDIYa, int tryb, String ssid){
+
+	public long addWiFiAction(long idDIYa, int tryb, String ssid){
 		
-		return 0;
-	}
-	public int addVibrationAction(long idDIYa){
+		String params = tryb + "/~/" + ssid;
 		
-		return 0;
+		return db.insertAddedAction(Constant.ACTION_WIFI, idDIYa, params);
 	}
-	public int addSoundAction(long idDIYa, int soundLevel){
-			
-		return 0;
+	public long addVibrationAction(long idDIYa){
+		
+		String params = "";
+		
+		return db.insertAddedAction(Constant.ACTION_VIBRATION, idDIYa, params);
 	}
-	public int addnotificationAction(long idDIYa, String tickerText, String notificationTitle, String notificationText){
+	public long addSoundAction(long idDIYa, int soundLevel){
 			
-		return 0;
+		String params = ""+ soundLevel;
+		
+		return db.insertAddedAction(Constant.ACTION_SOUND, idDIYa, params);
+	}
+	public long addnotificationAction(long idDIYa, String tickerText, String notificationTitle, String notificationText){
+			
+	String params = tickerText + "/~/" + notificationTitle + "/~/" + notificationText;
+		
+		return db.insertAddedAction(Constant.ACTION_NOTIFICATION, idDIYa, params);
 	}
 	
 	public String[] convertParamsIntoTab(String params){
@@ -145,4 +153,11 @@ public class DbMethods {
 		return db.deleteTask(idDIYa);
 	}
 	
+	public HashMap<String, String> getOneAddedActionFromDatabase(long idAddAct){
+		return db.getAddedAction(idAddAct);	
+	}
+	
+	public HashMap<String, String> getOneAddedConditionFromDatabase(long idAddCon){
+		return db.getAddedCondition(idAddCon);
+	}
 }
