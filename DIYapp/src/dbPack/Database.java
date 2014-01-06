@@ -657,10 +657,10 @@ ADDED_CONDITIONS_KEY_EXECUTED_CONDITION*/
 				String exec = cursorCon.getString(ADDED_CONDITIONS_EXECUTED_CONDITION_COLUMN);
 				HashMap<String, String> tempMap = new HashMap<String, String>();
 				//AddedCondition ac = new AddedCondition();
-				map.put(ADDED_CONDITIONS_KEY_ID_ADDEDD_CONDITIONS, id_add_con);
+				map.put(Constant.KEY_UNIQE_ID, id_add_con);
 				map.put(Constant.KEY_ID, id_con);//Nie zmieniaj tego klucza!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 				map.put(ADDED_CONDITIONS_KEY_TASK_ID_CONDITIONS, id_task);
-				map.put(ADDED_CONDITIONS_KEY_GROUP_ID, id_group);
+				map.put(Constant.KEY_GROUP_ID, id_group);
 				map.put(ADDED_CONDITIONS_KEY_PARAMETERS_CONDITIONS, params);
 				map.put(ADDED_CONDITIONS_KEY_EXECUTED_CONDITION, exec);
 				
@@ -750,7 +750,7 @@ ADDED_CONDITIONS_KEY_EXECUTED_CONDITION*/
 				String before = cursorAct.getString(ADDED_ACTIONS_BEFORE_ACTION_COLUMN);
 				HashMap<String, String> tempMap = new HashMap<String, String>();
 				//AddedCondition ac = new AddedCondition();
-				map.put(ADDED_ACTIONS_KEY_ID_ADDEDD_ACTIONS, id_add_act);
+				map.put(Constant.KEY_UNIQE_ID, id_add_act);
 				map.put(Constant.KEY_ID, id_act);//Nie zmieniaj tego klucza
 				map.put(ADDED_ACTIONS_KEY_TASK_ID_ACTIONS, id_task);
 				map.put(ADDED_ACTIONS_KEY_PARAMETERS_ACTIONS, params);
