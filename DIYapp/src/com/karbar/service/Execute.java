@@ -72,6 +72,7 @@ public class Execute extends Service{
 									}
 									else{//bylo wykonane wczesniej
 										//nic nie rob
+										//d
 									}
 								}
 								else if(true || false){//jesli bylo prawdziwe, ale juz nie jest
