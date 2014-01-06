@@ -863,7 +863,7 @@ ADDED_CONDITIONS_KEY_EXECUTED_CONDITION*/
 				addedConditions += addedConditionID;
 			}
 			else
-				addedConditions += ", " + addedConditionID;
+				addedConditions += "," + addedConditionID;
 			
 			ContentValues updateValues = new ContentValues();
 			updateValues.put(TASKS_KEY_ADDED_CONDITIONS_ID, addedConditions);
@@ -964,7 +964,7 @@ ADDED_CONDITIONS_KEY_EXECUTED_CONDITION*/
 				addedActions += addedActions;
 			}
 			else
-				addedActions += ", " + addedActions;
+				addedActions += "," + addedActions;
 			
 			ContentValues updateValues = new ContentValues();
 			updateValues.put(TASKS_KEY_ADDED_ACTIONS_ID, addedActions);
@@ -1011,21 +1011,37 @@ ADDED_CONDITIONS_KEY_EXECUTED_CONDITION*/
 	}
 	
 	public String deleteIdFromStringTab(String tab, long id){
-		
-		String []  t = tab.split(",");
-		String [] temp = {}; 
-		int i = 0;
-		for(String s : t){
-			if(!s.equals(id)){
-				temp[i]=s;
-				i++;
-			}
-		}
 		String ret="";
-		for(int j=0;j<temp.length-1;j++){
-			ret += temp[j]+",";
+		String []  t = tab.split(",");
+		if(t.length > 1){
+		
+			String [] temp = new String[t.length-1]; 
+			//int i = 0;
+			//for(String s : t){
+			//	if(!s.equals(id)){
+			//		temp[i]=s;
+			//		i++;
+			//	}
+			//}
+			
+			System.out.println("t lenght = " + t.length + " temp lenght = "+ temp.length + " a id szukane to "+ id);
+			for (int i=0, j=0;i< t.length;i++){
+				System.out.println(t[i]);
+				if(!t[i].equals(""+id)){
+					temp[j]=t[i];
+					System.out.println(temp[j]);
+					j++;
+				}
+			} 
+			System.out.println("t lenght = " + t.length + " temp lenght = "+ temp.length);
+			
+			for(int k=0;k<temp.length-1;k++){
+				ret += temp[k]+",";
+			}
+			ret += temp[temp.length-1];
+			
 		}
-		ret += temp[temp.length-1];
+		System.out.println("tab = "+tab+" ret = " + ret);
 		return ret;
 	}
 	//sprawdzic czy to dobrze -- jest zle zamienione act z con
