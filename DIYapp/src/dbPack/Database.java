@@ -450,6 +450,66 @@ public class Database {
 			return false;
 	}
 
+	public HashMap<String, String> getOneTask(long idTask){
+		String where_task = TASKS_KEY_ID + " IN (" + idTask + ")";
+		Cursor cursor = db.query( DB_TASKS_TABLE, column_keys_task, where_task, null, null, null, null); 
+		HashMap<String, String> task = new HashMap<String, String>();
+		if(cursor != null && cursor.moveToFirst()){
+			
+				String id = cursor.getString(TASKS_ID_TASKS_COLUMN);
+				String name = cursor.getString(TASKS_NAME_TASKS_COLUMN);
+				String description = cursor.getString(TASKS_DESCRIPTION_COLUMN);
+				String groups_of_conditions = cursor.getString(TASKS_GROUPS_OF_CONDITIONS_COLUMN);
+				String added_conditions_id = cursor.getString(TASKS_ADDED_CONDITIONS_ID_COLUMN);
+				String added_acions_id = cursor.getString(TASKS_ADDED_ACTIONS_ID_COLUMN);
+				int active = cursor.getInt(TASKS_ACTIVE_COLUMN);
+				boolean act = active == 1 ? true : false;
+				String date_create = cursor.getString(TASKS_DATE_CREATE_COLUMN);
+				String date_update = cursor.getString(TASKS_DATE_UPDATE_COLUMN); 
+				
+				
+				/*
+				 * public static final String TASKS_KEY_ID = "_id_tasks";
+	public static final String TASKS_KEY_NAME_TASKS = "name_tasks";
+	public static final String TASKS_KEY_DESCRIPTION = "descrition";
+	public static final String TASKS_KEY_GROUPS_OF_CONDITIONS = "groups_of_conditions";
+	public static final String TASKS_KEY_ADDED_CONDITIONS_ID = "added_conditions_id";
+	public static final String TASKS_KEY_ADDED_ACTIONS_ID = "added_actions_id";	
+	public static final String TASKS_KEY_DATE_CREATE = "date_create";
+	public static final String TASKS_KEY_DATE_UPDATE = "date_update";
+	public static final String TASKS_KEY_ACTIVE = "active";
+	public static final String TASKS_QUANTITY_OF_GROUPS = "quantity_of_groups";
+				 * 
+				 * 
+				 * 
+				 * 
+				 * 
+				 * */
+				
+				String [] gr = groups_of_conditions.split(",");
+				int quant_gr = gr.length;
+				
+				
+				task.put(TASKS_KEY_ID, id);
+				task.put(TASKS_KEY_NAME_TASKS, name);
+				task.put(TASKS_KEY_DESCRIPTION, description);
+				task.put(TASKS_KEY_GROUPS_OF_CONDITIONS, groups_of_conditions);
+				task.put(TASKS_KEY_ADDED_CONDITIONS_ID, added_conditions_id);
+				task.put(TASKS_KEY_ADDED_ACTIONS_ID, added_acions_id);
+				task.put(TASKS_KEY_DATE_CREATE, date_create);
+				task.put(TASKS_KEY_DATE_UPDATE, date_update);
+				task.put(TASKS_KEY_ACTIVE, ""+act);
+				task.put(TASKS_QUANTITY_OF_GROUPS, ""+quant_gr);
+				
+				
+				
+			
+			
+		}
+		return task;
+	}
+	
+	
 	public ArrayList<HashMap<String, String>> getAllTasks(){
 		ArrayList<HashMap<String, String>> getAllTasks = new ArrayList<HashMap<String,String>>();
 		Cursor cursor = db.query( DB_TASKS_TABLE, column_keys_task, null, null, null, null, null); 
@@ -917,5 +977,111 @@ ADDED_CONDITIONS_KEY_EXECUTED_CONDITION*/
 		}
 		
 		return -1;
+	}
+	
+	public boolean updateAddedAction(long idAddAct, String params, String before){
+		if(idAddAct > 0){
+			
+			ContentValues updateValues = new ContentValues();
+			updateValues.put(ADDED_ACTIONS_KEY_PARAMETERS_ACTIONS, params);
+			if(!before.equals("") || before != null)//?
+				updateValues.put(ADDED_ACTIONS_KEY_BEFORE_ACTION, before);
+
+			String where = ADDED_ACTIONS_KEY_ID_ADDEDD_ACTIONS + "=" + idAddAct;
+
+			return db.update(DB_ADDED_ACTIONS_TABLE, updateValues, where, null) > 0;
+		}
+		else
+			return false;
+	}
+	
+	public boolean updateAddedCondition(long idAddCon, String params){
+		if(idAddCon > 0){
+			
+			ContentValues updateValues = new ContentValues();
+			updateValues.put(ADDED_CONDITIONS_KEY_PARAMETERS_CONDITIONS, params);
+
+
+			String where = ADDED_CONDITIONS_KEY_ID_ADDEDD_CONDITIONS + "=" + idAddCon;
+
+			return db.update(DB_ADDED_CONDITIONS_TABLE, updateValues, where, null) > 0;
+		}
+		else
+			return false;
+	}
+	
+	public String deleteIdFromStringTab(String tab, long id){
+		
+		String []  t = tab.split(",");
+		String [] temp = {}; 
+		int i = 0;
+		for(String s : t){
+			if(!s.equals(id)){
+				temp[i]=s;
+				i++;
+			}
+		}
+		String ret="";
+		for(int j=0;j<temp.length-1;j++){
+			ret += temp[j]+",";
+		}
+		ret += temp[temp.length-1];
+		return ret;
+	}
+	//sprawdzic czy to dobrze -- jest zle zamienione act z con
+	public boolean deleteAddedCondition(long idAddCon, long idTask){
+		if(idAddCon > 0){
+			String where_task = TASKS_KEY_ID + " IN (" + idTask + ")";
+			//String where_act = ADDED_ACTIONS_KEY_TASK_ID_ACTIONS + " IN (" + idAddCon + ")";
+			String where_cond = ADDED_CONDITIONS_KEY_ID_ADDEDD_CONDITIONS + " IN (" + idAddCon + ")";
+			
+			//
+				// db.delete(DB_TASKS_TABLE, where_task, null) > 0 && 
+			String conditions="";
+				Cursor cursor = db.query( DB_TASKS_TABLE, column_keys_task, where_task, null, null, null, null); 
+				if(cursor != null){
+					cursor.moveToFirst();
+					conditions = cursor.getString(TASKS_ADDED_CONDITIONS_ID_COLUMN);
+				}
+				String conds = deleteIdFromStringTab(conditions, idAddCon); 	
+				if(db.delete(DB_ADDED_CONDITIONS_TABLE, where_cond, null) > 0){
+					ContentValues updateValues = new ContentValues();
+					updateValues.put(TASKS_KEY_ADDED_CONDITIONS_ID, conds);
+					String where = TASKS_KEY_ID + "=" + idTask;
+
+					db.update(DB_TASKS_TABLE, updateValues, where, null); 
+				}
+	
+				return true;
+		}
+			return false;
+	}
+	
+	public boolean deleteAddedAction(long idAddAct, long idTask){
+		if(idAddAct > 0){
+			String where_task = TASKS_KEY_ID + " IN (" + idTask + ")";
+			String where_act = ADDED_ACTIONS_KEY_ID_ADDEDD_ACTIONS + " IN (" + idAddAct + ")";
+			//String where_cond = ADDED_CONDITIONS_KEY_ID_ADDEDD_CONDITIONS + " IN (" + idAddCon + ")";
+			
+			//
+				// db.delete(DB_TASKS_TABLE, where_task, null) > 0 && 
+			String actions="";
+				Cursor cursor = db.query( DB_TASKS_TABLE, column_keys_task, where_task, null, null, null, null); 
+				if(cursor != null){
+					cursor.moveToFirst();
+					actions = cursor.getString(TASKS_ADDED_ACTIONS_ID_COLUMN);
+				}
+				String acts = deleteIdFromStringTab(actions, idAddAct); 	
+				if(db.delete(DB_ADDED_ACTIONS_TABLE, where_act, null) > 0){
+					ContentValues updateValues = new ContentValues();
+					updateValues.put(TASKS_KEY_ADDED_ACTIONS_ID, acts);
+					String where = TASKS_KEY_ID + "=" + idTask;
+
+					db.update(DB_TASKS_TABLE, updateValues, where, null); 
+				}
+	
+				return true;
+		}
+			return false;
 	}
 }

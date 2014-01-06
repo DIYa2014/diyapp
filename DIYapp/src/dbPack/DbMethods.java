@@ -44,8 +44,12 @@ public class DbMethods {
 		return db.getAllTasks();
 	}
 	
+	public HashMap<String, String> getOneDiya(long idDIYa){
+		return db.getOneTask(idDIYa);
+	}
 	
-	public ArrayList<ArrayList<HashMap<String, String>>> getConditonLists(int idDIYa){
+	
+	public ArrayList<ArrayList<HashMap<String, String>>> getConditonLists(long idDIYa){
 		/*
 		 * W HashMap masz dane dla pojedyñczego warunku. Zapisauj tam takie rzeczy jak id, nazwe czy adres obraska (R.drawable...).
 		 * Klucze masz w klasie Constant, jesli jakichs nie bedzie (np jeli bedziesz dodawal argumenty ) to stworz swoje wlasne klucze
@@ -159,5 +163,21 @@ public class DbMethods {
 	
 	public HashMap<String, String> getOneAddedConditionFromDatabase(long idAddCon){
 		return db.getAddedCondition(idAddCon);
+	}
+	
+	public boolean updateAddedCondition(long idCon, String params){
+		return db.updateAddedCondition(idCon, params);
+
+	}
+	
+	public boolean updateAddedAction(long idAct, String params){
+		return db.updateAddedAction(idAct, params, "");//trzeci parametr to before, bede tego uzywal w serwisie
+	}
+	
+	public boolean deleteAddedConditionFromTask(long idAddCon, long idDIYa){
+		return db.deleteAddedCondition(idAddCon, idDIYa);
+	}
+	public boolean deleteAddedActionFromTask(long idAddAct, long idDIYa){
+		return db.deleteAddedAction(idAddAct, idDIYa);
 	}
 }
