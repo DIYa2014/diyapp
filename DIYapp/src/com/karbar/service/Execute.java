@@ -69,14 +69,17 @@ public class Execute extends Service{
 								if(czyGrupaWarunkowPrawdziwa(groupsWithAddedConditions)){//jesli grupa warunkow prawdziwa
 									if(/*AddedCondition.get(Constant.ADDED_CONDITIONS_KEY_EXECUTED_CONDITION).equals("0")*/true){//jesli nie bylo wykonane
 										//wykonaj i zmien na wykonane
+										//break;
 									}
 									else{//bylo wykonane wczesniej
 										//nic nie rob
 										//d
+										//break;
 									}
 								}
 								else if(true || false){//jesli bylo prawdziwe, ale juz nie jest
-									
+									//zmien na niewykonane
+									//przywroc stan z przed wykonania
 								}
 								else{//jesli nie jest prawdziwe
 									
