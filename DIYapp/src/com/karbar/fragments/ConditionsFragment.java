@@ -252,7 +252,7 @@ public class ConditionsFragment extends Fragment{
 	public void addElemToList(int conditionId, int listId, long conditionUniqeID){
 		HorizontalListView listview = (HorizontalListView)getActivity().findViewById(listId);
 		
-		listview.add(conditionId, Long.valueOf(conditionUniqeID).intValue());
+		listview.add(conditionId, Long.valueOf(conditionUniqeID).intValue(), listId);
 		listview.setAdapter(listview.getAdapter());
 	    listview.setOnItemClickListener(onConditionItemClickListener);
 	}
@@ -303,21 +303,44 @@ public class ConditionsFragment extends Fragment{
 
 		@Override
 		public void onItemClick(AdapterView<?> av, View v, int pos, long id) {
-			MenuListViewAdapter a = (MenuListViewAdapter)av.getAdapter();
+			
+			final MenuListViewAdapter a = (MenuListViewAdapter)av.getAdapter();
 	     	HashMap<String, String> map = new HashMap<String, String>();
 	     	map = a.data.get(pos);
-	     	
-	     	String uniqeID = map.get(Constant.KEY_UNIQE_ID);
-			
-			ActionItem editItem 		= new ActionItem(Constant.QUICKACTION_EDIT, getString(R.string.quickaction_edit), getResources().getDrawable(R.drawable.ic_edit));
-			ActionItem removeItem 	= new ActionItem(Constant.QUICKACTION_REMOVE, getString(R.string.quickaction_remove), getResources().getDrawable(R.drawable.ic_delete));
-	       
-			final QuickAction mQuickAction 	= new QuickAction(getActivity());
-			
-			mQuickAction.addActionItem(editItem );
-			mQuickAction.addActionItem(removeItem);
-			mQuickAction.show(v);
-			
+	     	if(!map.get(Constant.KEY_ID).equals("-1")){
+		     	final String uniqeID = map.get(Constant.KEY_UNIQE_ID);
+		     	final int groupID = Integer.parseInt(map.get(Constant.KEY_GROUP_ID));
+		     	
+		     	final int position = pos;
+				ActionItem editItem 		= new ActionItem(Constant.QUICKACTION_EDIT, getString(R.string.quickaction_edit), getResources().getDrawable(R.drawable.ic_edit));
+				ActionItem removeItem 	= new ActionItem(Constant.QUICKACTION_REMOVE, getString(R.string.quickaction_remove), getResources().getDrawable(R.drawable.ic_delete));
+		       
+				final QuickAction mQuickAction 	= new QuickAction(getActivity());
+				
+				mQuickAction.addActionItem(editItem);
+				mQuickAction.addActionItem(removeItem);
+				mQuickAction.show(v);
+				
+				mQuickAction.setOnActionItemClickListener(new QuickAction.OnActionItemClickListener() {
+					@Override
+					public void onItemClick(QuickAction quickAction, int pos, int actionId) {
+						ActionItem actionItem = quickAction.getActionItem(pos);
+						
+						if (actionId == Constant.QUICKACTION_EDIT) {
+							
+						} 
+						else if(actionId == Constant.QUICKACTION_REMOVE) {
+							HorizontalListView lv = (HorizontalListView)getActivity().findViewById(groupID);
+							lv.remove(position);
+							lv.addEmptyToEnd(groupID);
+							lv.setAdapter(lv.getAdapter());
+						    lv.setOnItemClickListener(onConditionItemClickListener);
+						    dbMethods.deleteAddedConditionFromTask(Long.parseLong(uniqeID),diyaID);
+						    
+						} 
+					}
+				});
+	     	}
 		}
 		
 	};
@@ -481,6 +504,7 @@ public class ConditionsFragment extends Fragment{
 		    	long conditionID = dbMethods.addDateCondition(diyaID, idGroupFinal, since.getDayOfMonth(), since.getMonth(), since.getYear(), 
 		    			to.getDayOfMonth(), to.getMonth(), to.getYear());
 		    	dialog.dismiss();
+		    	
 				addElemToList(Constant.ID_CALENDAR, idGroupFinal, conditionID);
 				removeEmptyElem(idGroupFinal);
 		    }});

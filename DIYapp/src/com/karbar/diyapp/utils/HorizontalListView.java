@@ -88,16 +88,28 @@ public class HorizontalListView extends AdapterView<ListAdapter> {
 	public void setOnItemSelectedListener(AdapterView.OnItemSelectedListener listener) {
 		mOnItemSelected = listener;
 	}
-	public void add( int id, int uniqeID){
+	public void add( int id, int uniqeID, int groupID){
 		
 		HashMap<String, String> map = new HashMap<String, String>(); 
         map.put(Constant.KEY_ID, Integer.toString(id));
         map.put(Constant.KEY_UNIQE_ID, Integer.toString(uniqeID));
+        map.put(Constant.KEY_GROUP_ID, Integer.toString(groupID));
 		Log.d("kkams", "add, unixe id "+Integer.toString(uniqeID));
         
         MenuListViewAdapter a = (MenuListViewAdapter)mAdapter;
         //a.data.add(map);
         a.data.add(0, map);
+	}
+	public void addEmptyToEnd(int groupID){
+		HashMap<String, String> map = new HashMap<String, String>(); 
+        map.put(Constant.KEY_ID, Integer.toString(Constant.ID_EMPTY));
+        map.put(Constant.KEY_GROUP_ID, Integer.toString(groupID));
+        
+        MenuListViewAdapter a = (MenuListViewAdapter)mAdapter;
+        //a.data.add(map);
+        
+        a.data.add(a.data.size(), map);
+		
 	}
 	
 	public void remove( int id){

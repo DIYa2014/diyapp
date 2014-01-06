@@ -8,6 +8,7 @@ public class Constant {
 	public static final String KEY_ID = "id";
 	public static final String KEY_ICO = "ico_url";
 	public static final String KEY_BUNDLE = "bundle";
+	
 	public static final int QUICKACTION_EDIT = 1;
 	public static final int QUICKACTION_REMOVE = 2;
 	
@@ -24,7 +25,7 @@ public class Constant {
 	public static final int ID_WIFI =  4;
 	public static final int ID_EMPTY = -1;
 	public static final String KEY_UNIQE_ID = "uniqeID";
-	
+	public static final String KEY_GROUP_ID = "groupID";
 	public static final String KEY_DIYAID = "diyid";
 	
 	//u¿ywam ich ja

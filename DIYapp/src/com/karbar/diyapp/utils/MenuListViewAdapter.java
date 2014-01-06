@@ -13,11 +13,9 @@ import android.content.Context;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -117,7 +115,6 @@ public class MenuListViewAdapter extends BaseAdapter {
 	    	vi.setOnTouchListener(onTouchListener);
     	}
     	else{
-    		Log.d("kkams", "jestem w else");
     		Drawable ico;
 	        HashMap<String, String> map = new HashMap<String, String>();
 	        vi=convertView;
@@ -130,26 +127,20 @@ public class MenuListViewAdapter extends BaseAdapter {
 	    	map = data.get(position);
 	        if(map.get(Constant.KEY_ID) != null){
 	    	id=Integer.parseInt(map.get(Constant.KEY_ID));
-	    	Log.d("kkams", "id: "+ id);
 	    	switch(id){
 		    	case Constant.ID_TIME:
-		    		Log.d("kkams", "mla TIME");
 			        ico = activity.getResources().getDrawable(Constant.ICO_TIME);
 		    		break;
 		    	case Constant.ID_WIFI:
-		    		Log.d("kkams", "mla WIFI");
 			        ico = activity.getResources().getDrawable(Constant.ICO_WIFI);
 		    		break;
 		    	case Constant.ID_GPS:
-		    		Log.d("kkams", "mla GPS");
 			        ico = activity.getResources().getDrawable(Constant.ICO_GPS);
 		    		break;
 		    	case Constant.ID_CALENDAR:
-		    		Log.d("kkams", "mla CALENDAR");
 			        ico = activity.getResources().getDrawable(Constant.ICO_CALENDAR);
 		    		break;
 		    	default:
-		    		Log.d("kkams", "mla EMPTY");
 		    		ico = activity.getResources().getDrawable(Constant.ICO_EMPTY);
 		    		break;
 	    	}
