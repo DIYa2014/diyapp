@@ -1,7 +1,11 @@
 package com.karbar.service;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Timer;
 import java.util.TimerTask;
+
+import com.karbar.diyapp.utils.Constant;
 
 import dbPack.DbMethods;
 
@@ -45,6 +49,8 @@ public class Execute extends Service{
 		Log.d("kkams", "onStart");
 		okresowewykonywanie();
 	}
+	
+	
 	private void okresowewykonywanie() {
 
 		Timer timer = new Timer();
@@ -53,6 +59,33 @@ public class Execute extends Service{
 			public void run() {
 
 				Log.d("kkams", "service isRun? "+ dbMethods.isServiceRunning());
+				
+				ArrayList<HashMap<String,String>> DIYas = dbMethods.getDIYaList();
+				
+				for(HashMap<String, String> diya : DIYas){
+					if(diya.get(Constant.TASKS_KEY_ACTIVE).equals("1")){//jeœli DIYa jest aktywna
+						ArrayList<ArrayList<HashMap<String, String>>> AddedConditions = dbMethods.getConditonLists(Long.getLong(diya.get(Constant.TASKS_KEY_ID)));
+						for(ArrayList<HashMap<String, String>> groupsWithAddedConditions : AddedConditions){
+								if(czyGrupaWarunkowPrawdziwa(groupsWithAddedConditions)){//jesli grupa warunkow prawdziwa
+									if(/*AddedCondition.get(Constant.ADDED_CONDITIONS_KEY_EXECUTED_CONDITION).equals("0")*/true){//jesli nie bylo wykonane
+										//wykonaj i zmien na wykonane
+									}
+									else{//bylo wykonane wczesniej
+										//nic nie rob
+									}
+								}
+								else if(true || false){//jesli bylo prawdziwe, ale juz nie jest
+									
+								}
+								else{//jesli nie jest prawdziwe
+									
+								}
+
+						}//koniec grupy z warunkami
+					}//koniec pojedynczej DIYa
+				}//koniec listy DIYas
+				
+				
 				/*int idWarunku = 0;
 				int idWiersza;
 				int warunek = 0;
@@ -162,5 +195,13 @@ public class Execute extends Service{
 		
 		};
 		timer.scheduleAtFixedRate(timerTask, 100, 6000);
+	}
+	
+	
+	private boolean czyGrupaWarunkowPrawdziwa(ArrayList<HashMap<String, String>> groupsWithAddedConditions){
+		for(HashMap<String, String> AddedCondition : groupsWithAddedConditions){
+			
+		}//koniec dodanego warunku
+		return false;
 	}
 }
