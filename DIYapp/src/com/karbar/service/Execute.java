@@ -200,9 +200,23 @@ public class Execute extends Service{
 	
 	
 	private boolean czyGrupaWarunkowPrawdziwa(ArrayList<HashMap<String, String>> groupsWithAddedConditions){
+		boolean ret = true;
 		for(HashMap<String, String> AddedCondition : groupsWithAddedConditions){
+			int id_con = Integer.valueOf(AddedCondition.get(Constant.ADDED_CONDITIONS_KEY_CONDITION_ID));
+			String id_add_con = AddedCondition.get(Constant.ADDED_CONDITIONS_KEY_ID_ADDEDD_CONDITIONS);
+			String params = AddedCondition.get(Constant.ADDED_CONDITIONS_KEY_PARAMETERS_CONDITIONS);
+			switch (id_con) {
+			case (int) Constant.CONDITION_DATE:
+				//boolean czy = Cndition.czyWifiDziala(id_add-COn, params);
+				//if(!czy){ret=false;}
+				//i tak w ka¿dym
+				break;
+
+			default:
+				break;
+			}
 			
 		}//koniec dodanego warunku
-		return false;
+		return ret;
 	}
 }
