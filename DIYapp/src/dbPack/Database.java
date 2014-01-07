@@ -983,7 +983,8 @@ ADDED_CONDITIONS_KEY_EXECUTED_CONDITION*/
 		if(idAddAct > 0){
 			
 			ContentValues updateValues = new ContentValues();
-			updateValues.put(ADDED_ACTIONS_KEY_PARAMETERS_ACTIONS, params);
+			if(!params.equals("") || params != null)//?
+				updateValues.put(ADDED_ACTIONS_KEY_PARAMETERS_ACTIONS, params);
 			if(!before.equals("") || before != null)//?
 				updateValues.put(ADDED_ACTIONS_KEY_BEFORE_ACTION, before);
 
@@ -995,6 +996,7 @@ ADDED_CONDITIONS_KEY_EXECUTED_CONDITION*/
 			return false;
 	}
 	
+	
 	public boolean updateAddedCondition(long idAddCon, String params){
 		if(idAddCon > 0){
 			
@@ -1005,6 +1007,37 @@ ADDED_CONDITIONS_KEY_EXECUTED_CONDITION*/
 			String where = ADDED_CONDITIONS_KEY_ID_ADDEDD_CONDITIONS + "=" + idAddCon;
 
 			return db.update(DB_ADDED_CONDITIONS_TABLE, updateValues, where, null) > 0;
+		}
+		else
+			return false;
+	}
+	
+	public boolean setExecutedCondition(long idAddCon, boolean exec){
+		if(idAddCon > 0){
+			
+			ContentValues updateValues = new ContentValues();
+			int e = exec ? 1 : 0;
+			updateValues.put(ADDED_CONDITIONS_KEY_EXECUTED_CONDITION, e);
+
+
+			String where = ADDED_CONDITIONS_KEY_ID_ADDEDD_CONDITIONS + "=" + idAddCon;
+
+			return db.update(DB_ADDED_CONDITIONS_TABLE, updateValues, where, null) > 0;
+		}
+		else
+			return false;
+	}
+	
+	public boolean setExecutedAction(long idAddAct, boolean exec){
+		if(idAddAct > 0){
+			
+			ContentValues updateValues = new ContentValues();
+			int e = exec ? 1 : 0;
+			updateValues.put(ADDED_ACTIONS_KEY_EXECUTED_ACTION, e);
+
+			String where = ADDED_ACTIONS_KEY_ID_ADDEDD_ACTIONS + "=" + idAddAct;
+
+			return db.update(DB_ADDED_ACTIONS_TABLE, updateValues, where, null) > 0;
 		}
 		else
 			return false;
