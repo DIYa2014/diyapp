@@ -209,10 +209,50 @@ public class Trigger extends Activity{
 		return false;
 	}
 	
-	public boolean dzienTygodniaIGodzina(int idDIY){
+	public boolean sprawdzCzas(String id_add_con, String params){
+		
+		//int timeSinceHour, int timeSinceMinutes, int timeToHour, int timeToMinutes, boolean [] days){
+		
+		
+		String [] parametry = dbMethods.convertParamsIntoTab(params);
+		
+		String timeSinceHour = parametry[0];
+		String timeSinceMinutes = parametry[1];
+		String timeToHour = parametry[2];
+		String timeToMinutes = parametry[3];
+		String [] days = parametry[4].split(",");
+		
+		String pon = days[0];
+		String wt = days[1];
+		String sr = days[2];
+		String czw = days[3];
+		String pia = days[4];
+		String sob = days[5];
+		String niedz = days[6];
+		
+		int minutaPoczatkowy = Integer.valueOf(timeSinceHour);
+		int godzinaPoczatkowy = Integer.valueOf(timeSinceMinutes);
+		int minutaKoncowy = Integer.valueOf(timeToHour); 
+		int godzinaKoncowy = Integer.valueOf(timeToMinutes);  
+
+		boolean czyPon = pon.equals("true") ? true : false;
+		boolean czyWt = wt.equals("true") ? true : false;
+		boolean czySr = sr.equals("true") ? true : false; 
+		boolean czyCzw = czw.equals("true") ? true : false; 
+		boolean czyPia = pia.equals("true") ? true : false; 
+		boolean czySob = sob.equals("true") ? true : false; 
+		boolean czyNiedz = niedz.equals("true") ? true : false;
+		
+		return dzienTygodniaIGodzina(czyPon, czyWt, czySr, czyCzw, czyPia, czySob, czyNiedz, minutaPoczatkowy, godzinaPoczatkowy, minutaKoncowy, godzinaKoncowy);
+	}
+	
+	
+	public boolean dzienTygodniaIGodzina(boolean czyPon, boolean czyWt, boolean czySr, boolean czyCzw, 
+										boolean czyPia, boolean czySob, boolean czyNiedz, int minutaPoczatkowy,
+										int godzinaPoczatkowy, int minutaKoncowy, int godzinaKoncowy){
 
 		/*pobranie z bazy  przedzialow czasowych*/
-		
+		/*
 		boolean czyPon=false;
 		boolean czyWt=false;
 		boolean czySr=false; 
