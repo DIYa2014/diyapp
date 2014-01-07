@@ -144,7 +144,7 @@ public class DbMethods {
 	public String[] convertParamsIntoTab(String params){
 		String [] p = params.split("/~/");
 		return p;
-		
+		 
 	}
 	
 	//updateDIYa wywo³aj, gdy na koncu klikniesz zapisz lub w momencie zmiany aktywnoœci

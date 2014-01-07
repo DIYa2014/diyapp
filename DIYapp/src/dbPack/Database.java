@@ -965,7 +965,7 @@ ADDED_CONDITIONS_KEY_EXECUTED_CONDITION*/
 			}
 			else
 				addedActions += "," + addedActions;
-			
+			 
 			ContentValues updateValues = new ContentValues();
 			updateValues.put(TASKS_KEY_ADDED_ACTIONS_ID, addedActions);
 			int iloscZaktualizowanych = db.update(DB_TASKS_TABLE, updateValues, where, null);
