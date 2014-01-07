@@ -166,11 +166,10 @@ public class DbMethods {
 	
 	public boolean updateAddedCondition(long idCon, String params){
 		return db.updateAddedCondition(idCon, params);
-
 	}
 	
-	public boolean updateAddedAction(long idAct, String params){
-		return db.updateAddedAction(idAct, params, "");//trzeci parametr to before, bede tego uzywal w serwisie
+	public boolean updateAddedAction(long idAddAct, String params){
+		return db.updateAddedAction(idAddAct, params, "");//trzeci parametr to before, bede tego uzywal w serwisie
 	}
 	
 	public boolean deleteAddedConditionFromTask(long idAddCon, long idDIYa){
@@ -179,4 +178,17 @@ public class DbMethods {
 	public boolean deleteAddedActionFromTask(long idAddAct, long idDIYa){
 		return db.deleteAddedAction(idAddAct, idDIYa);
 	}
+	
+	public boolean updateAddedAction(long idAddAct, String params, String before){
+		return db.updateAddedAction(idAddAct, params, before);
+	}
+	
+	public boolean setExecutedAction(long idAddAct, boolean exec){
+		return db.setExecutedAction(idAddAct, exec);
+	}
+	
+	public boolean setExecutedCondition(long idAddCon, boolean exec){
+		return db.setExecutedCondition(idAddCon, exec);
+	}
+	
 }

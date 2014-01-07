@@ -1,7 +1,11 @@
 package com.karbar.service;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Timer;
 import java.util.TimerTask;
+
+import com.karbar.diyapp.utils.Constant;
 
 import dbPack.DbMethods;
 
@@ -16,6 +20,8 @@ import android.widget.Toast;
 public class Execute extends Service{
 	private static final String TAG = "MyService";
 	DbMethods dbMethods;
+	Action act;
+	Trigger tr;
 	
 	@Override
 	public IBinder onBind(Intent intent) {
@@ -26,6 +32,8 @@ public class Execute extends Service{
 	public void onCreate() {
 		Toast.makeText(this, "My Service Created", Toast.LENGTH_LONG).show();
 		 dbMethods = new DbMethods(getApplicationContext());
+		 act = new Action(getApplicationContext(), dbMethods);
+		 tr = new Trigger(getApplicationContext(), dbMethods);
 	}
 	
 
@@ -45,6 +53,8 @@ public class Execute extends Service{
 		Log.d("kkams", "onStart");
 		okresowewykonywanie();
 	}
+	
+	
 	private void okresowewykonywanie() {
 
 		Timer timer = new Timer();
@@ -53,6 +63,40 @@ public class Execute extends Service{
 			public void run() {
 
 				Log.d("kkams", "service isRun? "+ dbMethods.isServiceRunning());
+				
+				ArrayList<HashMap<String,String>> DIYas = dbMethods.getDIYaList();
+				
+				for(HashMap<String, String> diya : DIYas){
+					if(diya.get(Constant.TASKS_KEY_ACTIVE).equals("1")){//jeœli DIYa jest aktywna
+						ArrayList<ArrayList<HashMap<String, String>>> AddedConditions = dbMethods.getConditonLists(Long.getLong(diya.get(Constant.TASKS_KEY_ID)));
+						for(ArrayList<HashMap<String, String>> groupsWithAddedConditions : AddedConditions){
+							if(!groupsWithAddedConditions.isEmpty()){
+								if(czyGrupaWarunkowPrawdziwa(groupsWithAddedConditions)){//jesli grupa warunkow prawdziwa
+									if(groupsWithAddedConditions.get(0).get(Constant.ADDED_CONDITIONS_KEY_EXECUTED_CONDITION).equals("0")){//jesli nie bylo wykonane, pobieram pierwszy bo i tak we wszystkich jest to samo
+										//wykonaj i zmien na wykonane
+										wykonajAkcjeIZmienIchStatusNaWykonane(dbMethods.getActionsLists(Long.getLong(diya.get(Constant.TASKS_KEY_ID))), Long.getLong(diya.get(Constant.TASKS_KEY_ID)));
+										break;
+									}
+									else{//bylo wykonane wczesniej
+										//nic nie rob - tak bedzie w wypadku, gdy zakladamy, ze jak juz raz bylo cos wykonane, a teraz ta grupa nie jest juz prawdziwa, to przywracamy i nie sprawdzamy reszty
+										//d
+										break;
+									}
+								}
+								else if(!czyGrupaWarunkowPrawdziwa(groupsWithAddedConditions) && groupsWithAddedConditions.get(0).get(Constant.ADDED_CONDITIONS_KEY_EXECUTED_CONDITION).equals("0")){//jesli bylo prawdziwe, ale juz nie jest
+									//zmien na niewykonane
+									//przywroc stan z przed wykonania
+									przywrocAkcjeIZmienStatusNaNiewykonane(dbMethods.getActionsLists(Long.getLong(diya.get(Constant.TASKS_KEY_ID))), Long.getLong(diya.get(Constant.TASKS_KEY_ID)));
+								}
+								else{//jesli nie jest prawdziwe
+									
+								}
+							}
+						}//koniec grupy z warunkami
+					}//koniec pojedynczej DIYa
+				}//koniec listy DIYas
+				
+				
 				/*int idWarunku = 0;
 				int idWiersza;
 				int warunek = 0;
@@ -162,5 +206,95 @@ public class Execute extends Service{
 		
 		};
 		timer.scheduleAtFixedRate(timerTask, 100, 6000);
+	}
+	
+	
+	private boolean czyGrupaWarunkowPrawdziwa(ArrayList<HashMap<String, String>> groupsWithAddedConditions){
+		boolean ret = true;
+		for(HashMap<String, String> AddedCondition : groupsWithAddedConditions){
+			int id_con = Integer.valueOf(AddedCondition.get(Constant.ADDED_CONDITIONS_KEY_CONDITION_ID));
+			String id_add_con = AddedCondition.get(Constant.ADDED_CONDITIONS_KEY_ID_ADDEDD_CONDITIONS);
+			String params = AddedCondition.get(Constant.ADDED_CONDITIONS_KEY_PARAMETERS_CONDITIONS);
+			switch (id_con) {
+			case (int) Constant.CONDITION_WIFI:
+				boolean czy = tr.sprawdzWifi(id_add_con, params);
+				if(!czy){ret=false;}
+				//i tak w ka¿dym
+				break;
+			case (int) Constant.CONDITION_DATE:
+				boolean czy1 = tr.sprawdzDate(id_add_con, params);
+				if(!czy1){ret=false;}
+				//i tak w ka¿dym
+				break;
+				
+			case (int) Constant.CONDITION_GPS:
+				boolean czy2 = tr.sprawdzGPS(id_add_con, params);
+				if(!czy2){ret=false;}
+				//i tak w ka¿dym
+				break;
+				
+			case (int) Constant.CONDITION_TIME:
+				boolean czy3 = tr.sprawdzCzas(id_add_con, params);
+				if(!czy3){ret=false;}
+				//i tak w ka¿dym
+				break;
+				
+			default:
+				break;
+			}
+			
+		}//koniec dodanego warunku
+		
+		if(ret){//czyli cala grupa prawdziwa
+			for(HashMap<String, String> AddedCondition : groupsWithAddedConditions){
+				String id_add_con = AddedCondition.get(Constant.ADDED_CONDITIONS_KEY_ID_ADDEDD_CONDITIONS);
+				boolean wyk = dbMethods.setExecutedCondition(Long.valueOf(id_add_con), true);
+			}
+		}
+		
+		return ret;
+	}
+	
+	public boolean wykonajAkcjeIZmienIchStatusNaWykonane(ArrayList<HashMap<String, String>> AddedActions, long idDIYa){
+		
+		for(HashMap<String, String> addedAction : AddedActions){
+			int id_cact = Integer.valueOf(addedAction.get(Constant.ADDED_ACTIONS_KEY_ACTION_ID));
+			String id_add_act = addedAction.get(Constant.ADDED_ACTIONS_KEY_ID_ADDEDD_ACTIONS);
+			String params = addedAction.get(Constant.ADDED_ACTIONS_KEY_PARAMETERS_ACTIONS);
+			switch (id_cact) {
+			case (int) Constant.ACTION_WIFI:
+				boolean czy = act.zmienStanWifi(id_add_act, params, false);//false - nie przywracam
+				boolean wyk = dbMethods.setExecutedAction(Long.valueOf(id_add_act), true);
+				//i tak w ka¿dym
+				break;
+
+			default:
+				break;
+			}
+			
+		}
+		
+		return false;
+	}
+	
+	public boolean przywrocAkcjeIZmienStatusNaNiewykonane(ArrayList<HashMap<String, String>> AddedActions, long idDIYa){
+		for(HashMap<String, String> addedAction : AddedActions){
+			int id_cact = Integer.valueOf(addedAction.get(Constant.ADDED_ACTIONS_KEY_ACTION_ID));
+			String id_add_act = addedAction.get(Constant.ADDED_ACTIONS_KEY_ID_ADDEDD_ACTIONS);
+			String before = addedAction.get(Constant.ADDED_ACTIONS_KEY_BEFORE_ACTION);
+			switch (id_cact) {
+			case (int) Constant.ACTION_WIFI:
+				boolean czy = act.zmienStanWifi(id_add_act, before, true);//true - przywracam
+				boolean wyk = dbMethods.setExecutedAction(Long.valueOf(id_add_act), false);
+				//i tak w ka¿dym
+				break;
+
+			default:
+				break;
+			}
+			
+		}
+		
+		return false;
 	}
 }
