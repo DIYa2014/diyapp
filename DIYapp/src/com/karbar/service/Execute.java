@@ -228,14 +228,14 @@ public class Execute extends Service{
 			
 		}//koniec dodanego warunku
 		
-		if(!ret){
+		if(ret){//czyli cala grupa prawdziwa
 			for(HashMap<String, String> AddedCondition : groupsWithAddedConditions){
 				String id_add_con = AddedCondition.get(Constant.ADDED_CONDITIONS_KEY_ID_ADDEDD_CONDITIONS);
 				boolean wyk = dbMethods.setExecutedCondition(Long.valueOf(id_add_con), true);
 			}
 		}
 		
-		return !ret;
+		return ret;
 	}
 	
 	public boolean wykonajAkcjeIZmienIchStatusNaWykonane(ArrayList<HashMap<String, String>> AddedActions, long idDIYa){
