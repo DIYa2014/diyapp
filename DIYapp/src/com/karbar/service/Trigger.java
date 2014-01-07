@@ -502,14 +502,31 @@ public class Trigger extends Activity{
 		return false;
 	}
 	
-	public boolean czyWDanymMiejscu(int idDIY){
+	public boolean sprawdzGPS(String id_add_con, String params){
+		String [] parametry = dbMethods.convertParamsIntoTab(params);
+		
+		String lat = parametry[0];
+		String lng = parametry[1];
+		String rad = parametry[2];
+		String outside = parametry[3];
+		
+		double latitude_szukane = Double.valueOf(lat);
+		double longitude_szukane = Double.valueOf(lng);
+		double promien_szukane = Double.valueOf(rad);//w metrach
+		boolean czyNaZewnatrz = outside.equals("true") ? true : false;
+		
+		return czyWDanymMiejscu(latitude_szukane, longitude_szukane, promien_szukane, czyNaZewnatrz);
+	}
+	
+	public boolean czyWDanymMiejscu(double latitude_szukane, double longitude_szukane, double promien_szukane, 
+									boolean czyNaZewnatrz){
 		
 		/*pobranie z bazy*/
-		
+		/*
 		double latitude_szukane = 0;
 		double longitude_szukane = 0;
-		double promien_szukane = 0;
-		
+		double promien_szukane = 0;//w metrach
+		/*
 		Cursor c = mDbHelper.fetchAllDiy();
 		if (c.moveToFirst()) {
 			do {
@@ -548,10 +565,24 @@ public class Trigger extends Activity{
 		double latitude = location.getLatitude();//n-s
 		double longitude = location.getLongitude();//e-w
 		
-		promien_szukane /= 1000;
+		//promien_szukane /= 1000;
 		
-		if(Math.abs(latitude-latitude_szukane) < promien_szukane && Math.abs(longitude-longitude_szukane) < promien_szukane){
-			return true;
+		Location locationA = new Location("Obecny");
+
+		locationA.setLatitude(latitude);
+		locationA.setLongitude(longitude);
+
+		Location locationB = new Location("Szukany");
+
+		locationB.setLatitude(latitude_szukane);
+		locationB.setLongitude(longitude_szukane);
+
+		double distance = locationA.distanceTo(locationB);
+		
+		
+		if(distance < promien_szukane){
+			if(!czyNaZewnatrz)
+				return true;
 		}
 		
 		return false;
