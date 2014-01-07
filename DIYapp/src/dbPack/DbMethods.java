@@ -70,8 +70,7 @@ public class DbMethods {
 	} 
 	
 	public long addTimeCondition(long idDIYa, int groupId, int timeSinceHour, int timeSinceMinutes, int timeToHour, int timeToMinutes, boolean [] days){
-		//Log.d("kkams","Od: "+timeSinceHour+":"+timeSinceMinutes);
-    	Log.d("kkams",""+groupId);
+		
     	String days_boolean= "";
     	for(int i=0;i < days.length -1; i++){
     		days_boolean += days[i]+",";
@@ -121,25 +120,25 @@ public class DbMethods {
 		
 		String params = tryb + "/~/" + ssid;
 		
-		return db.insertAddedAction(Constant.ACTION_WIFI, idDIYa, params);
+		return db.insertAddedAction(Constant.ID_WIFI, idDIYa, params);
 	}
 	public long addVibrationAction(long idDIYa){
 		
 		String params = "";
 		
-		return db.insertAddedAction(Constant.ACTION_VIBRATION, idDIYa, params);
+		return db.insertAddedAction(Constant.ID_WIBRATION, idDIYa, params);
 	}
 	public long addSoundAction(long idDIYa, int soundLevel){
 			
 		String params = ""+ soundLevel;
 		
-		return db.insertAddedAction(Constant.ACTION_SOUND, idDIYa, params);
+		return db.insertAddedAction(Constant.ID_SOUND_LEVEL, idDIYa, params);
 	}
 	public long addnotificationAction(long idDIYa, String tickerText, String notificationTitle, String notificationText){
 			
 	String params = tickerText + "/~/" + notificationTitle + "/~/" + notificationText;
 		
-		return db.insertAddedAction(Constant.ACTION_NOTIFICATION, idDIYa, params);
+		return db.insertAddedAction(Constant.ID_NOTIFICATION, idDIYa, params);
 	}
 	
 	public String[] convertParamsIntoTab(String params){

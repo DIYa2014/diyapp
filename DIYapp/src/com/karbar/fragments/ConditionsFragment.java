@@ -86,7 +86,7 @@ public class ConditionsFragment extends Fragment{
 		 howManyEmptyElementsOnEachList = howManyEmptyElementsOnList();
 		 mButton1 = (RelativeLayout) mainView.findViewById(R.id.conditionsButtonRelative);
 		 mButton2 = (RelativeLayout) mainView.findViewById(R.id.actionsButtonRelative);
-		 mButton1.setOnClickListener(changeToConditionsListener);
+		 //mButton1.setOnClickListener(changeToConditionsListener);
 		 mButton2.setOnClickListener(changeToActionsListener);
 	 return mainView;
 	 }
@@ -310,7 +310,7 @@ public class ConditionsFragment extends Fragment{
 	     	if(!map.get(Constant.KEY_ID).equals("-1")){
 		     	final String uniqeID = map.get(Constant.KEY_UNIQE_ID);
 		     	final int groupID = Integer.parseInt(map.get(Constant.KEY_GROUP_ID));
-		     	
+		     	final int condition_id = Integer.parseInt(map.get(Constant.KEY_ID));
 		     	final int position = pos;
 				ActionItem editItem 		= new ActionItem(Constant.QUICKACTION_EDIT, getString(R.string.quickaction_edit), getResources().getDrawable(R.drawable.ic_edit));
 				ActionItem removeItem 	= new ActionItem(Constant.QUICKACTION_REMOVE, getString(R.string.quickaction_remove), getResources().getDrawable(R.drawable.ic_delete));
@@ -327,6 +327,22 @@ public class ConditionsFragment extends Fragment{
 						ActionItem actionItem = quickAction.getActionItem(pos);
 						
 						if (actionId == Constant.QUICKACTION_EDIT) {
+							switch (condition_id) {
+							case Constant.ID_TIME:
+								runDialogTimeUpdate(Integer.parseInt(uniqeID));
+								break;
+							case Constant.ID_CALENDAR:
+								runDialogDateUpdate(Integer.parseInt(uniqeID));
+								break;
+							case Constant.ID_WIFI:
+								runDialogWiFiUpdate(Integer.parseInt(uniqeID));
+								break;
+							case Constant.ID_GPS:
+								runDialogGPSUpdate(Integer.parseInt(uniqeID));
+								break;
+							
+							}
+							
 							
 						} 
 						else if(actionId == Constant.QUICKACTION_REMOVE) {
@@ -452,6 +468,176 @@ public class ConditionsFragment extends Fragment{
 		if(elemId == -1)
 			removeElemfromList(a.getCount()-1, id);
 	}
+	public void runDialogTimeUpdate(int uniqeID){
+		HashMap<String, String> hm = new HashMap<String, String>();
+		hm = dbMethods.getOneAddedConditionFromDatabase(uniqeID);
+		String params = hm.get(Constant.ADDED_CONDITIONS_KEY_PARAMETERS_CONDITIONS);
+		String [] pt = params.split("/~/");
+		
+		dialog = new Dialog(getActivity(), R.style.MyDialogTheme);
+		dialog.setContentView(R.layout.condition_time);
+		dialog.show();
+		final TimePicker tpSince = (TimePicker)dialog.findViewById(R.id.timeSince);
+		tpSince.setIs24HourView(true);
+		final TimePicker tpTo = (TimePicker)dialog.findViewById(R.id.timeTo);
+
+		
+		
+		tpTo.setIs24HourView(true);
+		
+		tpSince.setCurrentHour(Integer.parseInt(pt[0]));
+		tpSince.setCurrentMinute(Integer.parseInt(pt[1]));
+		tpTo.setCurrentHour(Integer.parseInt(pt[2]));
+		tpTo.setCurrentMinute(Integer.parseInt(pt[3]));
+		
+		final CheckBox []cb = new CheckBox[7];
+		String [] cb_string = pt[4].split(",");
+		cb[0] = (CheckBox)dialog.findViewById(R.id.day1);
+		cb[1] = (CheckBox)dialog.findViewById(R.id.day2);
+		cb[2] = (CheckBox)dialog.findViewById(R.id.day3);
+		cb[3] = (CheckBox)dialog.findViewById(R.id.day4);
+		cb[4] = (CheckBox)dialog.findViewById(R.id.day5);
+		cb[5] = (CheckBox)dialog.findViewById(R.id.day6);
+		cb[6] = (CheckBox)dialog.findViewById(R.id.day7);
+		
+		for(int i=0; i<cb.length; i++ ){
+			if(cb_string[i].equals("true")){
+				cb[i].setChecked(true);
+			}
+		}
+		
+		
+		Button ok, anuluj;
+		ok = (Button)dialog.findViewById(R.id.buttonOkTime);
+		final int unixeid_tmp =uniqeID;
+		
+		anuluj = (Button)dialog.findViewById(R.id.buttonAnulujTime);
+		anuluj.setOnClickListener(anulujListener);
+		ok.setOnClickListener(new OnClickListener() {
+		    public void onClick(View v) {
+		    	String params = "" + tpSince.getCurrentHour() + "/~/"+ tpSince.getCurrentMinute() + "/~/"+ tpTo.getCurrentHour()+ "/~/"+ tpTo.getCurrentMinute() + "/~/"+ cb[0].isChecked()+","+ cb[1].isChecked()+","+ cb[2].isChecked()+","+ cb[3].isChecked()+","+ cb[4].isChecked()+","+ cb[5].isChecked()+","+ cb[6].isChecked()+",";
+		    	dbMethods.updateAddedCondition(unixeid_tmp, params);
+		    	dialog.dismiss();
+		    }});
+	}
+	
+	public void runDialogDateUpdate(int uniqeID){
+		
+		HashMap<String, String> hm = new HashMap<String, String>();
+		hm = dbMethods.getOneAddedConditionFromDatabase(uniqeID);
+		String params = hm.get(Constant.ADDED_CONDITIONS_KEY_PARAMETERS_CONDITIONS);
+		String [] pt = params.split("/~/");
+		
+		dialog = new Dialog(getActivity(), R.style.MyDialogTheme);
+		dialog.setContentView(R.layout.condition_date);
+		dialog.show();
+		
+		Button ok, anuluj;
+		ok = (Button)dialog.findViewById(R.id.buttonOkDate);
+		anuluj = (Button)dialog.findViewById(R.id.buttonAnulujDate);
+		final int uniqeIdFinal = uniqeID;
+		final DatePicker since = (DatePicker)dialog.findViewById(R.id.datePickerSince);
+		final DatePicker to = (DatePicker)dialog.findViewById(R.id.datePickerTo);
+		since.init(Integer.parseInt(pt[2]), Integer.parseInt(pt[1]), Integer.parseInt(pt[0]), null);
+		to.init(Integer.parseInt(pt[5]), Integer.parseInt(pt[4]), Integer.parseInt(pt[3]), null);
+		
+		
+		anuluj.setOnClickListener(anulujListener);
+		ok.setOnClickListener(new OnClickListener() {
+		    public void onClick(View v) {
+		    	String params = "" + since.getDayOfMonth() + "/~/" + since.getMonth() + "/~/" + since.getYear() + "/~/" + to.getDayOfMonth() + "/~/" + to.getMonth() + "/~/" + to.getYear();
+		    	
+		    	dbMethods.updateAddedCondition(uniqeIdFinal, params);
+		    	dialog.dismiss();
+		    }});
+		
+	}
+	
+	public void runDialogWiFiUpdate(int uniqeID){
+		HashMap<String, String> hm = new HashMap<String, String>();
+		hm = dbMethods.getOneAddedConditionFromDatabase(uniqeID);
+		String params = hm.get(Constant.ADDED_CONDITIONS_KEY_PARAMETERS_CONDITIONS);
+		String [] pt = params.split("/~/");
+		
+		dialog = new Dialog(getActivity(), R.style.MyDialogTheme);
+		dialog.setContentView(R.layout.condition_wifi);
+		dialog.show();
+		
+		final Switch wifi;
+		wifi = (Switch) dialog.findViewById(R.id.switchWiFi);
+		final LinearLayout wiFiNameLayout;
+		
+			
+		wiFiNameLayout = (LinearLayout)dialog.findViewById(R.id.ifWiFiOn);
+		OnCheckedChangeListener switchListener = new OnCheckedChangeListener() {
+			
+			@Override
+			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+				if(isChecked)
+					wiFiNameLayout.setVisibility(View.VISIBLE);
+				else
+					wiFiNameLayout.setVisibility(View.GONE);
+					
+				
+			}
+		};
+		
+		wifi.setOnCheckedChangeListener(switchListener);
+		
+		
+		final EditText et = (EditText)dialog.findViewById(R.id.wifiName);
+		if(pt[0].equals("true")){
+			wifi.setChecked(true);
+			et.setText(pt[1]);
+		}
+		Button ok, anuluj;
+		ok = (Button)dialog.findViewById(R.id.buttonOkWifi);
+		anuluj = (Button)dialog.findViewById(R.id.buttonAnulujWifi);
+		final int uniqeIdFinal = uniqeID;
+		anuluj.setOnClickListener(anulujListener);
+		ok.setOnClickListener(new OnClickListener() {
+		    public void onClick(View v) {
+		    	String params = "" + wifi.isChecked() + "/~/" + et.getText().toString();
+		    	dbMethods.updateAddedCondition(uniqeIdFinal, params);
+		    	dialog.dismiss();
+		    }
+		    }
+		);
+	}
+	
+	public void runDialogGPSUpdate(int uniqeID){
+		HashMap<String, String> hm = new HashMap<String, String>();
+		hm = dbMethods.getOneAddedConditionFromDatabase(uniqeID);
+		String params = hm.get(Constant.ADDED_CONDITIONS_KEY_PARAMETERS_CONDITIONS);
+		String [] pt = params.split("/~/");
+		
+		dialog = new Dialog(getActivity(), R.style.MyDialogTheme);
+		dialog.setContentView(R.layout.condition_gps);
+		dialog.show();
+
+		final EditText etX = (EditText)dialog.findViewById(R.id.xGPS);
+		final EditText etY = (EditText)dialog.findViewById(R.id.yGPS);
+		final EditText etR = (EditText)dialog.findViewById(R.id.rGPS);
+		final CheckBox reversed = (CheckBox)dialog.findViewById(R.id.outsideGPS);
+		
+		etX .setText(pt[0]);
+		etY .setText(pt[1]);
+		etR .setText(pt[2]);
+		if(pt[3].equals("true"))
+			reversed.setChecked(true);
+		Button ok, anuluj;
+		ok = (Button)dialog.findViewById(R.id.buttonOkGPS);
+		anuluj = (Button)dialog.findViewById(R.id.buttonAnulujGPS);
+		final int uniqeIdFinal = uniqeID;
+		anuluj.setOnClickListener(anulujListener);
+		ok.setOnClickListener(new OnClickListener() {
+		    public void onClick(View v) {
+		    	String params = "" + etX.getText().toString() + "/~/" + etY.getText().toString() + "/~/" + etR.getText().toString() + "/~/" + reversed.isChecked();
+		    	dbMethods.updateAddedCondition(uniqeIdFinal, params);
+		    	dialog.dismiss();
+		    }});
+	}
+	
 	public void runDialogTime(int idGroup){
 		dialog = new Dialog(getActivity(), R.style.MyDialogTheme);
 		dialog.setContentView(R.layout.condition_time);
@@ -538,7 +724,7 @@ public class ConditionsFragment extends Fragment{
 		anuluj.setOnClickListener(anulujListener);
 		ok.setOnClickListener(new OnClickListener() {
 		    public void onClick(View v) {
-		    	long conditionID = dbMethods.addWiFiCondition(diyaID, idGroupFinal, wifi.isActivated(), et.getText().toString());
+		    	long conditionID = dbMethods.addWiFiCondition(diyaID, idGroupFinal, wifi.isChecked(), et.getText().toString());
 		    	dialog.dismiss();
 				addElemToList(Constant.ID_WIFI, idGroupFinal, conditionID);
 				removeEmptyElem(idGroupFinal);

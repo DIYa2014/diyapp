@@ -88,10 +88,32 @@ public class GridViewAdapter extends BaseAdapter {
     	
     	
     	id=Integer.parseInt(map.get(Constant.KEY_ID));
-        ico = activity.getResources().getDrawable(Integer.parseInt(map.get(Constant.KEY_ICO)));
-        
-        imageView=(ImageView)vi.findViewById(R.id.menu_element_ico); // ico image
-        imageView.setImageDrawable(ico);
+    	Log.d("kkams", "id action: "+id);
+    	if(map.get(Constant.KEY_ID) != null){
+	    	id=Integer.parseInt(map.get(Constant.KEY_ID));
+	    	switch(id){
+		    	case Constant.ID_WIFI:
+			        ico = activity.getResources().getDrawable(Constant.ICO_WIFI);
+		    		break;
+		    	case Constant.ID_NOTIFICATION:
+			        ico = activity.getResources().getDrawable(Constant.ICO_NOTIFICATION);
+		    		break;
+		    	case Constant.ID_SOUND_LEVEL:
+			        ico = activity.getResources().getDrawable(Constant.ICO_SOUND_LEVEL);
+		    		break;
+		    	case Constant.ID_WIBRATION:
+			        ico = activity.getResources().getDrawable(Constant.ICO_WIBRATION);
+		    		break;
+		    	default:
+		    		ico = activity.getResources().getDrawable(Constant.ICO_EMPTY);
+		    		break;
+	    	}
+	       
+	        
+	    	imageView=(ImageView)vi.findViewById(R.id.menu_element_ico); // ico image
+	    	imageView.setImageDrawable(ico);
+	        }
+    	
         imageView.setLayoutParams(new GridView.LayoutParams(120, 120));
         imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
         imageView.setPadding(8, 8, 8, 8);

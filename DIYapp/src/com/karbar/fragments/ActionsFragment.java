@@ -3,6 +3,9 @@ package com.karbar.fragments;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import net.londatiga.android.ActionItem;
+import net.londatiga.android.QuickAction;
+
 import android.app.Activity;
 import android.app.Dialog;
 import android.graphics.drawable.Drawable;
@@ -10,6 +13,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -86,7 +90,7 @@ public class ActionsFragment extends Fragment{
 		 mButton2 = (RelativeLayout) mView.findViewById(R.id.actionsButtonRelative);
 		 
 		 mButton1.setOnClickListener(changeToConditionsListener);
-		 mButton2.setOnClickListener(changeToActionsListener);
+		 //mButton2.setOnClickListener(changeToActionsListener);
 		 
 	 return mView;
 	 }
@@ -106,9 +110,13 @@ public class ActionsFragment extends Fragment{
 			bundle = getArguments();
 				if (bundle !=null){
 					diyaID = Integer.parseInt(String.valueOf(bundle.getLong(Constant.KEY_DIYAID)));
-					if(!dbMethods.isDIYaEmpty(diyaID)){
-						dbMethods.getActionsLists(diyaID);
-					}
+					Log.d("kkams", "is empty: "+dbMethods.isDIYaEmpty(diyaID));
+					
+					
+					Log.d("kkams", "actions: "+dbMethods.getActionsLists(diyaID).toString());
+					
+					createExistingGrid(dbMethods.getActionsLists(diyaID));
+					
 					
 				}
 				
@@ -130,15 +138,12 @@ public class ActionsFragment extends Fragment{
 		mGrid = (GridView)getActivity().findViewById(R.id.action_grid);
 		optionList2 = new ArrayList<HashMap<String, String>>();
 		
-		
-		
-		
-	
 	    mGridAdapter=new GridViewAdapter(getActivity(), optionList2);
 	    mGrid.setAdapter(mGridAdapter);
 	    
 	    
 	}
+	
 	private void createExistingGrid(ArrayList<HashMap<String, String>>  list){
 		mGrid = (GridView)getActivity().findViewById(R.id.action_grid);
 	    mGridAdapter=new GridViewAdapter(getActivity(), list);
@@ -197,57 +202,18 @@ public class ActionsFragment extends Fragment{
 	}
 	
 	
-	public void add( int id, int ico, ArrayList<HashMap<String, String>> optionList){
+	public void add( int id, int uniqeID, ArrayList<HashMap<String, String>> optionList){
 		
 		HashMap<String, String> map = new HashMap<String, String>(); 
 	    map.put(Constant.KEY_ID, Integer.toString(id));
-	    map.put(Constant.KEY_ICO, Integer.toString(ico));
+	    map.put(Constant.KEY_UNIQE_ID, Integer.toString(uniqeID));
 	    optionList.add(map);
+	    mGridAdapter=new GridViewAdapter(getActivity(), optionList);
+	    mGrid.setAdapter(mGridAdapter);
+	    mGrid.setOnItemClickListener(onActionItemClickListener);
 	}
 	
-	View.OnClickListener addConditionButtonListener = new View.OnClickListener() {
-		@Override
-		public void onClick(View v) {
-			
-	        /*
-			ArrayList<HashMap<String, String>> list = new ArrayList<HashMap<String, String>>();
 	
-			add(0, android.R.drawable.ic_input_get, list); 
-			add(1, android.R.drawable.ic_input_delete, list);
-			add(2, android.R.drawable.ic_menu_day, list);
-			add(3, android.R.drawable.ic_secure, list);
-			add(4, android.R.drawable.ic_menu_zoom, list);
-			add(5, android.R.drawable.ic_input_add, list);
-			add(0, android.R.drawable.ic_input_get, list); 
-			add(1, android.R.drawable.ic_input_delete, list);
-			add(2, android.R.drawable.ic_menu_day, list);
-			add(3, android.R.drawable.ic_secure, list);
-			add(4, android.R.drawable.ic_menu_zoom, list);
-			add(5, android.R.drawable.ic_input_add, list);add(0, android.R.drawable.ic_input_get, list); 
-			add(1, android.R.drawable.ic_input_delete, list);
-			add(2, android.R.drawable.ic_menu_day, list);
-			add(3, android.R.drawable.ic_secure, list);
-			add(4, android.R.drawable.ic_menu_zoom, list);
-			add(5, android.R.drawable.ic_input_add, list);
-			addGroup(list);
-			*/
-			/*test*/
-			/*
-			if(groupCounter == 4){
-				addElemToList(android.R.drawable.ic_media_play, 0);
-				addElemToList(android.R.drawable.ic_menu_delete, 0);
-				addElemToList(android.R.drawable.ic_media_play, 0);
-				addElemToList(android.R.drawable.ic_menu_delete, 0);
-				addElemToList(android.R.drawable.ic_media_play, 0);
-				addElemToList(android.R.drawable.ic_menu_delete, 0);
-				addElemToList(android.R.drawable.ic_media_play, 0);
-				addElemToList(android.R.drawable.ic_menu_delete, 0);
-				removeElemfromList(1, 1);
-				removeElemfromList(2, 1);
-				removeElemfromList(3, 1);
-			}*/
-		}
-	};
 	
 	public AdapterView.OnItemLongClickListener onLongClick = new AdapterView.OnItemLongClickListener() {
 	
@@ -368,6 +334,66 @@ public class ActionsFragment extends Fragment{
 		    	dialog.cancel();
 		    }
 		};
+		
+		public AdapterView.OnItemClickListener onActionItemClickListener = new AdapterView.OnItemClickListener() {
+
+			@Override
+			public void onItemClick(AdapterView<?> av, View v, int pos, long id) {
+				
+				/*final GridViewAdapter a = (GridViewAdapter)av.getAdapter();
+		     	HashMap<String, String> map = new HashMap<String, String>();
+		     	map = a.data.get(pos);
+			     	final String uniqeID = map.get(Constant.KEY_UNIQE_ID);
+			     	final int condition_id = Integer.parseInt(map.get(Constant.KEY_ID));
+			     	final int position = pos;*/
+					ActionItem editItem 		= new ActionItem(Constant.QUICKACTION_EDIT, getString(R.string.quickaction_edit), getResources().getDrawable(R.drawable.ic_edit));
+					ActionItem removeItem 	= new ActionItem(Constant.QUICKACTION_REMOVE, getString(R.string.quickaction_remove), getResources().getDrawable(R.drawable.ic_delete));
+			       
+					final QuickAction mQuickAction 	= new QuickAction(getActivity());
+					
+					mQuickAction.addActionItem(editItem);
+					mQuickAction.addActionItem(removeItem);
+					mQuickAction.show(v);
+					/*
+					mQuickAction.setOnActionItemClickListener(new QuickAction.OnActionItemClickListener() {
+						@Override
+						public void onItemClick(QuickAction quickAction, int pos, int actionId) {
+							ActionItem actionItem = quickAction.getActionItem(pos);
+							
+							if (actionId == Constant.QUICKACTION_EDIT) {
+								switch (condition_id) {
+								case Constant.ID_TIME:
+									//runDialogTimeUpdate(Integer.parseInt(uniqeID));
+									break;
+								case Constant.ID_CALENDAR:
+									//runDialogDateUpdate(Integer.parseInt(uniqeID));
+									break;
+								case Constant.ID_WIFI:
+									//runDialogWiFiUpdate(Integer.parseInt(uniqeID));
+									break;
+								case Constant.ID_GPS:
+									//runDialogGPSUpdate(Integer.parseInt(uniqeID));
+									break;
+								
+								}
+								
+								
+							} 
+							else if(actionId == Constant.QUICKACTION_REMOVE) {
+								//HorizontalListView lv = (HorizontalListView)getActivity().findViewById(groupID);
+								//lv.remove(position);
+								//lv.setAdapter(lv.getAdapter());
+							    //lv.setOnItemClickListener(onConditionItemClickListener);
+							    //dbMethods.deleteAddedConditionFromTask(Long.parseLong(uniqeID),diyaID);
+							    
+							} 
+						}
+					});
+					*/
+		     	}
+			
+			
+		};
 	
 		public void runDialogWiFi(){
 			dialog = new Dialog(getActivity(), R.style.MyDialogTheme);
@@ -401,12 +427,9 @@ public class ActionsFragment extends Fragment{
 			anuluj.setOnClickListener(anulujListener);
 			ok.setOnClickListener(new OnClickListener() {
 			    public void onClick(View v) {
-			    	//DbMethods.addWiFiCondition( wifi.isActivated(), et.getText().toString());
-					add( 0, draggedImgId, optionList2);
-					mGrid.setAdapter(mGridAdapter);
 					int tryb = 0;
 					String ssid ="";
-					if(wifi.isActivated()){
+					if(wifi.isChecked()){
 						tryb = 1;
 						if(!et.getText().toString().isEmpty()){
 							tryb = 2;
@@ -414,7 +437,9 @@ public class ActionsFragment extends Fragment{
 						}
 					}
 					long diyaID = bundle.getLong(Constant.KEY_DIYAID);
-					dbMethods.addWiFiAction(diyaID,tryb, ssid);
+					long uniqeID = dbMethods.addWiFiAction(diyaID,tryb, ssid);
+					add(Constant.ID_WIFI,  Integer.parseInt(Long.toString(uniqeID)), optionList2);
+					
 			    	dialog.dismiss();
 			    }
 			    }
@@ -435,11 +460,12 @@ public class ActionsFragment extends Fragment{
 			ok.setOnClickListener(new OnClickListener() {
 			    public void onClick(View v) {
 			    	//DbMethods.addWiFiCondition( wifi.isActivated(), et.getText().toString());
-					add( 0, draggedImgId, optionList2);
-					mGrid.setAdapter(mGridAdapter);
+					
 					long diyaID = bundle.getLong(Constant.KEY_DIYAID);
-					dbMethods.addnotificationAction(diyaID, ticker.getText().toString(), title.getText().toString(), content.getText().toString());
-			    	dialog.dismiss();
+					long uniqeID = dbMethods.addnotificationAction(diyaID, ticker.getText().toString(), title.getText().toString(), content.getText().toString());
+			    	
+			    	add(Constant.ID_NOTIFICATION, Integer.parseInt(Long.toString(uniqeID)), optionList2);
+					dialog.dismiss();
 			    }
 			    }
 			);
@@ -456,11 +482,9 @@ public class ActionsFragment extends Fragment{
 			anuluj.setOnClickListener(anulujListener);
 			ok.setOnClickListener(new OnClickListener() {
 			    public void onClick(View v) {
-			    	//DbMethods.addWiFiCondition( wifi.isActivated(), et.getText().toString());
-					add( 0, draggedImgId, optionList2);
-					mGrid.setAdapter(mGridAdapter);
 					long diyaID = bundle.getLong(Constant.KEY_DIYAID);
-					dbMethods.addSoundAction(diyaID, level.getProgress());
+					long uniqeID = dbMethods.addSoundAction(diyaID, level.getProgress());
+			    	add(Constant.ID_SOUND_LEVEL, Integer.parseInt(Long.toString(uniqeID)), optionList2);
 			    	dialog.dismiss();
 			    }
 			    }
@@ -468,10 +492,9 @@ public class ActionsFragment extends Fragment{
 		}
 		public void vibrationOn(){
 					
-					add( 0, draggedImgId, optionList2);
-					mGrid.setAdapter(mGridAdapter);
 					long diyaID = bundle.getLong(Constant.KEY_DIYAID);
-					dbMethods.addVibrationAction(diyaID);
+					long uniqeID = dbMethods.addVibrationAction(diyaID);
+			    	add(Constant.ID_WIBRATION, Integer.parseInt(Long.toString(uniqeID)), optionList2);
 			    	
 		}
 	}
