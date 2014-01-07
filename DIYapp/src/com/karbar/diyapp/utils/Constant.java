@@ -19,7 +19,7 @@ public class Constant {
 	public static final int ICO_CALENDAR = R.drawable.perm_group_calendar;
 	public static final int ICO_NOTIFICATION =  R.drawable.perm_group_user_dictionary;
 	public static final int ICO_WIBRATION=  R.drawable.ic_audio_ring_notif_vibrate;
-	public static final int ICO_SOUND_LEVEL=  R.drawable.ic_audio_ring_notif;
+	public static final int ICO_SOUND_LEVEL=  R.drawable.ic_audio_ring_notif; 
 	
 	public static final int ICO_EMPTY = R.drawable.empty;
 

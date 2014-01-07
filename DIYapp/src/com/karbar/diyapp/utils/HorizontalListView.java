@@ -61,7 +61,7 @@ public class HorizontalListView extends AdapterView<ListAdapter> {
 	private OnItemSelectedListener mOnItemSelected;
 	private OnItemClickListener mOnItemClicked;
 	private OnItemLongClickListener mOnItemLongClicked;
-	private boolean mDataChanged = false;
+	private boolean mDataChanged = false; 
 	
 	
 

@@ -47,7 +47,7 @@ public class GridViewAdapter extends BaseAdapter {
     public GridViewAdapter(Activity a, ArrayList<HashMap<String, String>> d) {
     	activity = a;
         data=d;
-        inflater = (LayoutInflater)activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        inflater = (LayoutInflater)activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE); 
 
         //onTouchListener = otl;
     }

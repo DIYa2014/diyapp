@@ -42,7 +42,7 @@ public class MenuListViewAdapter extends BaseAdapter {
     public View vi;
     private OnTouchListener onTouchListener;
     private boolean isMenu;
-    
+     
 
    
     public MenuListViewAdapter(Activity a, ArrayList<HashMap<String, String>> d, View list, View.OnTouchListener otl, boolean isMenu) {
