@@ -217,11 +217,28 @@ public class Execute extends Service{
 			String params = AddedCondition.get(Constant.ADDED_CONDITIONS_KEY_PARAMETERS_CONDITIONS);
 			switch (id_con) {
 			case (int) Constant.CONDITION_WIFI:
-				boolean czy = tr.sprawdzStanWifi(id_add_con, params);
+				boolean czy = tr.sprawdzWifi(id_add_con, params);
 				if(!czy){ret=false;}
 				//i tak w ka¿dym
 				break;
-
+			case (int) Constant.CONDITION_DATE:
+				boolean czy1 = tr.sprawdzDate(id_add_con, params);
+				if(!czy1){ret=false;}
+				//i tak w ka¿dym
+				break;
+				
+			case (int) Constant.CONDITION_GPS:
+				boolean czy2 = tr.sprawdzGPS(id_add_con, params);
+				if(!czy2){ret=false;}
+				//i tak w ka¿dym
+				break;
+				
+			case (int) Constant.CONDITION_TIME:
+				boolean czy3 = tr.sprawdzCzas(id_add_con, params);
+				if(!czy3){ret=false;}
+				//i tak w ka¿dym
+				break;
+				
 			default:
 				break;
 			}

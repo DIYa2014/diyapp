@@ -87,10 +87,41 @@ public class Trigger extends Activity{
 		return false;
 	}
 	
+	public boolean sprawdzDate(String id_add_con, String params){
+		
+		//String params = "" + dateSinceDay + "/~/" + dateSinceMonth + "/~/" + dateSinceYear + "/~/" + dateToDay + "/~/" + dateToMonth + "/~/" + dateToYear;
+		
+		String [] parametry = dbMethods.convertParamsIntoTab(params);
+		if(parametry.length == 6){
+			String dateSinceDay = parametry[0];
+			String dateSinceMonth = parametry[1];
+			String dateSinceYear = parametry[2];
+			String dateToDay = parametry[3];
+			String dateToMonth = parametry[4];
+			String dateToYear = parametry[5];
+			
+			int dzienPoczatkowy = Integer.valueOf(dateSinceDay);
+			int miesiacPoczatkowy = Integer.valueOf(dateSinceMonth);
+			int rokPoczatkowy = Integer.valueOf(dateSinceYear); 
+			int dzienKoncowy = Integer.valueOf(dateToDay);  
+			int miesiacKoncowy = Integer.valueOf(dateToMonth);  
+			int rokKoncowy = Integer.valueOf(dateToYear);
+			
+			return dzienIGodzina(dzienPoczatkowy, miesiacPoczatkowy, rokPoczatkowy, dzienKoncowy, miesiacKoncowy, rokKoncowy);
+			
+		}
+		return false;
+	}
 	
-	public boolean dzienIGodzina(int idDIY){
-
-		/*pobranie z bazy  przedzialow czasowych*/
+	public boolean dzienIGodzina(int dzienPoczatkowy, int miesiacPoczatkowy, int rokPoczatkowy, 
+									int dzienKoncowy,  int miesiacKoncowy,  int rokKoncowy){
+		
+		int godzinaPoczatkowy=0;
+		int godzinaKoncowy=0;
+		int minutaPoczatkowy=0;
+		int minutaKoncowy=0;
+		
+		/*pobranie z bazy  przedzialow czasowych
 		
 		int dzienPoczatkowy=0;
 		int dzienKoncowy=0;
@@ -99,10 +130,6 @@ public class Trigger extends Activity{
 		int rokPoczatkowy=0;
 		int rokKoncowy=0;
 		
-		int godzinaPoczatkowy=0;
-		int godzinaKoncowy=0;
-		int minutaPoczatkowy=0;
-		int minutaKoncowy=0;
 		try{
 		String dataPoczatkowy = "";
 		String dataKoncowy = "";
@@ -156,7 +183,7 @@ public class Trigger extends Activity{
 		}
 		catch(Exception e){System.out.println(e.toString());}
 		
-		/*koniec pobierania*/
+		koniec pobierania*/
 
 		Calendar c = Calendar.getInstance();
 		
@@ -323,7 +350,7 @@ public class Trigger extends Activity{
 		return false;
 	}
 	
-	public boolean sprawdzStanWifi(String id_add_con, String params){
+	public boolean sprawdzWifi(String id_add_con, String params){
 		String [] parametry = dbMethods.convertParamsIntoTab(params);
 		if(parametry.length==1){
 			if(parametry[0].equals("true")){
