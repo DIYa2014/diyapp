@@ -216,7 +216,7 @@ public class Execute extends Service{
 			String id_add_con = AddedCondition.get(Constant.ADDED_CONDITIONS_KEY_ID_ADDEDD_CONDITIONS);
 			String params = AddedCondition.get(Constant.ADDED_CONDITIONS_KEY_PARAMETERS_CONDITIONS);
 			switch (id_con) {
-			case (int) Constant.CONDITION_DATE:
+			case (int) Constant.CONDITION_WIFI:
 				boolean czy = tr.sprawdzStanWifi(id_add_con, params);
 				if(!czy){ret=false;}
 				//i tak w ka¿dym
