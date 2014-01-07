@@ -354,7 +354,7 @@ public class ConditionsFragment extends Fragment{
 						    dbMethods.deleteAddedConditionFromTask(Long.parseLong(uniqeID),diyaID);
 						    
 						} 
-					}
+					} 
 				});
 	     	}
 		}

@@ -56,7 +56,7 @@ public class StartFragment extends Fragment{
 	 mainView = inflater.inflate(R.layout.start_view, container, false);
 	 dbMethods = new DbMethods(getActivity());
 	 intent = new Intent(getActivity(), Execute.class);
-	 
+	  
 		
 	 if(!dbMethods.isServiceRunning()){
 			getActivity().startService(intent);

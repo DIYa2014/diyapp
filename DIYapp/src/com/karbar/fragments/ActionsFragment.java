@@ -210,7 +210,7 @@ public class ActionsFragment extends Fragment{
 	    optionList.add(map);
 	    mGridAdapter=new GridViewAdapter(getActivity(), optionList);
 	    mGrid.setAdapter(mGridAdapter);
-	    mGrid.setOnItemClickListener(onActionItemClickListener);
+	    mGrid.setOnItemClickListener(onActionItemClickListener); 
 	}
 	
 	
