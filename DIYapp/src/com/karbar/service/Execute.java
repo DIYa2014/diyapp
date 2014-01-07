@@ -20,6 +20,8 @@ import android.widget.Toast;
 public class Execute extends Service{
 	private static final String TAG = "MyService";
 	DbMethods dbMethods;
+	Action act;
+	Trigger tr;
 	
 	@Override
 	public IBinder onBind(Intent intent) {
@@ -30,6 +32,8 @@ public class Execute extends Service{
 	public void onCreate() {
 		Toast.makeText(this, "My Service Created", Toast.LENGTH_LONG).show();
 		 dbMethods = new DbMethods(getApplicationContext());
+		 act = new Action(getApplicationContext(), dbMethods);
+		 tr = new Trigger(getApplicationContext(), dbMethods);
 	}
 	
 
@@ -213,8 +217,8 @@ public class Execute extends Service{
 			String params = AddedCondition.get(Constant.ADDED_CONDITIONS_KEY_PARAMETERS_CONDITIONS);
 			switch (id_con) {
 			case (int) Constant.CONDITION_DATE:
-				//boolean czy = Cndition.czyWifiDziala(id_add-COn, params);
-				//if(!czy){ret=false;}
+				boolean czy = tr.sprawdzStanWifi(id_add_con, params);
+				if(!czy){ret=false;}
 				//i tak w ka¿dym
 				break;
 
@@ -223,7 +227,15 @@ public class Execute extends Service{
 			}
 			
 		}//koniec dodanego warunku
-		return ret;
+		
+		if(!ret){
+			for(HashMap<String, String> AddedCondition : groupsWithAddedConditions){
+				String id_add_con = AddedCondition.get(Constant.ADDED_CONDITIONS_KEY_ID_ADDEDD_CONDITIONS);
+				boolean wyk = dbMethods.setExecutedCondition(Long.valueOf(id_add_con), true);
+			}
+		}
+		
+		return !ret;
 	}
 	
 	public boolean wykonajAkcjeIZmienIchStatusNaWykonane(ArrayList<HashMap<String, String>> AddedActions, long idDIYa){
@@ -234,8 +246,8 @@ public class Execute extends Service{
 			String params = addedAction.get(Constant.ADDED_ACTIONS_KEY_PARAMETERS_ACTIONS);
 			switch (id_cact) {
 			case (int) Constant.ACTION_WIFI:
-				//boolean czy = Cndition.czyWifiDziala(id_add-COn, params);
-				//if(!czy){ret=false;}
+				boolean czy = act.zmienStanWifi(id_add_act, params, false);//false - nie przywracam
+				boolean wyk = dbMethods.setExecutedAction(Long.valueOf(id_add_act), true);
 				//i tak w ka¿dym
 				break;
 
@@ -249,6 +261,23 @@ public class Execute extends Service{
 	}
 	
 	public boolean przywrocAkcjeIZmienStatusNaNiewykonane(ArrayList<HashMap<String, String>> AddedActions, long idDIYa){
+		for(HashMap<String, String> addedAction : AddedActions){
+			int id_cact = Integer.valueOf(addedAction.get(Constant.ADDED_ACTIONS_KEY_ACTION_ID));
+			String id_add_act = addedAction.get(Constant.ADDED_ACTIONS_KEY_ID_ADDEDD_ACTIONS);
+			String before = addedAction.get(Constant.ADDED_ACTIONS_KEY_BEFORE_ACTION);
+			switch (id_cact) {
+			case (int) Constant.ACTION_WIFI:
+				boolean czy = act.zmienStanWifi(id_add_act, before, true);//true - przywracam
+				boolean wyk = dbMethods.setExecutedAction(Long.valueOf(id_add_act), false);
+				//i tak w ka¿dym
+				break;
+
+			default:
+				break;
+			}
+			
+		}
+		
 		return false;
 	}
 }
