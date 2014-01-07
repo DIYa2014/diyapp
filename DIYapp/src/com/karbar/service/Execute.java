@@ -66,25 +66,28 @@ public class Execute extends Service{
 					if(diya.get(Constant.TASKS_KEY_ACTIVE).equals("1")){//jeœli DIYa jest aktywna
 						ArrayList<ArrayList<HashMap<String, String>>> AddedConditions = dbMethods.getConditonLists(Long.getLong(diya.get(Constant.TASKS_KEY_ID)));
 						for(ArrayList<HashMap<String, String>> groupsWithAddedConditions : AddedConditions){
+							if(!groupsWithAddedConditions.isEmpty()){
 								if(czyGrupaWarunkowPrawdziwa(groupsWithAddedConditions)){//jesli grupa warunkow prawdziwa
-									if(/*AddedCondition.get(Constant.ADDED_CONDITIONS_KEY_EXECUTED_CONDITION).equals("0")*/true){//jesli nie bylo wykonane
+									if(groupsWithAddedConditions.get(0).get(Constant.ADDED_CONDITIONS_KEY_EXECUTED_CONDITION).equals("0")){//jesli nie bylo wykonane, pobieram pierwszy bo i tak we wszystkich jest to samo
 										//wykonaj i zmien na wykonane
-										//break;
+										wykonajAkcjeIZmienIchStatusNaWykonane(dbMethods.getActionsLists(Long.getLong(diya.get(Constant.TASKS_KEY_ID))), Long.getLong(diya.get(Constant.TASKS_KEY_ID)));
+										break;
 									}
 									else{//bylo wykonane wczesniej
-										//nic nie rob
+										//nic nie rob - tak bedzie w wypadku, gdy zakladamy, ze jak juz raz bylo cos wykonane, a teraz ta grupa nie jest juz prawdziwa, to przywracamy i nie sprawdzamy reszty
 										//d
-										//break;
+										break;
 									}
 								}
-								else if(true || false){//jesli bylo prawdziwe, ale juz nie jest
+								else if(!czyGrupaWarunkowPrawdziwa(groupsWithAddedConditions) && groupsWithAddedConditions.get(0).get(Constant.ADDED_CONDITIONS_KEY_EXECUTED_CONDITION).equals("0")){//jesli bylo prawdziwe, ale juz nie jest
 									//zmien na niewykonane
 									//przywroc stan z przed wykonania
+									przywrocAkcjeIZmienStatusNaNiewykonane(dbMethods.getActionsLists(Long.getLong(diya.get(Constant.TASKS_KEY_ID))), Long.getLong(diya.get(Constant.TASKS_KEY_ID)));
 								}
 								else{//jesli nie jest prawdziwe
 									
 								}
-
+							}
 						}//koniec grupy z warunkami
 					}//koniec pojedynczej DIYa
 				}//koniec listy DIYas
@@ -221,5 +224,31 @@ public class Execute extends Service{
 			
 		}//koniec dodanego warunku
 		return ret;
+	}
+	
+	public boolean wykonajAkcjeIZmienIchStatusNaWykonane(ArrayList<HashMap<String, String>> AddedActions, long idDIYa){
+		
+		for(HashMap<String, String> addedAction : AddedActions){
+			int id_cact = Integer.valueOf(addedAction.get(Constant.ADDED_ACTIONS_KEY_ACTION_ID));
+			String id_add_act = addedAction.get(Constant.ADDED_ACTIONS_KEY_ID_ADDEDD_ACTIONS);
+			String params = addedAction.get(Constant.ADDED_ACTIONS_KEY_PARAMETERS_ACTIONS);
+			switch (id_cact) {
+			case (int) Constant.ACTION_WIFI:
+				//boolean czy = Cndition.czyWifiDziala(id_add-COn, params);
+				//if(!czy){ret=false;}
+				//i tak w ka¿dym
+				break;
+
+			default:
+				break;
+			}
+			
+		}
+		
+		return false;
+	}
+	
+	public boolean przywrocAkcjeIZmienStatusNaNiewykonane(ArrayList<HashMap<String, String>> AddedActions, long idDIYa){
+		return false;
 	}
 }
