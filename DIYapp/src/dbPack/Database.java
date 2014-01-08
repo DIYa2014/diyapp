@@ -867,6 +867,7 @@ ADDED_CONDITIONS_KEY_EXECUTED_CONDITION*/
 			
 			ContentValues updateValues = new ContentValues();
 			updateValues.put(TASKS_KEY_ADDED_CONDITIONS_ID, addedConditions);
+			System.out.println("addedConditions = " + addedConditions);
 			int iloscZaktualizowanych = db.update(DB_TASKS_TABLE, updateValues, where, null);
 			//update wszystkich dodanych warunków - array
 		
@@ -956,18 +957,19 @@ ADDED_CONDITIONS_KEY_EXECUTED_CONDITION*/
 		Cursor cursor = db.query(DB_TASKS_TABLE, column_keys_task, where, null, null, null, null);
 		cursor.moveToFirst();
 		if(cursor != null && cursor.moveToFirst()){
-			System.out.println("cokolwiek");
+			System.out.println("addedActionID = " + addedActionID);
 			//tu poprawiæ
 			String addedActions = cursor.getString(TASKS_ADDED_ACTIONS_ID_COLUMN);
-			System.out.println("addedActions = " + addedActions);
+			System.out.println("addedActions = " + addedActions+"a");
 			if(addedActions.equals("")){
-				addedActions += addedActions;
+				addedActions += addedActionID;
 			}
 			else
-				addedActions += "," + addedActions;
+				addedActions += "," + addedActionID;
 			 
 			ContentValues updateValues = new ContentValues();
 			updateValues.put(TASKS_KEY_ADDED_ACTIONS_ID, addedActions);
+			System.out.println("addedActions = " + addedActions+"a");
 			int iloscZaktualizowanych = db.update(DB_TASKS_TABLE, updateValues, where, null);
 			//update wszystkich dodanych akcji - array
 		

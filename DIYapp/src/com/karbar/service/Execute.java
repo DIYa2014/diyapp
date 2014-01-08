@@ -267,7 +267,21 @@ public class Execute extends Service{
 				boolean wyk = dbMethods.setExecutedAction(Long.valueOf(id_add_act), true);
 				//i tak w ka¿dym
 				break;
-
+			case (int) Constant.ACTION_NOTIFICATION:
+				boolean czy1 = act.wlaczPowiadomienie(id_add_act, params, false);//false - nie przywracam
+				boolean wyk1 = dbMethods.setExecutedAction(Long.valueOf(id_add_act), true);
+				//i tak w ka¿dym
+				break;
+			case (int) Constant.ACTION_SOUND:
+				//boolean czy2 = act.ustawDzwiekTelefonu(id_add_act, params, false);//false - nie przywracam
+				boolean wyk2 = dbMethods.setExecutedAction(Long.valueOf(id_add_act), true);
+				//i tak w ka¿dym
+				break;
+			case (int) Constant.ACTION_VIBRATION:
+				//boolean czy3 = act.ustawWibracje(id_add_act, params, false);//false - nie przywracam
+				boolean wyk3 = dbMethods.setExecutedAction(Long.valueOf(id_add_act), true);
+				//i tak w ka¿dym
+				break;
 			default:
 				break;
 			}
@@ -288,7 +302,21 @@ public class Execute extends Service{
 				boolean wyk = dbMethods.setExecutedAction(Long.valueOf(id_add_act), false);
 				//i tak w ka¿dym
 				break;
-
+			case (int) Constant.ACTION_NOTIFICATION:
+				boolean czy1 = act.wlaczPowiadomienie(id_add_act, before, true);//true - przywracam
+				boolean wyk1 = dbMethods.setExecutedAction(Long.valueOf(id_add_act), false);
+				//i tak w ka¿dym
+				break;
+			case (int) Constant.ACTION_SOUND:
+				boolean czy2 = act.ustawDzwiek(id_add_act, before, true);//true - przywracam
+				boolean wyk2 = dbMethods.setExecutedAction(Long.valueOf(id_add_act), false);
+				//i tak w ka¿dym
+				break;
+			case (int) Constant.ACTION_VIBRATION:
+				boolean czy3 = act.ustawWibracje(id_add_act, before, true);//true - przywracam
+				boolean wyk3 = dbMethods.setExecutedAction(Long.valueOf(id_add_act), false);
+				//i tak w ka¿dym
+				break;
 			default:
 				break;
 			}
