@@ -14,6 +14,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.media.AudioManager;
+import android.media.RingtoneManager;
 import android.net.Uri;
 import android.net.wifi.WifiConfiguration;
 import android.net.wifi.WifiInfo;
@@ -480,6 +481,8 @@ public class Action  /*extends Activity*/{
 		int ledOnMS = 800;
 		int ledOffMS = 400;
 		Notification notification;
+		Uri alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+		
 	    if(czyWWW == 1){
 	    
 		    Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(adresStrony_pobrany));
@@ -495,6 +498,7 @@ public class Action  /*extends Activity*/{
 		    						        .setTicker(tickerText_pobrany)
 		    						        .setVibrate(tab)
 		    						        .setLights(ledARGB, ledOnMS, ledOffMS)
+		    						        .setSound(alarmSound)
 		    						        .getNotification();
 		    
 		    //notification.flags |= Notification.FLAG_AUTO_CANCEL;//powiadomienie zniknie gdy kliniemy na nie
@@ -515,6 +519,7 @@ public class Action  /*extends Activity*/{
 	        .setSound(Uri.withAppendedPath(Audio.Media.INTERNAL_CONTENT_URI, "1"))
 	        .setTicker(tickerText_pobrany)
 	        .setVibrate(tab)
+	        .setSound(alarmSound)
 	        .getNotification();
 	    	
 	    	//notification.setLatestEventInfo(mc.getApplicationContext(), notificationTitle_pobrany, notificationText_pobrany, pendingIntent);
