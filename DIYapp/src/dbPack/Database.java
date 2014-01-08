@@ -390,7 +390,7 @@ public class Database {
 		now.setToNow();
 		String nowString = now.toString();
 		ContentValues newValues = new ContentValues();
-		int act = 1;
+		int act = 0;
 		newValues.put(TASKS_KEY_ACTIVE, act);
 		newValues.put(TASKS_KEY_DATE_CREATE, nowString);
 		newValues.put(TASKS_KEY_DATE_UPDATE, nowString);
@@ -513,10 +513,11 @@ public class Database {
 	public ArrayList<HashMap<String, String>> getAllTasks(){
 		ArrayList<HashMap<String, String>> getAllTasks = new ArrayList<HashMap<String,String>>();
 		Cursor cursor = db.query( DB_TASKS_TABLE, column_keys_task, null, null, null, null, null); 
-		if(cursor != null){
+		if(cursor != null && cursor.moveToFirst()){
 			cursor.moveToFirst();
 			do{
 				String id = cursor.getString(TASKS_ID_TASKS_COLUMN);
+				
 				String name = cursor.getString(TASKS_NAME_TASKS_COLUMN);
 				String description = cursor.getString(TASKS_DESCRIPTION_COLUMN);
 				String groups_of_conditions = cursor.getString(TASKS_GROUPS_OF_CONDITIONS_COLUMN);
@@ -704,13 +705,74 @@ ADDED_CONDITIONS_KEY_EXECUTED_CONDITION*/
 			String description = cursor.getString(TASKS_DESCRIPTION_COLUMN);
 			String groups_of_conditions = cursor.getString(TASKS_GROUPS_OF_CONDITIONS_COLUMN);
 			String added_conditions_id = cursor.getString(TASKS_ADDED_CONDITIONS_ID_COLUMN);
-			String added_acions_id = cursor.getString(TASKS_ADDED_ACTIONS_ID_COLUMN);
+			String added_actions_id = cursor.getString(TASKS_ADDED_ACTIONS_ID_COLUMN);
 			int active = cursor.getInt(TASKS_ACTIVE_COLUMN);
 			boolean act = active == 1 ? true : false;
 			String date_create = cursor.getString(TASKS_DATE_CREATE_COLUMN);
 			String date_update = cursor.getString(TASKS_DATE_UPDATE_COLUMN); 
 			System.out.println("get task4");
-			if(added_conditions_id.equals("") && added_acions_id.equals(""))
+			if(added_conditions_id.equals("") && added_actions_id.equals(""))
+				return true;
+			return false;
+		}
+			return true;
+		
+	}
+	
+	public boolean isTaskEmptyOfadded_conditions(long idTask){
+		String where = TASKS_KEY_ID + "=" + idTask;
+		Cursor cursor = db.query(DB_TASKS_TABLE, column_keys_task, where, null, null, null, null);
+		System.out.println("get task2");
+		cursor.moveToFirst();
+		if(cursor != null && cursor.moveToFirst()){
+			System.out.println("get task3");
+
+			String added_conditions_id = cursor.getString(TASKS_ADDED_CONDITIONS_ID_COLUMN);
+
+			System.out.println("get task4");
+			if(added_conditions_id.equals(""))
+				return true;
+			return false;
+		}
+			return true;
+		
+	}
+	
+	
+	public boolean isTaskHasAddedConditions(long idTask){
+		String where = ADDED_CONDITIONS_KEY_TASK_ID_CONDITIONS + "=" + idTask;
+		Cursor cursor = db.query(DB_ADDED_CONDITIONS_TABLE, column_keys_added_condition, where, null, null, null, null);
+		System.out.println("get task2");
+		return cursor.moveToFirst();
+
+			
+		//return true;
+		
+	}
+	
+	public boolean isTaskHasAddedActions(long idTask){
+		String where = ADDED_ACTIONS_KEY_TASK_ID_ACTIONS + "=" + idTask;
+		Cursor cursor = db.query(DB_ADDED_ACTIONS_TABLE, column_keys_added_actions, where, null, null, null, null);
+		System.out.println("get task2");
+		return cursor.moveToFirst();
+
+			
+		//return true;
+		
+	}
+	
+	public boolean isTaskEmptyOfadded_actions(long idTask){
+		String where = TASKS_KEY_ID + "=" + idTask;
+		Cursor cursor = db.query(DB_TASKS_TABLE, column_keys_task, where, null, null, null, null);
+		System.out.println("get task2");
+		cursor.moveToFirst();
+		if(cursor != null && cursor.moveToFirst()){
+			System.out.println("get task3");
+
+			String added_actions_id = cursor.getString(TASKS_ADDED_ACTIONS_ID_COLUMN);
+
+			System.out.println("get task4");
+			if(added_actions_id.equals(""))
 				return true;
 			return false;
 		}

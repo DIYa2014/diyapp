@@ -39,6 +39,14 @@ public class DbMethods {
 		return db.isTaskEmpty(id);
 	}
 	
+	public boolean isDIYaHasCondition(long id){
+		return db.isTaskHasAddedConditions(id);
+	}
+
+	public boolean isDIYaHasAction(long id){
+		return db.isTaskHasAddedActions(id);
+	}
+	
 	public ArrayList<HashMap<String, String>> getDIYaList(){
 		
 		return db.getAllTasks();
