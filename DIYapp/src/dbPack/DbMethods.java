@@ -18,6 +18,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.text.format.Time;
 import android.util.Log;
 
+
 public class DbMethods {
 	private Context context;
 	private Database db;

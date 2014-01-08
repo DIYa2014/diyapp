@@ -391,6 +391,7 @@ public class Database {
 		String nowString = now.toString();
 		ContentValues newValues = new ContentValues();
 		int act = 0;
+		
 		newValues.put(TASKS_KEY_ACTIVE, act);
 		newValues.put(TASKS_KEY_DATE_CREATE, nowString);
 		newValues.put(TASKS_KEY_DATE_UPDATE, nowString);
