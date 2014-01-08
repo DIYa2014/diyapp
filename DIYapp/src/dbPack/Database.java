@@ -516,6 +516,7 @@ public class Database {
 		Cursor cursor = db.query( DB_TASKS_TABLE, column_keys_task, null, null, null, null, null); 
 		if(cursor != null && cursor.moveToFirst()){
 			cursor.moveToFirst();
+			if(cursor.getCount() > 0)
 			do{
 				String id = cursor.getString(TASKS_ID_TASKS_COLUMN);
 				
