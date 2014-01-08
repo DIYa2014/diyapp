@@ -456,7 +456,7 @@ public class Database {
 		Cursor cursor = db.query( DB_TASKS_TABLE, column_keys_task, where_task, null, null, null, null); 
 		HashMap<String, String> task = new HashMap<String, String>();
 		if(cursor != null && cursor.moveToFirst()){
-			
+			if(cursor.getCount() > 0){
 				String id = cursor.getString(TASKS_ID_TASKS_COLUMN);
 				String name = cursor.getString(TASKS_NAME_TASKS_COLUMN);
 				String description = cursor.getString(TASKS_DESCRIPTION_COLUMN);
@@ -504,7 +504,7 @@ public class Database {
 				
 				
 				
-			
+			}
 			
 		}
 		return task;
@@ -583,7 +583,7 @@ public class Database {
 		cursor.moveToFirst();
 		System.out.println("get task2.5");
 		String [] groupsListStrings = null;
-		if(cursor != null && cursor.moveToFirst()){
+		if(cursor != null && cursor.moveToFirst() && cursor.getCount() > 0){
 			System.out.println("get task3");
 			String name = cursor.getString(TASKS_NAME_TASKS_COLUMN);
 			String description = cursor.getString(TASKS_DESCRIPTION_COLUMN);
@@ -618,7 +618,7 @@ public class Database {
 		String where = TASKS_KEY_ID + "=" + idTask;
 		Cursor cursor = db.query(DB_TASKS_TABLE, column_keys_task, where, null, null, null, null);
 		cursor.moveToFirst();
-		if(cursor != null && cursor.moveToFirst()){
+		if(cursor != null && cursor.moveToFirst() && cursor.getCount() > 0){
 			String groups = cursor.getString(TASKS_GROUPS_OF_CONDITIONS_COLUMN);
 			groups += ","+group;
 			
@@ -639,7 +639,7 @@ public class Database {
 		String whereCon2 = ADDED_CONDITIONS_KEY_GROUP_ID + '=' + idGroup + " AND " + ADDED_CONDITIONS_KEY_TASK_ID_CONDITIONS +"="+idTask;
 		Cursor cursorCon = db.query(DB_ADDED_CONDITIONS_TABLE, column_keys_added_condition, whereCon2, null, null, null, null);
 		cursorCon.moveToFirst();
-		if(cursorCon != null && cursorCon.moveToFirst()){
+		if(cursorCon != null && cursorCon.moveToFirst() && cursorCon.getCount() > 0){
 			do{
 				/*ADDED_CONDITIONS_KEY_ID_ADDEDD_CONDITIONS, 
 				ADDED_CONDITIONS_KEY_CONDITION_ID,
@@ -701,7 +701,7 @@ ADDED_CONDITIONS_KEY_EXECUTED_CONDITION*/
 		Cursor cursor = db.query(DB_TASKS_TABLE, column_keys_task, where, null, null, null, null);
 		System.out.println("get task2");
 		cursor.moveToFirst();
-		if(cursor != null && cursor.moveToFirst()){
+		if(cursor != null && cursor.moveToFirst() && cursor.getCount() > 0){
 			System.out.println("get task3");
 			String name = cursor.getString(TASKS_NAME_TASKS_COLUMN);
 			String description = cursor.getString(TASKS_DESCRIPTION_COLUMN);
@@ -726,7 +726,7 @@ ADDED_CONDITIONS_KEY_EXECUTED_CONDITION*/
 		Cursor cursor = db.query(DB_TASKS_TABLE, column_keys_task, where, null, null, null, null);
 		System.out.println("get task2");
 		cursor.moveToFirst();
-		if(cursor != null && cursor.moveToFirst()){
+		if(cursor != null && cursor.moveToFirst() && cursor.getCount() > 0){
 			System.out.println("get task3");
 
 			String added_conditions_id = cursor.getString(TASKS_ADDED_CONDITIONS_ID_COLUMN);
@@ -745,10 +745,11 @@ ADDED_CONDITIONS_KEY_EXECUTED_CONDITION*/
 		String where = ADDED_CONDITIONS_KEY_TASK_ID_CONDITIONS + "=" + idTask;
 		Cursor cursor = db.query(DB_ADDED_CONDITIONS_TABLE, column_keys_added_condition, where, null, null, null, null);
 		System.out.println("get task2");
-		return cursor.moveToFirst();
-
+		 
+				if( cursor.moveToFirst()  && cursor.getCount() > 0)
+					return true;
 			
-		//return true;
+		return false;
 		
 	}
 	
@@ -756,7 +757,10 @@ ADDED_CONDITIONS_KEY_EXECUTED_CONDITION*/
 		String where = ADDED_ACTIONS_KEY_TASK_ID_ACTIONS + "=" + idTask;
 		Cursor cursor = db.query(DB_ADDED_ACTIONS_TABLE, column_keys_added_actions, where, null, null, null, null);
 		System.out.println("get task2");
-		return cursor.moveToFirst();
+		if( cursor.moveToFirst()  && cursor.getCount() > 0)
+			return true;
+	
+		return false;
 
 			
 		//return true;
@@ -768,7 +772,7 @@ ADDED_CONDITIONS_KEY_EXECUTED_CONDITION*/
 		Cursor cursor = db.query(DB_TASKS_TABLE, column_keys_task, where, null, null, null, null);
 		System.out.println("get task2");
 		cursor.moveToFirst();
-		if(cursor != null && cursor.moveToFirst()){
+		if(cursor != null && cursor.moveToFirst() && cursor.getCount() > 0){
 			System.out.println("get task3");
 
 			String added_actions_id = cursor.getString(TASKS_ADDED_ACTIONS_ID_COLUMN);
@@ -788,7 +792,7 @@ ADDED_CONDITIONS_KEY_EXECUTED_CONDITION*/
 		String whereCon2 = ADDED_ACTIONS_KEY_TASK_ID_ACTIONS +"="+idTask;
 		Cursor cursorAct = db.query(DB_ADDED_ACTIONS_TABLE, column_keys_added_actions, whereCon2, null, null, null, null);
 		cursorAct.moveToFirst();
-		if(cursorAct != null && cursorAct.moveToFirst()){
+		if(cursorAct != null && cursorAct.moveToFirst() && cursorAct.getCount() > 0){
 			do{
 				/*ADDED_CONDITIONS_KEY_ID_ADDEDD_CONDITIONS, 
 				ADDED_CONDITIONS_KEY_CONDITION_ID,
@@ -837,7 +841,7 @@ ADDED_CONDITIONS_KEY_EXECUTED_CONDITION*/
 		String whereCon2 = ADDED_ACTIONS_KEY_ID_ADDEDD_ACTIONS +"="+idAddAct;
 		Cursor cursorAct = db.query(DB_ADDED_ACTIONS_TABLE, column_keys_added_actions, whereCon2, null, null, null, null);
 		cursorAct.moveToFirst();
-		if(cursorAct != null && cursorAct.moveToFirst()){
+		if(cursorAct != null && cursorAct.moveToFirst() && cursorAct.getCount() > 0){
 				/*ADDED_CONDITIONS_KEY_ID_ADDEDD_CONDITIONS, 
 				ADDED_CONDITIONS_KEY_CONDITION_ID,
 ADDED_CONDITIONS_KEY_TASK_ID_CONDITIONS, 
@@ -878,7 +882,7 @@ ADDED_CONDITIONS_KEY_EXECUTED_CONDITION*/
 		String whereCon2 = ADDED_CONDITIONS_KEY_ID_ADDEDD_CONDITIONS +"="+idAddCon;
 		Cursor cursorCon = db.query(DB_ADDED_CONDITIONS_TABLE, column_keys_added_condition, whereCon2, null, null, null, null);
 		cursorCon.moveToFirst();
-		if(cursorCon != null && cursorCon.moveToFirst()){
+		if(cursorCon != null && cursorCon.moveToFirst() && cursorCon.getCount() > 0){
 				/*ADDED_CONDITIONS_KEY_ID_ADDEDD_CONDITIONS, 
 				ADDED_CONDITIONS_KEY_CONDITION_ID,
 ADDED_CONDITIONS_KEY_TASK_ID_CONDITIONS, 
@@ -918,7 +922,7 @@ ADDED_CONDITIONS_KEY_EXECUTED_CONDITION*/
 		String where = TASKS_KEY_ID + "=" + idTask;
 		Cursor cursor = db.query(DB_TASKS_TABLE, column_keys_task, where, null, null, null, null);
 		cursor.moveToFirst();
-		if(cursor != null && cursor.moveToFirst()){
+		if(cursor != null && cursor.moveToFirst() && cursor.getCount() > 0){
 			System.out.println("cokolwiek");
 			//tu poprawiæ
 			String addedConditions = cursor.getString(TASKS_ADDED_CONDITIONS_ID_COLUMN);
@@ -1020,7 +1024,7 @@ ADDED_CONDITIONS_KEY_EXECUTED_CONDITION*/
 		String where = TASKS_KEY_ID + "=" + idTask;
 		Cursor cursor = db.query(DB_TASKS_TABLE, column_keys_task, where, null, null, null, null);
 		cursor.moveToFirst();
-		if(cursor != null && cursor.moveToFirst()){
+		if(cursor != null && cursor.moveToFirst() && cursor.getCount() > 0){
 			System.out.println("addedActionID = " + addedActionID);
 			//tu poprawiæ
 			String addedActions = cursor.getString(TASKS_ADDED_ACTIONS_ID_COLUMN);
