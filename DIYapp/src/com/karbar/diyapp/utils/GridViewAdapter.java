@@ -27,7 +27,7 @@ import android.widget.TextView;
 public class GridViewAdapter extends BaseAdapter {
 
     private Activity activity;
-    public ArrayList<HashMap<String, String>> data;
+    public ArrayList<HashMap<String, String>> data; 
     private static LayoutInflater inflater=null;
     private View listView;
     private int id;

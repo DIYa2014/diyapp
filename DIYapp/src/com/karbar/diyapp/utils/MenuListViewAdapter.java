@@ -24,7 +24,7 @@ import android.widget.LinearLayout.LayoutParams;
 import android.widget.TextView;
 
 public class MenuListViewAdapter extends BaseAdapter {
-
+ 
     private Activity activity;
     public ArrayList<HashMap<String, String>> data;
     private static LayoutInflater inflater=null;

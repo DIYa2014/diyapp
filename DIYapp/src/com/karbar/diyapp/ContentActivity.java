@@ -13,7 +13,7 @@ import com.karbar.fragments.StartFragment;
 public class ContentActivity extends FragmentActivity {
 	ConditionsFragment conditions;
 	StartFragment start;
-	
+	 
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {

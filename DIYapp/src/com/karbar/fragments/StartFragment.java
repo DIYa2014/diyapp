@@ -47,7 +47,7 @@ public class StartFragment extends Fragment{
 	
 	
 	private View mainView;
-	private Button button;
+	private Button button; 
 	private ListView listView;
 	private ImageAdapter adapter;
 	ConditionsFragment conditions;

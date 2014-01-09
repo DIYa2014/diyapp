@@ -23,7 +23,7 @@ import android.widget.TextView;
  
 public class ImageAdapter extends BaseAdapter {
 
-	private Constant constant = new Constant();
+	private Constant constant = new Constant(); 
     private Activity activity;
     public ArrayList<HashMap<String, String>> data;
     private static LayoutInflater inflater=null;

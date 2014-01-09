@@ -51,7 +51,7 @@ public class HorizontalListView extends AdapterView<ListAdapter> {
 	protected ListAdapter mAdapter;
 	private int mLeftViewIndex = -1;
 	private int mRightViewIndex = 0;
-	protected int mCurrentX;
+	protected int mCurrentX; 
 	protected int mNextX;
 	private int mMaxX = Integer.MAX_VALUE;
 	private int mDisplayOffset = 0;

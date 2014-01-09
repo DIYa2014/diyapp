@@ -42,7 +42,7 @@ import com.karbar.diyapp.utils.MenuListViewAdapter;
 
 import dbPack.DbMethods;
 
-public class ActionsFragment extends Fragment{
+public class ActionsFragment extends Fragment{ 
 	
 	private Activity mActivity;
 	private MenuListViewAdapter mMenuAdapter;

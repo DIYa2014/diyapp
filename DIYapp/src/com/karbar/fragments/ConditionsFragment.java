@@ -46,7 +46,7 @@ import dbPack.DbMethods;
 import net.londatiga.android.QuickAction;
 import net.londatiga.android.ActionItem;
 
-public class ConditionsFragment extends Fragment{
+public class ConditionsFragment extends Fragment{ 
 	
 	private Activity mActivity;
 	private View mainView;
