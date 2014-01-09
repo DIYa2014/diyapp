@@ -42,6 +42,7 @@ public class GridViewAdapter extends BaseAdapter {
     private ImageView imageView;
     public View vi;
     private OnTouchListener onTouchListener;
+    public HashMap<String, String> map;
 
    // int dropArray[];
     public GridViewAdapter(Activity a, ArrayList<HashMap<String, String>> d) {
@@ -79,8 +80,10 @@ public class GridViewAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         Drawable ico;
-        HashMap<String, String> map = new HashMap<String, String>();
+        map = new HashMap<String, String>();
         vi=convertView;
+        if(vi == null) 
+        {
         if(convertView==null)
             vi = inflater.inflate(R.layout.menu_single_element, null);
         map = data.get(position);
@@ -117,7 +120,8 @@ public class GridViewAdapter extends BaseAdapter {
         imageView.setLayoutParams(new GridView.LayoutParams(120, 120));
         imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
         imageView.setPadding(8, 8, 8, 8);
-    
+        
+        }
         return imageView;
         
        

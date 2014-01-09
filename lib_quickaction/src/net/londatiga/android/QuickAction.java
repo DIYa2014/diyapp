@@ -211,7 +211,6 @@ public class QuickAction extends PopupWindows implements OnDismissListener {
 
 		Rect anchorRect 	= new Rect(location[0], location[1], location[0] + anchor.getWidth(), location[1] 
 		                	+ anchor.getHeight());
-		Log.d("kkams", "szerokosc anchor: " +location[0]);
 		//mRootView.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
 		mRootView.measure(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT);
 		
@@ -220,10 +219,9 @@ public class QuickAction extends PopupWindows implements OnDismissListener {
 		int rootHeight 		= mRootView.getMeasuredHeight();
 
 		int screenWidth 	= mWindowManager.getDefaultDisplay().getWidth();
-		Log.d("kkams", "screenWidth: " + mRootView.getMeasuredWidth());
 		//int screenHeight 	= mWindowManager.getDefaultDisplay().getHeight();
 
-		int xPos 			= 0;
+		int xPos 			= 1000;
 		int yPos	 		= anchorRect.top - rootHeight;
 
 		boolean onTop		= true;

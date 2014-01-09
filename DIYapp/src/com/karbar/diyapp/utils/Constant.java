@@ -11,7 +11,8 @@ public class Constant {
 	
 	public static final int QUICKACTION_EDIT = 1;
 	public static final int QUICKACTION_REMOVE = 2;
-	
+	public static final int QUICKACTION_RUN = 3;
+	public static final int QUICKACTION_STOP= 4;
 	
 	public static final int ICO_TIME = R.drawable.perm_group_system_clock;
 	public static final int ICO_WIFI =  R.drawable.perm_group_network;

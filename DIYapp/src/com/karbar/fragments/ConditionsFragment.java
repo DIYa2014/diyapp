@@ -588,6 +588,7 @@ public class ConditionsFragment extends Fragment{
 		final EditText et = (EditText)dialog.findViewById(R.id.wifiName);
 		if(pt[0].equals("true")){
 			wifi.setChecked(true);
+			if(pt.length>1)
 			et.setText(pt[1]);
 		}
 		Button ok, anuluj;

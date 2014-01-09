@@ -140,6 +140,7 @@ public class ActionsFragment extends Fragment{
 		
 	    mGridAdapter=new GridViewAdapter(getActivity(), optionList2);
 	    mGrid.setAdapter(mGridAdapter);
+	    mGrid.setOnItemClickListener(onActionItemClickListener); 
 	    
 	    
 	}
@@ -148,6 +149,7 @@ public class ActionsFragment extends Fragment{
 		mGrid = (GridView)getActivity().findViewById(R.id.action_grid);
 	    mGridAdapter=new GridViewAdapter(getActivity(), list);
 	    mGrid.setAdapter(mGridAdapter);
+	    mGrid.setOnItemClickListener(onActionItemClickListener); 
 	    
 	    
 	}
@@ -308,11 +310,7 @@ public class ActionsFragment extends Fragment{
 		View.OnClickListener addListener= new OnClickListener() {
 		    public void onClick(View v) {
 
-		    	 mFragmentManager = getFragmentManager(); 
-
-				 start = new StartFragment();
-
-		    	 mFragmentManager.beginTransaction().replace(R.id.contentFrag, start).commit();
+		    	runDialogAddDIYa();
 
 		    	 
 		    }
@@ -340,61 +338,207 @@ public class ActionsFragment extends Fragment{
 			@Override
 			public void onItemClick(AdapterView<?> av, View v, int pos, long id) {
 				
-				/*final GridViewAdapter a = (GridViewAdapter)av.getAdapter();
-		     	HashMap<String, String> map = new HashMap<String, String>();
-		     	map = a.data.get(pos);
+				    final GridViewAdapter a = (GridViewAdapter)av.getAdapter();
+		     		HashMap<String, String> map = new HashMap<String, String>();
+		     		final ArrayList<HashMap<String, String>> mapArray;
+		     		mapArray = a.data;
+		     		map = mapArray.get(pos);
 			     	final String uniqeID = map.get(Constant.KEY_UNIQE_ID);
-			     	final int condition_id = Integer.parseInt(map.get(Constant.KEY_ID));
-			     	final int position = pos;*/
+			     	final int action_id = Integer.parseInt(map.get(Constant.KEY_ID));
+			     	final int position = pos;
 					ActionItem editItem 		= new ActionItem(Constant.QUICKACTION_EDIT, getString(R.string.quickaction_edit), getResources().getDrawable(R.drawable.ic_edit));
 					ActionItem removeItem 	= new ActionItem(Constant.QUICKACTION_REMOVE, getString(R.string.quickaction_remove), getResources().getDrawable(R.drawable.ic_delete));
 			       
 					final QuickAction mQuickAction 	= new QuickAction(getActivity());
+
+					if(action_id!=Constant.ID_WIBRATION)
+						mQuickAction.addActionItem(editItem);
 					
-					mQuickAction.addActionItem(editItem);
 					mQuickAction.addActionItem(removeItem);
 					mQuickAction.show(v);
-					/*
+					Log.d("kkams", "uniqe_id: "+uniqeID+ " action_id= "+action_id);
+					
 					mQuickAction.setOnActionItemClickListener(new QuickAction.OnActionItemClickListener() {
 						@Override
 						public void onItemClick(QuickAction quickAction, int pos, int actionId) {
 							ActionItem actionItem = quickAction.getActionItem(pos);
 							
 							if (actionId == Constant.QUICKACTION_EDIT) {
-								switch (condition_id) {
-								case Constant.ID_TIME:
-									//runDialogTimeUpdate(Integer.parseInt(uniqeID));
-									break;
-								case Constant.ID_CALENDAR:
-									//runDialogDateUpdate(Integer.parseInt(uniqeID));
-									break;
+								switch (action_id) {
 								case Constant.ID_WIFI:
-									//runDialogWiFiUpdate(Integer.parseInt(uniqeID));
+									runDialogWiFiUpdate(Integer.parseInt(uniqeID));
 									break;
-								case Constant.ID_GPS:
-									//runDialogGPSUpdate(Integer.parseInt(uniqeID));
+								case Constant.ID_NOTIFICATION:
+									runDialogNotificationUpdate(Integer.parseInt(uniqeID));
 									break;
-								
+								case Constant.ID_SOUND_LEVEL:
+									runDialogSoundLevelUpdate(Integer.parseInt(uniqeID));
+									break;
 								}
 								
 								
 							} 
 							else if(actionId == Constant.QUICKACTION_REMOVE) {
-								//HorizontalListView lv = (HorizontalListView)getActivity().findViewById(groupID);
-								//lv.remove(position);
-								//lv.setAdapter(lv.getAdapter());
-							    //lv.setOnItemClickListener(onConditionItemClickListener);
-							    //dbMethods.deleteAddedConditionFromTask(Long.parseLong(uniqeID),diyaID);
-							    
+								mapArray.remove(position);
+							    mGridAdapter=new GridViewAdapter(getActivity(), mapArray);
+							    mGrid.setAdapter(mGridAdapter);
+							    dbMethods.deleteAddedActionFromTask(Long.parseLong(uniqeID), diyaID);
 							} 
 						}
 					});
-					*/
+					
 		     	}
 			
 			
 		};
-	
+		public void runDialogAddDIYa(){
+			
+			dialog = new Dialog(getActivity(), R.style.MyDialogTheme);
+			dialog.setContentView(R.layout.diya_data);
+			dialog.show();
+
+			final EditText name = (EditText)dialog.findViewById(R.id.addDiyaNameEdit);
+			final EditText description = (EditText)dialog.findViewById(R.id.addDiyaDescEdit);
+			Button ok, anuluj;
+			
+			ok = (Button)dialog.findViewById(R.id.buttonOk);
+			anuluj = (Button)dialog.findViewById(R.id.buttonAnuluj);
+			anuluj.setOnClickListener(anulujListener);
+			ok.setOnClickListener(new OnClickListener() {
+			    public void onClick(View v) {
+			    	
+					dbMethods.updateDIYa(diyaID, "1", description.getText().toString(), name.getText().toString());
+					dialog.dismiss();
+					FragmentTransaction ft = getFragmentManager().beginTransaction();
+			    	//ft.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out);
+			    	StartFragment start;
+			    	start = new StartFragment();
+			    	ft.replace(R.id.contentFrag, start);
+
+			    	// Start the animated transition.
+			    	ft.commit();
+			    }
+			    }
+			);
+		}
+		public void runDialogWiFiUpdate(int uniqeID){
+			HashMap<String, String> hm = new HashMap<String, String>();
+			hm = dbMethods.getOneAddedActionFromDatabase(uniqeID);
+			String params = hm.get(Constant.ADDED_ACTIONS_KEY_PARAMETERS_ACTIONS);
+			String [] pt = params.split("/~/");
+			
+			dialog = new Dialog(getActivity(), R.style.MyDialogTheme);
+			dialog.setContentView(R.layout.condition_wifi);
+			dialog.show();
+			TextView jesli = (TextView)dialog.findViewById(R.id.text_if);
+			jesli.setText("On/OFF WiFi");
+			TextView name = (TextView)dialog.findViewById(R.id.conectetToWifiNamed);
+			name.setText("Polacz z konktretna siecia(opcjonalnie)");
+			final Switch wifi;
+			final LinearLayout wiFiNameLayout;
+			wiFiNameLayout = (LinearLayout)dialog.findViewById(R.id.ifWiFiOn);
+			wifi = (Switch) dialog.findViewById(R.id.switchWiFi);
+			
+				
+			OnCheckedChangeListener switchListener = new OnCheckedChangeListener() {
+				
+				@Override
+				public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+					if(isChecked)
+						wiFiNameLayout.setVisibility(View.VISIBLE);
+					else
+						wiFiNameLayout.setVisibility(View.GONE);
+						
+					
+				}
+			};
+			
+			wifi.setOnCheckedChangeListener(switchListener);
+			
+			
+			final EditText et = (EditText)dialog.findViewById(R.id.wifiName);
+			if(pt[0].equals("1")){
+				wifi.setChecked(true);
+				if(pt.length>1)
+				et.setText(pt[1]);
+			}
+			Button ok, anuluj;
+			ok = (Button)dialog.findViewById(R.id.buttonOkWifi);
+			anuluj = (Button)dialog.findViewById(R.id.buttonAnulujWifi);
+			final int uniqeIdFinal = uniqeID;
+			anuluj.setOnClickListener(anulujListener);
+			ok.setOnClickListener(new OnClickListener() {
+			    public void onClick(View v) {
+			    	int tmp;
+			    	if(wifi.isChecked())
+			    		tmp = 1;
+			    	else
+			    		tmp = 0;
+			    	String params = "" + tmp + "/~/" + et.getText().toString();
+			    	dbMethods.updateAddedAction(uniqeIdFinal, params);
+			    	dialog.dismiss();
+			    }
+			    }
+			);
+		}
+		public void runDialogNotificationUpdate(int uniqeID){
+			HashMap<String, String> hm = new HashMap<String, String>();
+			hm = dbMethods.getOneAddedActionFromDatabase(uniqeID);
+			String params = hm.get(Constant.ADDED_ACTIONS_KEY_PARAMETERS_ACTIONS);
+			String [] pt = params.split("/~/");
+			
+			dialog = new Dialog(getActivity(), R.style.MyDialogTheme);
+			dialog.setContentView(R.layout.action_notification);
+			dialog.show();
+
+			final int uniqeIdFinal = uniqeID;
+			final EditText ticker = (EditText)dialog.findViewById(R.id.tickerTextNotificationEdit);
+			final EditText title = (EditText)dialog.findViewById(R.id.notificationTitleNotificationEdit);
+			final EditText content = (EditText)dialog.findViewById(R.id.notificationTextNotificationEdit);
+			Button ok, anuluj;
+			ticker.setText(pt[0]);
+			title.setText(pt[1]);
+			content.setText(pt[2]);
+			ok = (Button)dialog.findViewById(R.id.buttonOkNotification);
+			anuluj = (Button)dialog.findViewById(R.id.buttonAnulujNotification);
+			anuluj.setOnClickListener(anulujListener);
+			ok.setOnClickListener(new OnClickListener() {
+			    public void onClick(View v) {
+			    	//DbMethods.addWiFiCondition( wifi.isActivated(), et.getText().toString());
+			    	String params = "" + ticker.getText().toString() + "/~/" + title.getText().toString()+ "/~/" + content.getText().toString();
+					dbMethods.updateAddedAction( uniqeIdFinal , params);
+					
+					dialog.dismiss();
+			    }
+			    }
+			);
+		}
+			
+		public void runDialogSoundLevelUpdate(int uniqeID){
+			HashMap<String, String> hm = new HashMap<String, String>();
+			hm = dbMethods.getOneAddedActionFromDatabase(uniqeID);
+			
+			String params = hm.get(Constant.ADDED_ACTIONS_KEY_PARAMETERS_ACTIONS);
+			dialog = new Dialog(getActivity(), R.style.MyDialogTheme);
+			dialog.setContentView(R.layout.action_sound);
+			dialog.show();
+			
+			final SeekBar level = (SeekBar)dialog.findViewById(R.id.setSoundLevel);
+			Button ok, anuluj;
+			final int uniqeIdFinal = uniqeID;
+			ok = (Button)dialog.findViewById(R.id.buttonOkSound);
+			anuluj = (Button)dialog.findViewById(R.id.buttonAnulujSound);
+			anuluj.setOnClickListener(anulujListener);
+			level.setProgress(Integer.parseInt(params));
+			ok.setOnClickListener(new OnClickListener() {
+			    public void onClick(View v) {
+			    	String params = "" + level.getProgress();
+					dbMethods.updateAddedAction( uniqeIdFinal , params);
+			    	dialog.dismiss();
+			    }
+			    }
+			);
+		}
 		public void runDialogWiFi(){
 			dialog = new Dialog(getActivity(), R.style.MyDialogTheme);
 			dialog.setContentView(R.layout.condition_wifi);
@@ -419,6 +563,7 @@ public class ActionsFragment extends Fragment{
 					
 				}
 			};
+			
 			wifi.setOnCheckedChangeListener(switchListener);
 			final EditText et = (EditText)dialog.findViewById(R.id.wifiName);
 			Button ok, anuluj;
@@ -459,7 +604,6 @@ public class ActionsFragment extends Fragment{
 			anuluj.setOnClickListener(anulujListener);
 			ok.setOnClickListener(new OnClickListener() {
 			    public void onClick(View v) {
-			    	//DbMethods.addWiFiCondition( wifi.isActivated(), et.getText().toString());
 					
 					long diyaID = bundle.getLong(Constant.KEY_DIYAID);
 					long uniqeID = dbMethods.addnotificationAction(diyaID, ticker.getText().toString(), title.getText().toString(), content.getText().toString());
