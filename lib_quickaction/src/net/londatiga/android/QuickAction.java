@@ -33,10 +33,10 @@ import android.view.animation.Interpolator;
  * - Kevin Peck <kevinwpeck@gmail.com>
  */
 public class QuickAction extends PopupWindows implements OnDismissListener {
-	private ImageView mArrowUp;
-	private ImageView mArrowDown;
-	private Animation mTrackAnim;
-	private LayoutInflater inflater;
+	private ImageView mArrowUp; 
+	private ImageView mArrowDown; 
+	private Animation mTrackAnim; 
+	private LayoutInflater inflater; 
 	private ViewGroup mTrack;
 	private OnActionItemClickListener mItemClickListener;
 	private OnDismissListener mDismissListener;
