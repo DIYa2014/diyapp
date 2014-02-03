@@ -14,22 +14,18 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
-import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout.LayoutParams;
-import android.widget.TextView;
 
-public class GridViewAdapter extends BaseAdapter {
+public class GridAdapter extends BaseAdapter {
 
     private Activity activity;
     public ArrayList<HashMap<String, String>> data; 
     private static LayoutInflater inflater=null;
-    private View listView;
     private int id;
     Boolean touchFlag=false;
     boolean dropFlag=false;
@@ -41,16 +37,12 @@ public class GridViewAdapter extends BaseAdapter {
     int topy,leftX,rightX,bottomY;
     private ImageView imageView;
     public View vi;
-    private OnTouchListener onTouchListener;
     public HashMap<String, String> map;
 
-   // int dropArray[];
-    public GridViewAdapter(Activity a, ArrayList<HashMap<String, String>> d) {
+    public GridAdapter(Activity a, ArrayList<HashMap<String, String>> d) {
     	activity = a;
         data=d;
         inflater = (LayoutInflater)activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE); 
-
-        //onTouchListener = otl;
     }
     
     public ArrayList<HashMap<String, String>> getData(){
@@ -87,9 +79,6 @@ public class GridViewAdapter extends BaseAdapter {
         if(convertView==null)
             vi = inflater.inflate(R.layout.menu_single_element, null);
         map = data.get(position);
-        
-    	
-    	
     	id=Integer.parseInt(map.get(Constant.KEY_ID));
     	Log.d("kkams", "id action: "+id);
     	if(map.get(Constant.KEY_ID) != null){
@@ -111,8 +100,6 @@ public class GridViewAdapter extends BaseAdapter {
 		    		ico = activity.getResources().getDrawable(Constant.ICO_EMPTY);
 		    		break;
 	    	}
-	       
-	        
 	    	imageView=(ImageView)vi.findViewById(R.id.menu_element_ico); // ico image
 	    	imageView.setImageDrawable(ico);
 	        }

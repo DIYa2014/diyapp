@@ -12,7 +12,7 @@
         <string name="item_gps">GPS</string>
         <string name="item_phone">Telefon</string>
         <string name="item_date">Data</string>
-        <string name="item_sound">Glosnosc dzwonka</string>
+        <string name="item_sound">Glośność dzwonka</string>
         <string name="item_notification">Notyfikacja</string>
         
         <string name="addDiya">Dodaj DIYe</string>
@@ -22,14 +22,18 @@
         <string name="orText">Lub&#8230;</string>
         <string name="textSince">od&#8230;</string>
         <string name="textTo">&#8230;do</string>
-        <string name="text_if">jesli&#8230;</string>
-        <string name="onDays">W nastpujce dni tygodnia:</string>
-        <string name="conectetToWifiNamed">Podlaczone do konkretnej sieci(opcjonalnie):</string>
+        <string name="text_if">jeśli&#8230;</string>
+        <string name="onDays">W następujące dni tygodnia:</string>
+        <string name="conectetToWifiNamed">Podłączone do konkretnej sieci(opcjonalnie):</string>
         <string name="tickerTextNotification">tickerText:</string>
         <string name="notificationTitleNotification">notificationTitle:</string>
         <string name="notificationTextNotification">notificationText:</string>
-        <string name="soundLevel">Ustaw glosnosc dzwonka:</string>
+        <string name="soundLevel">Ustaw glośność dzwonka:</string>
         
+		<string name="item_add_diya">DIYa</string>
+		<string name="addDiyaName">Podaj nazwę:</string>
+		<string name="addDiyaDesc">Podaj opis:</string>
+		
 		<string name="CheckBoxDay1">Pn</string>
 		<string name="CheckBoxDay2">Wt</string>
 		<string name="CheckBoxDay3">Śr</string>
@@ -45,4 +49,6 @@
 		
         <string name="quickaction_edit">Edytuj</string>
         <string name="quickaction_remove">Usuń</string>
+        <string name="quickaction_run">Start</string>
+        <string name="quickaction_stop">Stop</string>
 </resources>

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:id="@+id/diya_single_row"
+    android:layout_width="fill_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal"
+    android:padding="5dip"
+     >
+<LinearLayout
+    android:layout_width="match_parent"
+    android:orientation="horizontal"
+    android:layout_marginBottom="20dp"
+    android:layout_height="match_parent" >
+	<LinearLayout
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:orientation="vertical"
+	    android:layout_marginRight="30dp" >
+	    <ImageView
+	        android:id="@+id/diya_ico"
+	        android:layout_width="40dp"
+	        android:layout_height="40dp"
+	        android:scaleType="fitXY"
+	    	android:layout_gravity="center_vertical"
+	        android:src="@drawable/ic_media_stop" />
+
+	   
+
+    </LinearLayout>
+	<LinearLayout
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+	    android:orientation="vertical"
+	    android:layout_gravity="center_vertical" >
+	    
+	     <TextView
+	        android:id="@+id/diya_name_single_elem"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:textSize="18dp"
+	        android:textColor="@color/white" />
+	      <TextView
+	        android:id="@+id/diya_desc_single_elem"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:textSize="12dp"
+	        android:textColor="@color/white" 
+	        />
+	      </LinearLayout>
+	     
+
+	
+
+</LinearLayout>
+</RelativeLayout>

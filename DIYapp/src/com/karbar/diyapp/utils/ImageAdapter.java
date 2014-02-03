@@ -9,21 +9,17 @@ import android.app.Activity;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.CheckBox;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
  
 public class ImageAdapter extends BaseAdapter {
 
-	private Constant constant = new Constant(); 
     private Activity activity;
     public ArrayList<HashMap<String, String>> data;
     private static LayoutInflater inflater=null;
@@ -58,7 +54,7 @@ public class ImageAdapter extends BaseAdapter {
         return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dipValue, metrics);
     }
     public View getView(int position, View convertView, ViewGroup parent) {
-        Drawable ico, bg;
+        Drawable ico;
         HashMap<String, String> map = new HashMap<String, String>();
         View vi=convertView;
         if(convertView==null)
@@ -71,11 +67,11 @@ public class ImageAdapter extends BaseAdapter {
 
     	map = data.get(position);
         
-    	if(map.get(constant.TASKS_KEY_NAME_TASKS).equals(""))
-    		title.setText(map.get(constant.TASKS_KEY_DATE_CREATE));
+    	if(map.get(Constant.TASKS_KEY_NAME_TASKS).equals(""))
+    		title.setText(map.get(Constant.TASKS_KEY_DATE_CREATE));
     	else
-    		title.setText(map.get(constant.TASKS_KEY_NAME_TASKS));
-    	description.setText(map.get(constant.TASKS_KEY_DESCRIPTION));
+    		title.setText(map.get(Constant.TASKS_KEY_NAME_TASKS));
+    	description.setText(map.get(Constant.TASKS_KEY_DESCRIPTION));
         
     	if(map.get(Constant.TASKS_KEY_ACTIVE).equals("1"))
     		ico = activity.getResources().getDrawable(R.drawable.ic_media_play);
