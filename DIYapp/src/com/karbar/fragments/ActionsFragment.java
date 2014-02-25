@@ -130,6 +130,7 @@ public class ActionsFragment extends Fragment {
 	}
 
 	private void createExistingGrid(ArrayList<HashMap<String, String>> list) {
+		optionList = list;
 		mGrid = (GridView) getActivity().findViewById(R.id.action_grid);
 		mGridAdapter = new GridAdapter(getActivity(), list);
 		mGrid.setAdapter(mGridAdapter);
@@ -279,7 +280,6 @@ public class ActionsFragment extends Fragment {
 	};
 	View.OnClickListener changeToActionsListener = new OnClickListener() {
 		public void onClick(View v) {
-
 			mFragmentManager = getFragmentManager();
 			actions = new ActionsFragment();
 			FragmentTransaction transaction = mFragmentManager
