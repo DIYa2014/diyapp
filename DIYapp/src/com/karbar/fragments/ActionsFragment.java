@@ -130,7 +130,7 @@ public class ActionsFragment extends Fragment {
 	}
 
 	private void createExistingGrid(ArrayList<HashMap<String, String>> list) {
-		optionList = list;
+		optionList2 = list;
 		mGrid = (GridView) getActivity().findViewById(R.id.action_grid);
 		mGridAdapter = new GridAdapter(getActivity(), list);
 		mGrid.setAdapter(mGridAdapter);
