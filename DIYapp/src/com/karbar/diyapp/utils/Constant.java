@@ -83,10 +83,9 @@ public class Constant {
 	public static final long CONDITION_GPS = 3;
 	public static final long CONDITION_WIFI = 4;
 	
-	
 	/*mo¿liwe akcje*/
-	public static final long ACTION_WIFI = 1;
-	public static final long ACTION_VIBRATION = 2;
-	public static final long ACTION_SOUND = 3;
-	public static final long ACTION_NOTIFICATION = 4;
+	public static final long ACTION_WIFI = 4;
+	public static final long ACTION_VIBRATION = 6;
+	public static final long ACTION_SOUND = 7;
+	public static final long ACTION_NOTIFICATION = 5;
 }

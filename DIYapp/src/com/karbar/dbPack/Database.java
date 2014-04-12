@@ -552,6 +552,7 @@ public class Database {
 				String [] gr = groups_of_conditions.split(",");
 				int quant_gr = gr.length;
 				
+				Log.d("karbarServiceTestAct", ""+act);
 				
 				task.put(TASKS_KEY_ID, id);
 				task.put(TASKS_KEY_NAME_TASKS, name);
@@ -658,7 +659,7 @@ ADDED_CONDITIONS_KEY_EXECUTED_CONDITION*/
 				String id_group = cursorCon.getString(ADDED_CONDITIONS_GROUP_ID_COLUMN);
 				String params = cursorCon.getString(ADDED_CONDITIONS_PARAMETERS_CONDITIONS_COLUMN);
 				String exec = cursorCon.getString(ADDED_CONDITIONS_EXECUTED_CONDITION_COLUMN);
-				HashMap<String, String> tempMap = new HashMap<String, String>();
+				//HashMap<String, String> tempMap = new HashMap<String, String>();
 				//AddedCondition ac = new AddedCondition();
 				map.put(Constant.KEY_UNIQE_ID, id_add_con);
 				map.put(Constant.KEY_ID, id_con);//Nie zmieniaj tego klucza!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -666,6 +667,13 @@ ADDED_CONDITIONS_KEY_EXECUTED_CONDITION*/
 				map.put(Constant.KEY_GROUP_ID, id_group);
 				map.put(ADDED_CONDITIONS_KEY_PARAMETERS_CONDITIONS, params);
 				map.put(ADDED_CONDITIONS_KEY_EXECUTED_CONDITION, exec);
+				
+				map.put(ADDED_CONDITIONS_KEY_ID_ADDEDD_CONDITIONS, id_add_con);
+						//ADDED_CONDITIONS_KEY_CONDITION_ID
+				map.put(ADDED_CONDITIONS_KEY_CONDITION_ID, id_con);
+				map.put(ADDED_CONDITIONS_KEY_GROUP_ID, id_group);
+
+				Log.d("karolChuj", map.toString());
 				
 				ret.add(map);
 				
@@ -825,6 +833,9 @@ ADDED_CONDITIONS_KEY_EXECUTED_CONDITION*/
 				map.put(ADDED_ACTIONS_KEY_EXECUTED_ACTION, exec);
 				map.put(ADDED_ACTIONS_KEY_BEFORE_ACTION, before);
 				
+				map.put(ADDED_ACTIONS_KEY_ID_ADDEDD_ACTIONS, id_add_act);
+				map.put(ADDED_ACTIONS_KEY_ACTION_ID, id_act);
+				
 				getActionsLists.add(map);
 				
 				
@@ -908,7 +919,7 @@ ADDED_CONDITIONS_KEY_EXECUTED_CONDITION*/
 				map.put(ADDED_CONDITIONS_KEY_GROUP_ID, id_group);
 				map.put(ADDED_CONDITIONS_KEY_PARAMETERS_CONDITIONS, params);
 				map.put(ADDED_CONDITIONS_KEY_EXECUTED_CONDITION, exec);
-			
+			Log.d("karolChuj", map.toString());
 				
 				
 			}
@@ -967,7 +978,7 @@ ADDED_CONDITIONS_KEY_EXECUTED_CONDITION*/
 		newValues.put(ADDED_CONDITIONS_KEY_TASK_ID_CONDITIONS, idTask);
 		newValues.put(ADDED_CONDITIONS_KEY_GROUP_ID, idGroup);
 		//newValues.put(ADDED_CONDITIONS_KEY_PARAMETERS_CONDITIONS, ""); //zakomentowalem, zobaczymy, czy bedzie odbrze
-		newValues.put(ADDED_CONDITIONS_KEY_EXECUTED_CONDITION, 0);
+		newValues.put(ADDED_CONDITIONS_KEY_EXECUTED_CONDITION, -1);
 		newValues.put(ADDED_CONDITIONS_KEY_PARAMETERS_CONDITIONS, params);
 		
 

@@ -190,7 +190,7 @@ public class Trigger extends Activity{
 		
 		Calendar poczatkowa  = GregorianCalendar.getInstance();
 		poczatkowa.set(GregorianCalendar.YEAR, rokPoczatkowy);
-		poczatkowa.set(GregorianCalendar.MONTH, miesiacPoczatkowy-1);
+		poczatkowa.set(GregorianCalendar.MONTH, miesiacPoczatkowy);
 		poczatkowa.set(GregorianCalendar.DAY_OF_MONTH, dzienPoczatkowy);
 		poczatkowa.set(GregorianCalendar.HOUR_OF_DAY, godzinaPoczatkowy);
 		poczatkowa.set(GregorianCalendar.MINUTE, minutaPoczatkowy);
@@ -198,7 +198,7 @@ public class Trigger extends Activity{
 
 		Calendar koncowa  = GregorianCalendar.getInstance();
 		koncowa.set(GregorianCalendar.YEAR, rokKoncowy);
-		koncowa.set(GregorianCalendar.MONTH, miesiacKoncowy-1);
+		koncowa.set(GregorianCalendar.MONTH, miesiacKoncowy);
 		koncowa.set(GregorianCalendar.DAY_OF_MONTH, dzienKoncowy);
 		koncowa.set(GregorianCalendar.HOUR_OF_DAY, godzinaKoncowy);
 		koncowa.set(GregorianCalendar.MINUTE, minutaKoncowy);
@@ -221,6 +221,7 @@ public class Trigger extends Activity{
 		String timeSinceMinutes = parametry[1];
 		String timeToHour = parametry[2];
 		String timeToMinutes = parametry[3];
+		Log.d("karolChuj", "czas params[4] "+parametry[4]);
 		String [] days = parametry[4].split(",");
 		
 		String pon = days[0];
@@ -231,10 +232,10 @@ public class Trigger extends Activity{
 		String sob = days[5];
 		String niedz = days[6];
 		
-		int minutaPoczatkowy = Integer.valueOf(timeSinceHour);
-		int godzinaPoczatkowy = Integer.valueOf(timeSinceMinutes);
-		int minutaKoncowy = Integer.valueOf(timeToHour); 
-		int godzinaKoncowy = Integer.valueOf(timeToMinutes);  
+		int minutaPoczatkowy = Integer.valueOf(timeSinceMinutes);
+		int godzinaPoczatkowy = Integer.valueOf(timeSinceHour);
+		int minutaKoncowy = Integer.valueOf(timeToMinutes); 
+		int godzinaKoncowy = Integer.valueOf(timeToHour);  
 
 		boolean czyPon = pon.equals("true") ? true : false;
 		boolean czyWt = wt.equals("true") ? true : false;

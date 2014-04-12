@@ -21,6 +21,7 @@ import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.provider.MediaStore.Audio;
+import android.util.Log;
 import android.view.Menu;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -408,12 +409,14 @@ public class Action  /*extends Activity*/{
 			String notificationText_pobrany = parametry[2];
 			
 			dbMethods.updateAddedAction(Long.valueOf(id_add_act), "", ""+MY_NOTIFICATION);
+			Log.d("karolChuj", "my not "+MY_NOTIFICATION);
 			
 			return wyswietlPowiadomienie(tickerText_pobrany, notificationTitle_pobrany, notificationText_pobrany, MY_NOTIFICATION);
 		}
 		else{
-			dbMethods.updateAddedAction(Long.valueOf(id_add_act), "", "");
-			return anulujPowiadomienie(Integer.valueOf(params));
+			boolean ret = anulujPowiadomienie(Integer.parseInt(params));
+			//dbMethods.updateAddedAction(Long.valueOf(id_add_act), "", "");
+			return ret;
 		}
 			
 	}
@@ -508,14 +511,14 @@ public class Action  /*extends Activity*/{
 	    else{
 	    	
 	    	Intent intent = null;
-	    	PendingIntent pendingIntent = PendingIntent.getActivity(mc.getApplicationContext(), 0, intent, 0);
+	    	//PendingIntent pendingIntent = PendingIntent.getActivity(mc.getApplicationContext(), 0, intent, 0);
 		    
 	    	notification = new Notification.Builder(mc)
 			.setAutoCancel(true)
 			.setContentTitle(notificationTitle_pobrany)
 			.setContentText(notificationText_pobrany)
 			.setSmallIcon(icon)
-	        .setContentIntent(pendingIntent)
+	        //.setContentIntent(pendingIntent)
 	        .setSound(Uri.withAppendedPath(Audio.Media.INTERNAL_CONTENT_URI, "1"))
 	        .setTicker(tickerText_pobrany)
 	        .setVibrate(tab)
