@@ -287,6 +287,7 @@ public class ActionsFragment extends Fragment {
 			transaction.replace(R.id.contentFrag, actions).addToBackStack( "tag" );
 			transaction.commit();
 
+			
 		}
 	};
 	View.OnClickListener addListener = new OnClickListener() {
