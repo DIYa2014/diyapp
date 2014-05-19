@@ -1,8 +1,10 @@
 package com.karbar.diyapp.utils;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 
+import com.karbar.dbPack.DbMethods;
 import com.karbar.diyapp.R;
  
 import android.app.Activity;
@@ -24,6 +26,7 @@ public class ImageAdapter extends BaseAdapter {
     public ArrayList<HashMap<String, String>> data;
     private static LayoutInflater inflater=null;
     private View listView;
+	private DbMethods dbMethods;
     
     
  
@@ -32,7 +35,7 @@ public class ImageAdapter extends BaseAdapter {
         data=d;
         inflater = (LayoutInflater)activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         listView = list;
-
+        
     }
  
     public int getCount() {
@@ -64,14 +67,19 @@ public class ImageAdapter extends BaseAdapter {
         TextView description = (TextView)vi.findViewById(R.id.diya_desc_single_elem); // title
         View listview = getListView();
         ll.setMinimumHeight(200);
+		Calendar c = Calendar.getInstance(); 
 
     	map = data.get(position);
-        
-    	if(map.get(Constant.TASKS_KEY_NAME_TASKS).equals(""))
-    		title.setText(map.get(Constant.TASKS_KEY_DATE_CREATE));
-    	else
+    	dbMethods = new DbMethods(activity);
+    	if(map.get(Constant.TASKS_KEY_NAME_TASKS).equals("")){
+    		String name = activity.getResources().getString(R.string.default_diya_name)+" "+map.get(Constant.TASKS_KEY_ID);
+    		title.setText(name);
+    	}else
     		title.setText(map.get(Constant.TASKS_KEY_NAME_TASKS));
-    	description.setText(map.get(Constant.TASKS_KEY_DESCRIPTION));
+    	if(map.get(Constant.TASKS_KEY_DESCRIPTION).equals("")){
+    		
+    	}else
+    		description.setText(map.get(Constant.TASKS_KEY_DESCRIPTION));
         
     	if(map.get(Constant.TASKS_KEY_ACTIVE).equals("1"))
     		ico = activity.getResources().getDrawable(R.drawable.ic_media_play);

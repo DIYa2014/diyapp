@@ -1,6 +1,7 @@
 package com.karbar.fragments;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 
 import net.londatiga.android.ActionItem;
@@ -387,13 +388,25 @@ public class ActionsFragment extends Fragment {
 		dialog = new Dialog(getActivity(), R.style.MyDialogTheme);
 		dialog.setContentView(R.layout.diya_data);
 		dialog.show();
-
+		Calendar c = Calendar.getInstance(); 
 		final EditText name = (EditText) dialog
 				.findViewById(R.id.addDiyaNameEdit);
+		
 		final EditText description = (EditText) dialog
 				.findViewById(R.id.addDiyaDescEdit);
 		Button ok, anuluj;
 
+		if(dbMethods.getOneDiya(diyaID).get(Constant.TASKS_KEY_NAME_TASKS).isEmpty())
+			name.setText(getActivity().getResources().getString(R.string.default_diya_name)+" "+diyaID);
+		else
+			name.setText(dbMethods.getOneDiya(diyaID).get(Constant.TASKS_KEY_NAME_TASKS));
+		if(dbMethods.getOneDiya(diyaID).get(Constant.TASKS_KEY_DESCRIPTION).isEmpty()){
+			int month = c.get(Calendar.MONTH) + 1;
+			description.setText(c.get(Calendar.DAY_OF_MONTH)+"/"+month+"/"+c.get(Calendar.YEAR));
+		}else
+			description.setText(dbMethods.getOneDiya(diyaID).get(Constant.TASKS_KEY_DESCRIPTION));
+		
+		
 		ok = (Button) dialog.findViewById(R.id.buttonOk);
 		anuluj = (Button) dialog.findViewById(R.id.buttonAnuluj);
 		anuluj.setOnClickListener(anulujListener);
