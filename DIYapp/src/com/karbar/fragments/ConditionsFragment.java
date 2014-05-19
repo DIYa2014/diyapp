@@ -451,7 +451,7 @@ public class ConditionsFragment extends Fragment {
 			actions.setArguments(bundle);
 			FragmentTransaction transaction = mFragmentManager
 					.beginTransaction();
-			transaction.replace(R.id.contentFrag, actions);
+			transaction.replace(R.id.contentFrag, actions).addToBackStack( "tag" );
 			transaction.commit();
 		}
 	};
@@ -462,7 +462,7 @@ public class ConditionsFragment extends Fragment {
 			conditions = new ConditionsFragment();
 
 			mFragmentManager.beginTransaction()
-					.replace(R.id.contentFrag, conditions).commit();
+					.replace(R.id.contentFrag, conditions).addToBackStack( "tag" ).commit();
 
 		}
 	};

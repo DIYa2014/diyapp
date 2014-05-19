@@ -25,10 +25,10 @@
         <string name="text_if">jeśli&#8230;</string>
         <string name="onDays">W następujące dni tygodnia:</string>
         <string name="conectetToWifiNamed">Podłączone do konkretnej sieci(opcjonalnie):</string>
-        <string name="tickerTextNotification">tickerText:</string>
-        <string name="notificationTitleNotification">notificationTitle:</string>
-        <string name="notificationTextNotification">notificationText:</string>
-        <string name="soundLevel">Ustaw glośność dzwonka:</string>
+        <string name="tickerTextNotification">Powiadomienie w górnym pask:</string>
+        <string name="notificationTitleNotification">Tytuł:</string>
+        <string name="notificationTextNotification">Treść powiadomienia:</string>
+        <string name="soundLevel">Ustaw głośność dzwonka:</string>
         
 		<string name="item_add_diya">DIYa</string>
 		<string name="addDiyaName">Podaj nazwę:</string>

@@ -1,5 +1,7 @@
 package com.karbar.diyapp;
 
+
+
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 
@@ -17,6 +19,9 @@ public class ContentActivity extends FragmentActivity {
 				.replace(R.id.contentFrag, start).commit();
 
 	}
+
+
+	
 
 }
 

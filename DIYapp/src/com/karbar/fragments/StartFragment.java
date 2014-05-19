@@ -116,7 +116,7 @@ public class StartFragment extends Fragment {
 			Log.d("kkams", "Nadaje nowe id dla DIYi: " + id);
 			conditions = new ConditionsFragment();
 			conditions.setArguments(bundle);
-			ft.replace(R.id.contentFrag, conditions);
+			ft.replace(R.id.contentFrag, conditions).addToBackStack( "tag" );
 			ft.commit();
 		}
 	};
@@ -169,7 +169,7 @@ public class StartFragment extends Fragment {
 										uniqeID_final);
 								conditions = new ConditionsFragment();
 								conditions.setArguments(bundle);
-								ft.replace(R.id.contentFrag, conditions);
+								ft.replace(R.id.contentFrag, conditions).addToBackStack( "tag" );
 
 								ft.commit();
 

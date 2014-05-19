@@ -284,7 +284,7 @@ public class ActionsFragment extends Fragment {
 			actions = new ActionsFragment();
 			FragmentTransaction transaction = mFragmentManager
 					.beginTransaction();
-			transaction.replace(R.id.contentFrag, actions);
+			transaction.replace(R.id.contentFrag, actions).addToBackStack( "tag" );
 			transaction.commit();
 
 		}
@@ -303,7 +303,7 @@ public class ActionsFragment extends Fragment {
 			conditions.setArguments(bundle);
 			FragmentTransaction transaction = mFragmentManager
 					.beginTransaction();
-			transaction.replace(R.id.contentFrag, conditions);
+			transaction.replace(R.id.contentFrag, conditions).addToBackStack( "tag" );
 			transaction.commit();
 
 		}
@@ -408,7 +408,7 @@ public class ActionsFragment extends Fragment {
 				// android.R.anim.fade_out);
 				StartFragment start;
 				start = new StartFragment();
-				ft.replace(R.id.contentFrag, start);
+				ft.replace(R.id.contentFrag, start).addToBackStack( "tag" );
 
 				// Start the animated transition.
 				ft.commit();
@@ -493,9 +493,13 @@ public class ActionsFragment extends Fragment {
 		final EditText content = (EditText) dialog
 				.findViewById(R.id.notificationTextNotificationEdit);
 		Button ok, anuluj;
-		ticker.setText(pt[0]);
-		title.setText(pt[1]);
-		content.setText(pt[2]);
+		if(pt.length > 0)
+			ticker.setText(pt[0]);
+		if(pt.length > 1)
+			title.setText(pt[1]);
+		if(pt.length > 2)
+			content.setText(pt[2]);
+		
 		ok = (Button) dialog.findViewById(R.id.buttonOkNotification);
 		anuluj = (Button) dialog.findViewById(R.id.buttonAnulujNotification);
 		anuluj.setOnClickListener(anulujListener);
@@ -642,7 +646,7 @@ public class ActionsFragment extends Fragment {
 			}
 		});
 	}
-
+	
 	public void vibrationOn() {
 
 		long diyaID = bundle.getLong(Constant.KEY_DIYAID);
