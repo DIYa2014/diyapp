@@ -410,7 +410,8 @@ public class Execute extends Service {
 
 				case (int) Constant.CONDITION_GPS:
 					Log.d("karbarServiceTest", "Basia6");
-					boolean czy2 = tr.sprawdzGPS(id_add_con, params);
+					//boolean czy2 = tr.sprawdzGPS(id_add_con, params);
+					boolean czy2 = false;
 					retArray.add(czy2);
 					break;
 

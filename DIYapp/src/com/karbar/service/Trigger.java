@@ -13,10 +13,12 @@ import com.karbar.dbPack.DbMethods;
 import android.app.Activity;
 import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
+import android.location.LocationListener;
 import android.location.LocationManager;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
@@ -30,6 +32,8 @@ public class Trigger extends Activity{
 	Context mc;
 	
 	DbMethods dbMethods;
+	
+	double retLocation [] = {0.0, 0.0};
 	
 	public Trigger(Context c, DbMethods dbMethods) {
 		// TODO Auto-generated constructor stub
@@ -504,7 +508,7 @@ public class Trigger extends Activity{
 		return false;
 	}
 	
-	public boolean sprawdzGPS(String id_add_con, String params){
+	public boolean sprawdzGPS(String id_add_con, String params, Location location){
 		String [] parametry = dbMethods.convertParamsIntoTab(params);
 		
 		String lat = parametry[0];
@@ -517,10 +521,43 @@ public class Trigger extends Activity{
 		double promien_szukane = Double.valueOf(rad);//w metrach
 		boolean czyNaZewnatrz = outside.equals("true") ? true : false;
 		
-		return czyWDanymMiejscu(latitude_szukane, longitude_szukane, promien_szukane, czyNaZewnatrz);
+		return czyWDanymMiejscu(latitude_szukane, longitude_szukane, promien_szukane, czyNaZewnatrz, location);
 	}
 	
 	public boolean czyWDanymMiejscu(double latitude_szukane, double longitude_szukane, double promien_szukane, 
+			boolean czyNaZewnatrz, Location location){
+
+		double latitude = location.getLatitude();//n-s
+		double longitude = location.getLongitude();//e-w
+		
+		Toast.makeText(mc.getApplicationContext(), "lat (n-s) " + latitude + " long (e-w) " + longitude,  Toast.LENGTH_SHORT).show();
+		System.out.println("lat (n-s) " + latitude + " long (e-w) " + longitude);
+		//System.out.println("lat2 (n-s) " + latitude_2 + " long2 (e-w) " + longitude_2);
+		//promien_szukane /= 1000;
+		
+		Location locationA = new Location("Obecny");
+		
+		locationA.setLatitude(latitude);
+		locationA.setLongitude(longitude);
+		
+		Location locationB = new Location("Szukany");
+		
+		locationB.setLatitude(latitude_szukane);
+		locationB.setLongitude(longitude_szukane);
+		
+		double distance = locationA.distanceTo(locationB);
+		
+		if(distance < promien_szukane){
+			if(!czyNaZewnatrz)
+				return true;
+		}
+		
+		return false;
+	
+	}
+	
+	
+	public boolean czyWDanymMiejscu2(double latitude_szukane, double longitude_szukane, double promien_szukane, 
 									boolean czyNaZewnatrz){
 		
 		/*pobranie z bazy*/
@@ -556,17 +593,60 @@ public class Trigger extends Activity{
 		LocationManager locationManager;
 		locationManager = (LocationManager) mc.getSystemService(Context.LOCATION_SERVICE);
 		String providerStr = LocationManager.NETWORK_PROVIDER;//nie trzeba odswiezac samemu, zzera mniej baterii niz gps
-
-		int a=0;
+		/*LocationListener locationListener = null;
+		*
+		
+		int a=34567;
 		
 		locationManager.requestSingleUpdate(LocationManager.NETWORK_PROVIDER, PendingIntent.getService(mc.getApplicationContext(), a, getIntent(), a));
 		locationManager.requestSingleUpdate(LocationManager.NETWORK_PROVIDER, PendingIntent.getService(mc.getApplicationContext(), a, getIntent(), a));
 		//to wyzej dwa razy, bo czasami nie odswieza od razu
+		
+		locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 45000, 1, locationListener);
+		*
+		*/
+		
+	//	Intent intent = getIntent();
+	//	Intent intent2 = new Intent(mc, Execute_2.class);
+		
+		//PendingIntent pi = PendingIntent.getService(mc, 0, intent, 0);
+		
+	//	PendingIntent pi2 = PendingIntent.getService(mc, 123456, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+		
+		
+		
+		LocationListener locationListener = new LocationListener() {
+		    public void onLocationChanged(Location location) {
+		      // Called when a new location is found by the network location provider.
+		    	createLocations(location);
+		    	System.out.println("lat2_list (n-s) " + location.getLatitude() + " long2_list (e-w) " + location.getLongitude());
+		    }
+
+		    public void onStatusChanged(String provider, int status, Bundle extras) {}
+
+		    public void onProviderEnabled(String provider) {}
+
+		    public void onProviderDisabled(String provider) {}
+		  };
+
+		final double latitude_2 = retLocation[0];
+		final double longitude_2 = retLocation[1];
+		
+		//locationManager.requestSingleUpdate(providerStr, locationListener, null);
+		//locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, locationListener);
+		locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
+		
+		//nope
 		Location location = locationManager.getLastKnownLocation(providerStr);
+		
+		//locationManager.removeUpdates(locationListener);
 		
 		double latitude = location.getLatitude();//n-s
 		double longitude = location.getLongitude();//e-w
 		
+		Toast.makeText(mc.getApplicationContext(), "lat (n-s) " + latitude + " long (e-w) " + longitude,  Toast.LENGTH_SHORT).show();
+		System.out.println("lat (n-s) " + latitude + " long (e-w) " + longitude);
+		System.out.println("lat2 (n-s) " + latitude_2 + " long2 (e-w) " + longitude_2);
 		//promien_szukane /= 1000;
 		
 		Location locationA = new Location("Obecny");
@@ -590,6 +670,13 @@ public class Trigger extends Activity{
 		return false;
 		
 	}
+	
+	public void createLocations(Location location){
+		 
+		retLocation[0] = location.getLatitude();
+		retLocation[1] = location.getLongitude(); 
+	}
+	
 	
 		public boolean czyWDanymMiejscuTest(double latitude_szukane, double longitude_szukane, double promien_szukane){
 		

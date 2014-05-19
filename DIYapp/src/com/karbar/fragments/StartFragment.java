@@ -1,13 +1,19 @@
 package com.karbar.fragments;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 
 import net.londatiga.android.ActionItem;
 import net.londatiga.android.QuickAction;
 
+import android.app.Activity;
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
@@ -24,6 +30,7 @@ import com.karbar.diyapp.R;
 import com.karbar.diyapp.utils.Constant;
 import com.karbar.diyapp.utils.ImageAdapter;
 import com.karbar.service.Execute;
+import com.karbar.service.Execute_2;
 
 public class StartFragment extends Fragment {
 
@@ -35,6 +42,7 @@ public class StartFragment extends Fragment {
 	private long id;
 	DbMethods dbMethods;
 	private Intent intent;
+	private Intent intent2;
 	ArrayList<HashMap<String, String>> data;
 
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -49,9 +57,43 @@ public class StartFragment extends Fragment {
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		intent = new Intent(getActivity(), Execute.class);
+		intent2 = new Intent(getActivity(), Execute_2.class);
 		dbMethods = new DbMethods(getActivity());
 		if (!dbMethods.isServiceRunning()) {
-			getActivity().startService(intent);
+			//getActivity().startService(intent);
+			
+			try {
+	             
+	            //Create a new PendingIntent and add it to the AlarmManager
+				Calendar calendar = Calendar.getInstance();
+	            PendingIntent pendingIntent = 
+	            			//PendingIntent.getActivity(getActivity(), 123456, intent2, PendingIntent.FLAG_UPDATE_CURRENT);
+	            			PendingIntent.getService(getActivity(), 123456, intent2, PendingIntent.FLAG_UPDATE_CURRENT);
+	            AlarmManager am =
+	                (AlarmManager) getActivity().getSystemService(Activity.ALARM_SERVICE);
+	           // 
+		            if(PendingIntent.getBroadcast(getActivity(), 123456, intent2, PendingIntent.FLAG_NO_CREATE) == null){
+		            	
+		            	am.cancel(pendingIntent);
+		            	
+			            am.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),
+			                    2*60*1000, pendingIntent);
+			            //am.toString();
+			            Log.d("am_service", "Ustawiono alarm manager?: " + am.toString());
+			            
+			            boolean alarmUp = PendingIntent.getBroadcast(getActivity(), 123456, intent2, PendingIntent.FLAG_NO_CREATE) != null;
+			            
+			            Log.d("am_service", "Ustawiono alarm manager?, alarmUp: " + alarmUp);
+	            }
+	            
+	            else {
+	            	Log.d("am_service", "Nie ustawiono powtornie alarmmanagera");
+	            }
+	          } catch (Exception e) {
+	        	  Log.d("am_service", "Wyjatek przy ustawianiu alarmmanagera");
+	          }
+			
+			
 		}
 		listView = (ListView) mainView.findViewById(R.id.diyaList);
 		if (dbMethods.getDIYaList() != null) {
